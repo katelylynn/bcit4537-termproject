@@ -1,10 +1,12 @@
 const express = require("express")
+const cors = require("cors")
 const UserManager = require("./userManager.js")
 
 module.exports = class ApiServer {
 
     constructor() {
         this.app = express()
+        this.app.use(cors())
         this.userManager = new UserManager()
     }
 

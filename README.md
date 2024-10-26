@@ -30,4 +30,5 @@ Back end:
 - [ ] Use downloaded pre-trained LLM model, not third-party service
 - [ ] Host LLM model from HuggingFace
 - [ ] Warn user if they have used up 20 free API calls
+- [ ] Ensure CORS is set to only allow requests from client
 - [X] Hosted on its own origin
