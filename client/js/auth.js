@@ -7,7 +7,7 @@ export class Auth {
     }
 
     register() {
-        fetch("https://jsonplaceholder.typicode.com/posts")
+        fetch("https://bcit4537-termproject-server.up.railway.app/users") // temp, testing calling the server
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error))
