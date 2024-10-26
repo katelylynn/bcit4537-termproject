@@ -1,6 +1,6 @@
 const express = require("express")
 const DatabaseConnection = require('./db.js')
-const Pinger = require("./ping.js")
+const UserManager = require("./userManager.js")
 
 module.exports = class ApiServer {
 
@@ -12,7 +12,7 @@ module.exports = class ApiServer {
             process.env.MYSQLPASSWORD, 
             process.env.MYSQLDATABASE
         )
-        this.pinger = new Pinger()
+        this.userManager = new UserManager()
     }
 
     start(port) {
@@ -21,14 +21,13 @@ module.exports = class ApiServer {
     }
 
     exposeRoutes() {
-        this.app.get("/ping1", this.pinger.ping1)
-        this.app.get("/ping2", this.pinger.ping2)
-        this.app.get("/users", (req, res) => {
-            this.db.query("SELECT * FROM User;", (err, obj) => {
-                if (err) console.log(err)
-                else res.send(JSON.stringify(obj))
-            })
-        })
+        this.app.post("/register", this.userManager.register)
+        this.app.post("/login", this.userManager.login)
+        this.app.get("/users", this.userManager.getAllUsers)
+        this.app.get("/users/:userId", this.userManager.getUser)
+        this.app.patch("/users/:userId", this.userManager.patchUser)
+        this.app.patch("/users/change-role/:userId", this.userManager.patchUserRole)
+        this.app.delete("/users/:userId", this.userManager.deleteUser)
     }
 
 }
