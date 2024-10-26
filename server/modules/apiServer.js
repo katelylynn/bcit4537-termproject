@@ -14,13 +14,13 @@ module.exports = class ApiServer {
     }
 
     exposeRoutes() {
-        this.app.post("/register", this.userManager.register)
-        this.app.post("/login", this.userManager.login)
-        this.app.get("/users", this.userManager.getAllUsers)
-        this.app.get("/users/:userId", this.userManager.getUser)
-        this.app.patch("/users/:userId", this.userManager.patchUser)
-        this.app.patch("/users/change-role/:userId", this.userManager.patchUserRole)
-        this.app.delete("/users/:userId", this.userManager.deleteUser)
+        this.app.post("/register", this.userManager.register.bind(this.userManager))
+        this.app.post("/login", this.userManager.login.bind(this.userManager))
+        this.app.get("/users", this.userManager.getAllUsers.bind(this.userManager))
+        this.app.get("/users/:userId", this.userManager.getUser.bind(this.userManager))
+        this.app.patch("/users/:userId", this.userManager.patchUser.bind(this.userManager))
+        this.app.patch("/users/change-role/:userId", this.userManager.patchUserRole.bind(this.userManager))
+        this.app.delete("/users/:userId", this.userManager.deleteUser.bind(this.userManager))
     }
 
 }
