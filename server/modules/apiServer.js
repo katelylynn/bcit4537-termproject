@@ -1,17 +1,10 @@
 const express = require("express")
-const DatabaseConnection = require('./db.js')
 const UserManager = require("./userManager.js")
 
 module.exports = class ApiServer {
 
     constructor() {
         this.app = express()
-        this.db = new DatabaseConnection(
-            process.env.MYSQLHOST, 
-            process.env.MYSQLUSER, 
-            process.env.MYSQLPASSWORD, 
-            process.env.MYSQLDATABASE
-        )
         this.userManager = new UserManager()
     }
 
