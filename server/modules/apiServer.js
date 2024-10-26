@@ -24,7 +24,7 @@ module.exports = class ApiServer {
         this.app.get("/ping1", this.pinger.ping1)
         this.app.get("/ping2", this.pinger.ping2)
         this.app.get("/users", (req, res) => {
-            const users = this.db.query("SELECT * FROM user;")
+            const users = this.db.query("SELECT * FROM User;")
             console.log(users)
             res.send({ data: users })
         })
