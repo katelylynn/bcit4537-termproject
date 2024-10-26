@@ -9,9 +9,11 @@
 
 Front end:
 - [ ] Create project title
-- [ ] Create Login page
+- [X] Create Login page
 - [ ] Make call to back end to register user
-- [ ] Create Landing page
+- [ ] Make call to back end to login user
+- [ ] Make call to back end for forgotten password
+- [X] Create Landing page
 - [ ] Make API calls to backend
 - [ ] Display user's API consumption in the login/landing page
 - [ ] Display all users' API consumption if logged in as admin user
@@ -23,9 +25,9 @@ Back end:
   - [ ] User Registration
   - [ ] User Login
   - [ ] Get all user API consumption data
-- [ ] Setup a DB
+- [X] Setup a DB
 - [ ] Hash passwords before storing in DB
 - [ ] Use downloaded pre-trained LLM model, not third-party service
 - [ ] Host LLM model from HuggingFace
 - [ ] Warn user if they have used up 20 free API calls
-- [ ] Hosted on its own origin
+- [X] Hosted on its own origin
