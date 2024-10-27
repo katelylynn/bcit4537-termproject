@@ -5,6 +5,7 @@
 - [ ] Follow microservice architecture
 - [ ] Use httpOnly cookie or JWT for auth
 - [ ] Protect project against SQL injection or XSS attack
+- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
 - [ ] BONUS: Implement forgot password feature
 
 Front end:

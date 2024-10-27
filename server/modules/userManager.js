@@ -1,3 +1,4 @@
+require('dotenv').config()
 const DatabaseConnection = require('./db.js')
 
 module.exports = class UserManager {
