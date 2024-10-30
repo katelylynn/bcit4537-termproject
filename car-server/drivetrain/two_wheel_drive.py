@@ -1,5 +1,8 @@
 from gpiozero import Motor, Device
+from gpiozero.pins.mock import MockFactory, MockPWMPin
 from typing import Tuple
+
+Device.pin_factory = MockFactory(pin_class=MockPWMPin)
 
 class TwoWheelDrive:
     def __init__(self, left_motor_pins: Tuple[int, int],
@@ -76,10 +79,7 @@ class TwoWheelDrive:
         print("TWO_WHEEL_DRIVE: Motors stopped")
 
 if __name__ == "__main__":
-    from gpiozero.pins.mock import MockFactory, MockPWMPin
     from time import sleep
-
-    Device.pin_factory = MockFactory(pin_class=MockPWMPin)
 
     twd = TwoWheelDrive(left_motor_pins=(17, 18), right_motor_pins=(22, 23), left_calibration=1.0, right_calibration=0.9)
 
