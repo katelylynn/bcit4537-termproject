@@ -1,8 +1,10 @@
 const express = require("express")
+const UserManager = require("./userManager")
 
-module.exports = class ApiServer {
+module.exports = class DatabaseAPI {
 
-    constructor() {
+    constructor(db) {
+        this.um = new UserManager(db)
         this.app = express()
         this.app.use(this.setCorsHeaders)
         this.exposeRoutes()
@@ -21,9 +23,11 @@ module.exports = class ApiServer {
     }
 
     exposeRoutes() {
-        this.app.post("/register", (req, res) => res.send("register"))
-        this.app.post("/login", (req, res) => res.send("login"))
-        this.app.post("/forgot-password", (req, res) => res.send("forgot password"))
+        this.app.get("/users", this.um.getAllUsers.bind(this.um))
+        this.app.get("/users/:userId", this.um.getUser.bind(this.um))
+        this.app.patch("/users/:userId", this.um.patchUser.bind(this.um))
+        this.app.patch("/users/change-role/:userId", this.um.patchUserRole.bind(this.um))
+        this.app.delete("/users/:userId", this.um.deleteUser.bind(this.um))
     }
 
 }

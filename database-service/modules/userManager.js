@@ -1,15 +1,9 @@
-require('dotenv').config()
-const DatabaseConnection = require('./db.js')
+require("dotenv").config()
 
 module.exports = class UserManager {
 
-    constructor() {
-        this.db = new DatabaseConnection(
-            process.env.MYSQLHOST, 
-            process.env.MYSQLUSER, 
-            process.env.MYSQLPASSWORD, 
-            process.env.MYSQLDATABASE
-        )
+    constructor(db) {
+        this.db = db
     }
 
     register(req, res) {
