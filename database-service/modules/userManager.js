@@ -36,7 +36,7 @@ module.exports = class UserManager {
         this.db.query("INSERT INTO User (username, role) VALUES (?, ?);", (err) => {
             if (err) return res.status(500).send("Error creating user.")
             res.send("User created successfully.")
-        }, [username, password, email])
+        }, [name, role])
     }
 
     patchUser(req, res) {
