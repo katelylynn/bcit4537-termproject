@@ -26,6 +26,7 @@ module.exports = class DatabaseAPI {
     exposeRoutes() {
         this.app.get("/users", this.um.getAllUsers.bind(this.um))
         this.app.get("/users/:userId", this.um.getUser.bind(this.um))
+        this.app.post("/users", this.um.postUser.bind(this.um))
         this.app.patch("/users/:userId", this.um.patchUser.bind(this.um))
         this.app.patch("/users/change-role/:userId", this.um.patchUserRole.bind(this.um))
         this.app.delete("/users/:userId", this.um.deleteUser.bind(this.um))
