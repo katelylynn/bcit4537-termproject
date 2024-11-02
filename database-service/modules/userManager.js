@@ -25,11 +25,31 @@ module.exports = class UserManager {
         }, [uid])
     }
 
+    postUser(req, res) {
+        const { username, role } = req.body;
+
+        // temp validation
+        if (!username || !role) {
+            return res.status(400).send("Username, password, and email are required.");
+        }
+
+        this.db.query("INSERT INTO User (username, role) VALUES (?, ?);", (err) => {
+            if (err) return res.status(500).send("Error creating user.")
+            res.send("User created successfully.")
+        }, [username, password, email])
+    }
+
     patchUser(req, res) {
         const uid = req.params.userId
         
         // allow variable number of changes to user
         const changes = req.body
+
+        // prevent changing role
+        if (changes.role !== undefined) {
+            return res.status(400).send("Not allowed to modify the role permission.");
+        }
+
         const fields = Object.keys(changes).map(field => `${field} = ?`).join(", ")
         const values = Object.values(changes)
         values.push(uid)

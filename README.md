@@ -41,3 +41,4 @@ Database service:
 - [ ] Ensure CORS is set to only allow requests from router-service
 - [ ] Extract db query strings into const variables
 - [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
+- [ ] Limit user's privilege
