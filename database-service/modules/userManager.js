@@ -33,7 +33,7 @@ module.exports = class UserManager {
             return res.status(400).send("All fields are required.");
         }
 
-        this.db.query("INSERT INTO User (username, role) VALUES (?, ?);", (err) => {
+        this.db.query("INSERT INTO User (name, role) VALUES (?, ?);", (err) => {
             if (err) return res.status(500).send("Error creating user.")
             res.send("User created successfully.")
         }, [name, role])
