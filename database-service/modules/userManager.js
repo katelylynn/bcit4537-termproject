@@ -1,4 +1,5 @@
 require("dotenv").config()
+const { QUERIES, USER_MSGS } = require("../lang/en.js")
 
 module.exports = class UserManager {
 
@@ -9,7 +10,7 @@ module.exports = class UserManager {
     getAllUsers(req, res) {
         // TODO: admins only
 
-        this.db.query("SELECT * FROM User;", (err, obj) => {
+        this.db.query(QUERIES.GET_ALL_USERS, (err, obj) => {
             if (err) res.status(500).send(err.message)
             else res.send(JSON.stringify(obj))
         })
@@ -18,9 +19,9 @@ module.exports = class UserManager {
     getUser(req, res) {
         const uid = req.params.userId
         
-        this.db.query("SELECT * FROM User WHERE id = ?;", (err, obj) => {
+        this.db.query(QUERIES.GET_USER, (err, obj) => {
             if (err) return res.status(500).send(err.message)
-            if (obj.length === 0) return res.status(404).send("User not found.")
+            if (obj.length === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.json(obj[0])
         }, [uid])
     }
@@ -30,11 +31,11 @@ module.exports = class UserManager {
 
         // temp validation
         if (!name || !role) {
-            return res.status(400).send("All fields are required.");
+            return res.status(400).send(USER_MSGS.ALL_FIELDS_REQUIRED);
         }
 
-        this.db.query("INSERT INTO User (name, role) VALUES (?, ?);", (err) => {
-            if (err) return res.status(500).send("Error creating user.")
+        this.db.query(QUERIES.INSERT_USER, (err) => {
+            if (err) return res.status(500).send(USER_MSGS.ERROR_CREATING_USER)
             res.send("User created successfully.")
         }, [name, role])
     }
@@ -47,16 +48,16 @@ module.exports = class UserManager {
 
         // prevent changing role
         if (changes.role !== undefined) {
-            return res.status(400).send("Not allowed to modify the role permission.");
+            return res.status(400).send(USER_MSGS.NOT_ALLOWED_TO_MODIFY_ROLE);
         }
 
         const fields = Object.keys(changes).map(field => `${field} = ?`).join(", ")
         const values = Object.values(changes)
         values.push(uid)
 
-        this.db.query(`UPDATE User SET ${fields} WHERE id = ?;`, (err) => {
+        this.db.query(QUERIES.UPDATE_USER.replace('?', fields), (err) => {
             if (err) return res.status(500).send(err.message)
-            res.send("User updated successfully.")
+            res.send(USER_MSGS.USER_UPDATED_SUCCESSFULLY)
         }, values)
     }
 
@@ -66,9 +67,9 @@ module.exports = class UserManager {
         const uid = req.params.userId
         const { role } = req.body
 
-        this.db.query("UPDATE User SET role = ? WHERE id = ?;", (err) => {
+        this.db.query(QUERIES.UPDATE_USER_ROLE, (err) => {
             if (err) return res.status(500).send(err.message)
-            res.send("User role updated successfully.")
+            res.send(USER_MSGS.USER_ROLE_UPDATED_SUCCESSFULLY)
         }, [role, uid])
     }
 
@@ -77,9 +78,9 @@ module.exports = class UserManager {
 
         const uid = req.params.userId
 
-        this.db.query("DELETE FROM User WHERE id = ?;", (err) => {
+        this.db.query(QUERIES.DELETE_USER, (err) => {
             if (err) return res.status(500).send(err.message)
-            res.send("User deleted successfully.")
+            res.send(USER_MSGS.USER_DELETED_SUCCESSFULLY)
         }, [uid])
     }
 
