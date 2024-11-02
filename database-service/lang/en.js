@@ -2,7 +2,7 @@ exports.QUERIES = {
     GET_ALL_USERS: "SELECT * FROM User;",
     GET_USER: "SELECT * FROM User WHERE id = ?;",
     INSERT_USER: "INSERT INTO User (name, role) VALUES (?, ?);",
-    UPDATE_USER: "UPDATE User SET ? WHERE id = ?;",
+    UPDATE_USER: fields => `UPDATE User SET ${fields} WHERE id = ?;`,
     UPDATE_USER_ROLE: "UPDATE User SET role = ? WHERE id = ?;",
     DELETE_USER: "DELETE FROM User WHERE id = ?;",
 }

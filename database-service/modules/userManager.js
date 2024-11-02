@@ -55,7 +55,7 @@ module.exports = class UserManager {
         const values = Object.values(changes)
         values.push(uid)
 
-        this.db.query(QUERIES.UPDATE_USER.replace('?', fields), (err) => {
+        this.db.query(QUERIES.UPDATE_USER(fields), (err) => {
             if (err) return res.status(500).send(err.message)
             res.send(USER_MSGS.USER_UPDATED_SUCCESSFULLY)
         }, values)
