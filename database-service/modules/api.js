@@ -6,6 +6,7 @@ module.exports = class DatabaseAPI {
     constructor(db) {
         this.um = new UserManager(db)
         this.app = express()
+        this.app.use(express.json())
         this.app.use(this.setCorsHeaders)
         this.exposeRoutes()
     }
