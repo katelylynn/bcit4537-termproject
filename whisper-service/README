@@ -1,0 +1,70 @@
+# Whisper-Service
+
+### Purpose
+---
+The `whisper-service` is responsible for transcribing audio files into text using the Whisper model. This service is part of a microservices architecture and operates as a Flask application, receiving `.wav` audio files and returning transcriptions.
+
+### Requirements
+---
+- Python 3.8 or later
+- Flask
+- Transformers
+- Torchaudio
+
+Install the required packages by running:
+```bash
+pip install -r requirements.txt
+```
+
+### Installation
+---
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/bcit4537-termproject.git
+   cd bcit4537-termproject/whisper-service
+   ```
+
+2. **Unzip the Model**: 
+    The Whisper model is stored in Model_zip as a compressed file. Unzip this file to the model directory to ensure the application can access it.
+
+    ```bash
+    # Navigate to Model_zip
+    cd Model_zip
+
+    # Unzip the model
+    unzip whisper_tiny_model.zip -d ../model
+    ```
+3. **Verify Directory Structure**
+
+    After unzipping, your directory structure should look like this:
+    ```python
+    whisper-service/
+    ├── model/
+    │   └── whisper_tiny_model/        # Unzipped model files here
+    ├── Model_zip/
+    │   └── whisper_tiny_model.zip     # Original compressed model file
+    ├── modules/
+    ├── .gitignore
+    ├── app.py
+    └── README.md
+    ```
+
+### Usage
+To run the Flask application:
+```bash
+python app.py
+```
+
+### Project Structure
+
+whisper-service/
+├── model/                       # Directory where the unzipped model files should be located
+│   └── whisper_tiny_model/
+├── Model_zip/                   # Contains the compressed version of the model
+│   └── whisper_tiny_model.zip
+├── modules/                     # Additional modules or helper functions
+├── .gitignore                   # Specifies files and directories to be ignored by Git
+├── app.py                       # Main Flask application file
+└── README.md                    # Documentation for whisper-service
+
+Make sure the model files are unzipped in the correct directory structure to ensure the application can access and load them.
