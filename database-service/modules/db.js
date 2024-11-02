@@ -15,8 +15,8 @@ module.exports = class DatabaseConnection {
         })
     }
 
-    query(query, cb = (_) => {}) {
-        this.con.query(query, function (err, result) {
+    query(query, cb = (_) => {}, values = []) {
+        this.con.query(query, values, function (err, result) {
             cb(err, result)
         })
     }
