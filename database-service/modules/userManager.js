@@ -26,11 +26,11 @@ module.exports = class UserManager {
     }
 
     postUser(req, res) {
-        const { username, role } = req.body;
+        const { name, role } = req.body;
 
         // temp validation
-        if (!username || !role) {
-            return res.status(400).send("Username, password, and email are required.");
+        if (!name || !role) {
+            return res.status(400).send("All fields are required.");
         }
 
         this.db.query("INSERT INTO User (username, role) VALUES (?, ?);", (err) => {
