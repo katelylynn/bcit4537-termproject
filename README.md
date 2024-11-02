@@ -2,35 +2,42 @@
 
 ## Project Requirements
 
-- [ ] Follow microservice architecture
-- [ ] Use httpOnly cookie or JWT for auth
+- [X] Follow microservice architecture
 - [ ] Protect project against SQL injection or XSS attack
-- [ ] Ensure CORS is specified across all services
-- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
-- [ ] BONUS: Implement forgot password feature
 
-Front end:
+Client:
 - [ ] Create project title
 - [X] Create Login page
 - [ ] Make call to back end to register user
 - [ ] Make call to back end to login user
 - [ ] Make call to back end for forgotten password
 - [X] Create Landing page
-- [ ] Make API calls to backend
 - [ ] Display user's API consumption in the login/landing page
 - [ ] Display all users' API consumption if logged in as admin user
 - [ ] Warn user if they have used up 20 free API calls (continues providing services)
-- [ ] Hosted on its own origin
 
-Back end:
-- [ ] Set up API endpoints
-  - [ ] User Registration
-  - [ ] User Login
-  - [ ] Get all user API consumption data
-- [X] Setup a DB
-- [ ] Hash passwords before storing in DB
-- [ ] Use downloaded pre-trained LLM model, not third-party service
-- [ ] Host LLM model from HuggingFace
-- [ ] Warn user if they have used up 20 free API calls
+Router:
+- [ ] User Registration
+- [ ] User Login
+- [ ] Calls to LLM-service
+- [ ] Calls to car-service
 - [ ] Ensure CORS is set to only allow requests from client
-- [X] Hosted on its own origin
+
+Auth-service:
+- [ ] Use httpOnly cookie and/or JWT for auth
+
+LLM-service:
+- [ ] Use downloaded pre-trained LLM model
+- [ ] Host LLM model from HuggingFace
+- [ ] Ensure CORS is set to only allow requests from router-service
+
+Car-service:
+- [ ] Ensure CORS is set to only allow requests from router-service
+
+Database service:
+- [X] Setup a DB
+- [ ] Respond with correct status codes
+- [ ] Hash passwords before storing in DB
+- [ ] Ensure CORS is set to only allow requests from router-service
+- [ ] Extract db query strings into const variables
+- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
