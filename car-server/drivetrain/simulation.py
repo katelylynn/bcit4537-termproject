@@ -78,6 +78,18 @@ class TwoWheelDrive:
         self.right_motor.stop()
         print("TWO_WHEEL_DRIVE: Motors stopped")
 
+    def set_calibration(self, left_calibration, right_calibration):
+        """
+        Sets the calibration factor for each side's motor
+        
+        :param left_calibration: Calibration factor for left motor
+        :param right_calibration: Calibration factor for right motor
+        """
+        self.left_calibration = left_calibration
+        self.right_calibration = right_calibration
+        print("TWO_WHEEL_DRIVE: left and right calibration set to {left_calibration}, {right_calibration}")
+
+
 if __name__ == "__main__":
     from time import sleep
 

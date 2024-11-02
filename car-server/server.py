@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
-from drivetrain.two_wheel_drive import TwoWheelDrive
+# from drivetrain.hardware import TwoWheelDrive
+from drivetrain.simulation import TwoWheelDrive
 
 app = Flask(__name__)
 twd = TwoWheelDrive(left_motor_pins=(17, 18), right_motor_pins=(22, 23))

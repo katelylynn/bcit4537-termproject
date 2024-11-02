@@ -28,7 +28,7 @@ echo "Testing /stop endpoint..."
 curl -X POST -H "Content-Type: application/json" "$BASE_URL/stop"
 echo -e "\n"
 
-# (NOT A REAL ENDPOINT. SHOULD FAIL) Test set calibration endpoint
+# Test set calibration endpoint
 echo "Testing /set_calibration endpoint..."
 curl -X POST -H "Content-Type: application/json" -d '{"left_calibration": 1.0, "right_calibration": 0.9}' "$BASE_URL/set_calibration"
 echo -e "\n"
