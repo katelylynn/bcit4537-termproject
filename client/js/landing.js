@@ -10,10 +10,10 @@ class Landing {
 
     // temp, testing calling the server
     getAllUsers() {
-        fetch("https://bcit4537-termproject-server.up.railway.app/users")
+        fetch("https://bcit4537-termproject-database.up.railway.app/users")
             .then(response => response.json())
             .then(data => console.log(data))
-            .catch(error => console.error('Error:', error))
+            .catch(error => console.error(error))
     }
 
 }
