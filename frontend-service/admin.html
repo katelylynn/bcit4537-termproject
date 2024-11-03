@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Voice Activated Land-Bound Drone - Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+    <main>
+      <h2>Admin Dashboard - API Consumption Stats</h2>
+      <p>Monitor API usage statistics and user consumption details.</p>
+
+      <div>
+        <h3>API Consumption Stats</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint</th>
+              <th>Requests</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PUT</td>
+              <td>/API/v1/customers/id</td>
+              <td>79</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>/API/v1/customers/id</td>
+              <td>145</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3>User API Consumption Stats</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Total #Requests</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jaohn23</td>
+              <td>john@john.xyp</td>
+              <td>143</td>
+            </tr>
+            <tr>
+              <td>tom45</td>
+              <td>tom@tom.io</td>
+              <td>12</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3>Send Voice Commands</h3>
+        <button id="recordButton">Record 5s Command</button>
+        <p id="status"></p>
+        <a id="downloadLink"></a>
+      </div>
+
+      <div>
+        <h3>Session</h3>
+        <button id="logoutButton">Logout</button>
+      </div>
+    </main>
+    <script type="module" src="js/landing.js"></script>
+  </body>
+</html>
