@@ -1,3 +1,5 @@
+import { userMessages } from "../lang/en.js"
+
 const AUDIO_SL_WAV = "audio/wav"
 const AUDIO_DOT_WAV = "audio.wav"
 const EVENT_MOUSE_DOWN = "mousedown"
@@ -37,14 +39,14 @@ export class AudioManager {
         }
 
         this.mediaRecorder.start()
-        this.status.innerText = "Recording..."
+        this.status.innerText = userMessages.startRecording
     }
 
     async stopRecording() {
         // Handle button release to stop recording
         if (this.mediaRecorder && this.mediaRecorder.state !== STATE_INACTIVE) {
             this.mediaRecorder.stop()
-            this.status.innerText = "Recording stopped. Sending audio..."
+            this.status.innerText = userMessages.stopRecording
         }
     }
 
@@ -60,9 +62,9 @@ export class AudioManager {
             })
 
             const result = await response.json()
-            this.status.innerText = `Transcription: ${result.transcription}`
+            this.status.innerText = userMessages.transcription(result.transcription)
         } catch (error) {
-            this.status.innerText = "Error sending audio."
+            this.status.innerText = userMessages.sendAudioError
         }
     }
 
