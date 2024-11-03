@@ -21,6 +21,7 @@ class Landing {
 
 document.addEventListener("DOMContentLoaded", () => {
     Initializer.loadUserMessages();
+    new Landing(GET_ALL_USERS_BUTTON_ID)
     
     const recordButton = document.getElementById('recordButton');
     const status = document.getElementById('status');
