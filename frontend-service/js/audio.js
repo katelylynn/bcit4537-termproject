@@ -35,7 +35,6 @@ export class AudioManager {
         this.mediaRecorder.onstop = () => {
             const audioBlob = new Blob(audioChunks, { type: AUDIO_SL_WAV })
             this.sendAudioFile(audioBlob)
-            this.downloadAudioFile(audioBlob)
         }
 
         this.mediaRecorder.start()
@@ -66,17 +65,6 @@ export class AudioManager {
         } catch (error) {
             this.status.innerText = userMessages.sendAudioError
         }
-    }
-
-    downloadAudioFile(audioBlob) {
-        const url = URL.createObjectURL(audioBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'audio.wav'; // Set the desired file name
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url); // Clean up
     }
 
 }

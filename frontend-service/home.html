@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Voice Activated Land-Bound Drone</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>    
+
+  <body>
+    <main>
+      <h2>Voice Activated Land-Bound Drone</h2>
+      <p>Control your land-bound drone using voice commands!</p>
+
+      <div>
+        <h3>API Consumption</h3>
+        <p id="apiUsage">API Calls Made: <span id="usageCount">0</span></p>
+      </div>
+
+      <div>
+        <h3>Send Voice Commands</h3>
+        <button id="recordButton">Hold to Record</button>
+        <p id="status"></p>
+      </div>
+
+      <div>
+        <h3>Session</h3>
+        <button id="logoutButton">Logout</button>
+      </div>
+    </main>
+    <script type="module" src="js/landing.js"></script>
+  </body>
+</html>
