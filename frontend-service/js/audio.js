@@ -1,69 +1,112 @@
-import { userMessages } from "../lang/en.js"
-
-const AUDIO_SL_WAV = "audio/wav"
-const AUDIO_DOT_WAV = "audio.wav"
-const EVENT_MOUSE_DOWN = "mousedown"
-const EVENT_MOUSE_UP = "mouseup"
-const METHOD_POST = "POST"
-const STATE_INACTIVE = "inactive"
-const TYPE_FILE = "file"
+import WavEncoder from "./libs/wav-encoder.js"
 
 export class AudioManager {
 
     constructor(recordButtonId, statusId) {
-        this.recordButton = document.getElementById(recordButtonId)
+        this.checkWebSpeechSupport()
         this.status = document.getElementById(statusId)
-
-        this.addEventListeners()
+        document.getElementById(recordButtonId).addEventListener(buttonClick).bind(this)
     }
 
-    addEventListeners() {
-        this.recordButton.addEventListener(EVENT_MOUSE_DOWN, this.startRecording.bind(this))
-        this.recordButton.addEventListener(EVENT_MOUSE_UP, this.stopRecording.bind(this))
+    checkWebSpeechSupport() {
+        // Check for Web Speech API support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        let recognition
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition()
+            recognition.lang = 'en-US'
+            recognition.interimResults = false
+            recognition.maxAlternatives = 1
+        } else {
+            console.warn("Web Speech API is not supported in this browser.")
+        }
     }
 
-    async startRecording() {
-        // Request access to the microphone
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        this.mediaRecorder = new MediaRecorder(stream)
-        let audioChunks = []
+    async buttonClick() {
+        if (recognition) {
+            recognition.start()
+            this.status.innerText = "Recording and transcribing..."
 
-        this.mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data)
+            recognition.onresult = (event) => {
+                const transcription = event.results[0][0].transcript
+                console.log("Client-side transcription:", transcription)
+                this.status.innerText = `Client-side transcription: ${transcription}`
+            }
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error)
+                this.status.innerText = `Error in transcription: ${event.error}`
+            }
+
+            recognition.onend = () => {
+                this.status.innerText = "Transcription completed on client-side."
+            }
         }
 
-        this.mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: AUDIO_SL_WAV })
-            this.sendAudioFile(audioBlob)
+        // Request access to the microphone
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        this.mediaRecorder = new this.mediaRecorder(stream)
+        this.audioChunks = []
+
+        this.mediaRecorder.ondataavailable = (event) => {
+            this.audioChunks.push(event.data)
+        }
+
+        this.mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(this.audioChunks)
+            const arrayBuffer = await audioBlob.arrayBuffer()
+
+            // Create an AudioContext with 16kHz sample rate
+            const audioContext = new AudioContext({ sampleRate: 16000 })
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer)
+
+            // Encode PCM data to WAV format with WavEncoder
+            const wavData = await WavEncoder.encode({
+                sampleRate: 16000, // Ensure this matches the AudioContext sample rate
+                channelData: [audioBuffer.getChannelData(0)]  // mono channel data
+            })
+
+            const wavBlob = new Blob([wavData], { type: "audio/wav" })
+
+            // Send the encoded WAV file to the server for transcription
+            sendAudioFile(wavBlob)
+        
+            // Create a download link for the encoded .wav file
+            const audioUrl = URL.createObjectURL(wavBlob)
+            const downloadLink = document.createElement('a')
+            downloadLink.href = audioUrl
+            downloadLink.download = 'recorded_audio.wav'
+            downloadLink.textContent = 'Download recorded audio'
+            document.body.appendChild(downloadLink)
         }
 
         this.mediaRecorder.start()
-        this.status.innerText = userMessages.startRecording
-    }
+        this.status.innerText = "Recording..."
 
-    async stopRecording() {
-        // Handle button release to stop recording
-        if (this.mediaRecorder && this.mediaRecorder.state !== STATE_INACTIVE) {
-            this.mediaRecorder.stop()
-            this.status.innerText = userMessages.stopRecording
-        }
+        setTimeout(() => {
+            if (this.mediaRecorder.state !== "inactive") {
+                this.mediaRecorder.stop()
+                this.status.innerText = "Recording stopped. Sending audio..."
+            }
+        }, 5000) // 5 seconds
     }
 
     async sendAudioFile(audioBlob) {
-        // Send the recorded audio file to the router
         const formData = new FormData()
-        formData.append(TYPE_FILE, audioBlob, AUDIO_DOT_WAV)
+        formData.append('file', audioBlob, 'audio.wav')
 
         try {
-            const response = await fetch('http://localhost:5001/transcribe', { // Directly to whisper-service
-                method: METHOD_POST,
+            const response = await fetch('http://localhost:5001/transcribe', {
+                method: 'POST',
                 body: formData,
             })
 
             const result = await response.json()
-            this.status.innerText = userMessages.transcription(result.transcription)
+            console.log("Transcription from server:", result.transcription)
+            this.status.innerText = `Transcription from server: ${result.transcription}`
         } catch (error) {
-            this.status.innerText = userMessages.sendAudioError
+            this.status.innerText = "Error sending audio."
+            console.error("Error:", error)
         }
     }
 
