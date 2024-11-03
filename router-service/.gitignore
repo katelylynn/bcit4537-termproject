@@ -1,5 +1,0 @@
-#node modules
-node_modules
-
-# dependencies
-package-lock.json

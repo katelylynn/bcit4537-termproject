@@ -23,8 +23,26 @@ pip install -r requirements.txt
    git clone https://github.com/your-username/bcit4537-termproject.git
    cd bcit4537-termproject/whisper-service
    ```
+2. **Set Up a Virtual Environment**:
+    It’s recommended to use a virtual environment to manage dependencies.
 
-2. **Unzip the Model**: 
+    ```bash
+    python -m venv .venv
+    ```
+
+    Activate the virtual environment:
+
+    Windows:
+    .venv\Scripts\activate
+    macOS/Linux:
+    source .venv/bin/activate
+
+3. Install dependencies
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Unzip the Model**: 
     The Whisper model is stored in Model_zip as a compressed file. Unzip this file to the model directory to ensure the application can access it.
 
     ```bash
@@ -34,7 +52,7 @@ pip install -r requirements.txt
     # Unzip the model
     unzip whisper_tiny_model.zip -d ../model
     ```
-3. **Verify Directory Structure**
+5. **Verify Directory Structure**
 
     After unzipping, your directory structure should look like this:
     ```python
@@ -48,6 +66,8 @@ pip install -r requirements.txt
     ├── app.py
     └── README.md
     ```
+
+
 
 ### Usage
 To run the Flask application:
