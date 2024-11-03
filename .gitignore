@@ -1,3 +1,18 @@
-package-lock.json
+#node modules
 node_modules
+
+# dependencies
+package-lock.json
+
+# virual environment for whisper-service tiny whisper model libraries
+.venv/
+
+# unzipped model
+model
+
+# IDE files
+.idea
+__pycache__
+
+# environment variables
 .env
