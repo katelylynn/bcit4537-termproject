@@ -1,5 +1,6 @@
 import torchaudio
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
+from pydub import AudioSegment
 
 processor = WhisperProcessor.from_pretrained("./models/whisper_tiny_model")
 model = WhisperForConditionalGeneration.from_pretrained(
