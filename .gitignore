@@ -13,3 +13,6 @@ model
 # IDE files
 .idea
 __pycache__
+
+# environment variables
+.env
