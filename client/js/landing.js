@@ -1,4 +1,5 @@
 import { Initializer } from "./initializer.js";
+import WavEncoder from "./libs/wav-encoder.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     Initializer.loadUserMessages();
@@ -8,7 +9,38 @@ document.addEventListener("DOMContentLoaded", () => {
     let mediaRecorder;
     let audioChunks = [];
 
-    recordButton.addEventListener('mousedown', async () => {
+    // Check for Web Speech API support
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+    } else {
+        console.warn("Web Speech API is not supported in this browser.");
+    }
+
+    recordButton.addEventListener('click', async () => {
+        if (recognition) {
+            recognition.start();
+            status.innerText = "Recording and transcribing...";
+
+            recognition.onresult = (event) => {
+                const transcription = event.results[0][0].transcript;
+                console.log("Client-side transcription:", transcription);
+                status.innerText = `Client-side transcription: ${transcription}`;
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                status.innerText = `Error in transcription: ${event.error}`;
+            };
+
+            recognition.onend = () => {
+                status.innerText = "Transcription completed on client-side.";
+            };
+        }
 
         // Request access to the microphone
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -19,37 +51,58 @@ document.addEventListener("DOMContentLoaded", () => {
             audioChunks.push(event.data);
         };
 
-        mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            sendAudioFile(audioBlob);
+        mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks);
+            const arrayBuffer = await audioBlob.arrayBuffer();
+
+            // Create an AudioContext with 16kHz sample rate
+            const audioContext = new AudioContext({ sampleRate: 16000 });
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+            // Encode PCM data to WAV format with WavEncoder
+            const wavData = await WavEncoder.encode({
+                sampleRate: 16000, // Ensure this matches the AudioContext sample rate
+                channelData: [audioBuffer.getChannelData(0)]  // mono channel data
+            });
+
+            const wavBlob = new Blob([wavData], { type: "audio/wav" });
+
+            // Send the encoded WAV file to the server for transcription
+            sendAudioFile(wavBlob);
+        
+            // Create a download link for the encoded .wav file
+            const audioUrl = URL.createObjectURL(wavBlob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = audioUrl;
+            downloadLink.download = 'recorded_audio.wav';
+            downloadLink.textContent = 'Download recorded audio';
+            document.body.appendChild(downloadLink);
         };
 
         mediaRecorder.start();
         status.innerText = "Recording...";
+
+        setTimeout(() => {
+            if (mediaRecorder.state !== "inactive") {
+                mediaRecorder.stop();
+                status.innerText = "Recording stopped. Sending audio...";
+            }
+        }, 5000); // 5 seconds
     });
 
-    // Handle button release to stop recording
-    recordButton.addEventListener('mouseup', () => {
-        if (mediaRecorder && mediaRecorder.state !== "inactive") {
-            mediaRecorder.stop();
-            status.innerText = "Recording stopped. Sending audio...";
-        }
-    });
-
-    // Send the recorded audio file to the router
     async function sendAudioFile(audioBlob) {
         const formData = new FormData();
         formData.append('file', audioBlob, 'audio.wav');
 
         try {
-            const response = await fetch('http://localhost:5001/transcribe', { // Directly to whisper-service
+            const response = await fetch('http://localhost:5001/transcribe', {
                 method: 'POST',
                 body: formData,
             });
 
             const result = await response.json();
-            console.log("Transcription:", result.transcription);  // Log the transcription result
-            status.innerText = `Transcription: ${result.transcription}`;
+            console.log("Transcription from server:", result.transcription);
+            status.innerText = `Transcription from server: ${result.transcription}`;
         } catch (error) {
             status.innerText = "Error sending audio.";
             console.error("Error:", error);
