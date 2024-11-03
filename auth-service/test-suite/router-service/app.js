@@ -1,6 +1,5 @@
 const http = require('http');
 
-// Helper function to forward the request to the target server
 const forwardRequest = (req, res, targetPort) => {
     const options = {
         hostname: 'localhost',
@@ -11,18 +10,15 @@ const forwardRequest = (req, res, targetPort) => {
     };
 
     const proxyReq = http.request(options, (proxyRes) => {
-        // Set CORS headers for the client
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
 
-        // Pipe the response from the target server back to the client
         res.writeHead(proxyRes.statusCode, proxyRes.headers);
         proxyRes.pipe(res, { end: true });
     });
 
-    // Pipe the request data from the client to the target server
     req.pipe(proxyReq, { end: true });
 
     proxyReq.on('error', (err) => {
@@ -32,9 +28,7 @@ const forwardRequest = (req, res, targetPort) => {
     });
 };
 
-// Main router service logic
 const server = http.createServer((req, res) => {
-    // Handle CORS preflight requests
     if (req.method === 'OPTIONS') {
         res.writeHead(204, {
             'Access-Control-Allow-Origin': 'http://localhost:3001',
@@ -46,15 +40,14 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Route `/login` to the main API server on port 3000
-    if (req.url === '/login') {
+    // Route `/login` and `/logout` to the authorization service on port 3000
+    if (req.url === '/login' || req.url === '/logout') {
         forwardRequest(req, res, 3000);
     }
-    // Route `/something` to the "something" service on port 3003
+    // Route `/something` to the resource service on port 3003
     else if (req.url === '/something') {
         forwardRequest(req, res, 3003);
     } else {
-        // Return 404 for any other routes
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: '404 Not Found' }));
     }
