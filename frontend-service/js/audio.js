@@ -1,11 +1,12 @@
-import WavEncoder from "./libs/wav-encoder.js"
+import WavEncoder from "../libs/wav-encoder.js"
 
 export class AudioManager {
 
-    constructor(recordButtonId, statusId) {
+    constructor(downloadLinkId, recordButtonId, statusId) {
         this.checkWebSpeechSupport()
+        this.downloadLink = document.getElementById(downloadLinkId)
         this.status = document.getElementById(statusId)
-        document.getElementById(recordButtonId).addEventListener(buttonClick).bind(this)
+        document.getElementById(recordButtonId).addEventListener('click', this.buttonClick.bind(this))
     }
 
     checkWebSpeechSupport() {
@@ -13,39 +14,39 @@ export class AudioManager {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         let recognition
         if (SpeechRecognition) {
-            recognition = new SpeechRecognition()
-            recognition.lang = 'en-US'
-            recognition.interimResults = false
-            recognition.maxAlternatives = 1
+            this.recognition = new SpeechRecognition()
+            this.recognition.lang = 'en-US'
+            this.recognition.interimResults = false
+            this.recognition.maxAlternatives = 1
         } else {
             console.warn("Web Speech API is not supported in this browser.")
         }
     }
 
     async buttonClick() {
-        if (recognition) {
-            recognition.start()
+        if (this.recognition) {
+            this.recognition.start()
             this.status.innerText = "Recording and transcribing..."
 
-            recognition.onresult = (event) => {
+            this.recognition.onresult = (event) => {
                 const transcription = event.results[0][0].transcript
                 console.log("Client-side transcription:", transcription)
                 this.status.innerText = `Client-side transcription: ${transcription}`
             }
 
-            recognition.onerror = (event) => {
+            this.recognition.onerror = (event) => {
                 console.error("Speech recognition error:", event.error)
                 this.status.innerText = `Error in transcription: ${event.error}`
             }
 
-            recognition.onend = () => {
+            this.recognition.onend = () => {
                 this.status.innerText = "Transcription completed on client-side."
             }
         }
 
         // Request access to the microphone
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        this.mediaRecorder = new this.mediaRecorder(stream)
+        this.mediaRecorder = new MediaRecorder(stream)
         this.audioChunks = []
 
         this.mediaRecorder.ondataavailable = (event) => {
@@ -69,15 +70,13 @@ export class AudioManager {
             const wavBlob = new Blob([wavData], { type: "audio/wav" })
 
             // Send the encoded WAV file to the server for transcription
-            sendAudioFile(wavBlob)
+            this.sendAudioFile(wavBlob)
         
             // Create a download link for the encoded .wav file
             const audioUrl = URL.createObjectURL(wavBlob)
-            const downloadLink = document.createElement('a')
-            downloadLink.href = audioUrl
-            downloadLink.download = 'recorded_audio.wav'
-            downloadLink.textContent = 'Download recorded audio'
-            document.body.appendChild(downloadLink)
+            this.downloadLink.textContent = 'Download recorded audio'
+            this.downloadLink.href = audioUrl
+            this.downloadLink.download = 'recorded_audio.wav'
         }
 
         this.mediaRecorder.start()
