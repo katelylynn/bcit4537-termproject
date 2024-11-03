@@ -1,33 +1,45 @@
+import { Auth } from "./auth.js"
 import { Initializer } from "./initializer.js"
 
 const DOM_CONTENT_LOADED = "DOMContentLoaded"
-const REGISTER_BUTTON_ID = "registerButton"
-const LOGIN_BUTTON_ID = "loginButton"
+const EMAIL_INPUT_ID = "emailInput"
 const FORGOT_BUTTON_ID = "forgotButton"
+const LOGIN_BUTTON_ID = "loginButton"
+const PASSWORD_INPUT_ID = "passwordInput"
+const REGISTER_BUTTON_ID = "registerButton"
 
 class Login {
+    // Proxy for Auth class that specifically handles input and button events.
 
-    constructor(registerButtonId, loginButtonId, forgotButtonId) {
-        document.getElementById(registerButtonId).onclick = this.register
-        document.getElementById(loginButtonId).onclick = this.login
-        document.getElementById(forgotButtonId).onclick = this.forgotPassword
+    constructor() {
+        document.getElementById(REGISTER_BUTTON_ID).onclick = this.register
+        document.getElementById(LOGIN_BUTTON_ID).onclick = this.login
+        document.getElementById(FORGOT_BUTTON_ID).onclick = this.forgotPassword
     }
 
     register() {
-        console.log("register")
+        Auth.register(
+            document.getElementById(EMAIL_INPUT_ID).value,
+            document.getElementById(PASSWORD_INPUT_ID).value
+        )
     }
 
     login() {
-        console.log("login")
+        Auth.login(
+            document.getElementById(EMAIL_INPUT_ID).value,
+            document.getElementById(PASSWORD_INPUT_ID).value
+        )
     }
 
     forgotPassword() {
-        console.log("forgot password")
+        Auth.forgotPassword(
+            document.getElementById(EMAIL_INPUT_ID).value,
+        )
     }
 
 }
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
     Initializer.loadUserMessages()
-    new Login(REGISTER_BUTTON_ID, LOGIN_BUTTON_ID, FORGOT_BUTTON_ID)
+    new Login()
 })
