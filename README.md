@@ -4,6 +4,7 @@
 
 - [X] Follow microservice architecture
 - [ ] Protect project against SQL injection or XSS attack
+- [ ] Admin gets to see API consumption per user
 
 Client:
 - [ ] Create project title
@@ -36,6 +37,7 @@ Car-service:
 
 Database service:
 - [X] Setup a DB
+- [ ] Create user table if not already created
 - [ ] Respond with correct status codes
 - [ ] Hash passwords before storing in DB
 - [ ] Ensure CORS is set to only allow requests from router-service
