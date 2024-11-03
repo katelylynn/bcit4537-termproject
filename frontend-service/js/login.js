@@ -1,5 +1,6 @@
 import { Initializer } from "./initializer.js"
 
+const DOM_CONTENT_LOADED = "DOMContentLoaded"
 const REGISTER_BUTTON_ID = "registerButton"
 const LOGIN_BUTTON_ID = "loginButton"
 const FORGOT_BUTTON_ID = "forgotButton"
@@ -26,7 +27,7 @@ class Login {
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(DOM_CONTENT_LOADED, () => {
     Initializer.loadUserMessages()
     new Login(REGISTER_BUTTON_ID, LOGIN_BUTTON_ID, FORGOT_BUTTON_ID)
 })
