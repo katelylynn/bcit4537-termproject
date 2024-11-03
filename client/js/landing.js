@@ -42,12 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append('file', audioBlob, 'audio.wav');
 
         try {
-            const response = await fetch('http://localhost:3000/api/transcribe-and-control', {
+            const response = await fetch('http://localhost:5001/transcribe', { // Directly to whisper-service
                 method: 'POST',
                 body: formData,
             });
 
             const result = await response.json();
+            console.log("Transcription:", result.transcription);  // Log the transcription result
             status.innerText = `Transcription: ${result.transcription}`;
         } catch (error) {
             status.innerText = "Error sending audio.";
