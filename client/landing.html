@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>COMP4537 Term Project</title>
+    <title>Voice Activated Land-Bound Drone & User Management</title>
     <link rel="stylesheet" href="css/style.css">
-  </head>    
+</head>    
 
-  <body>
+<body>
     <main>
-      <h1>Landing</h1>
-      <div>
-        <label>Get All Users</label>
-        <button id="getAllUsersButton">Get All Users</button>
-      </div>
-      <div>
-        <button id="recordButton">Start Recording</button>
-        <p id="status"></p>
-      </div>
-      <div>
-        <a href="index.html">Back</a>
-      </div>
+        <h2>Voice Activated Land-Bound Drone & User Management</h2>
+        <p>Control your land-bound drone using voice commands and manage users!</p>
+
+        <div>
+            <h3>API Consumption</h3>
+            <p id="apiUsage">API Calls Made: <span id="usageCount">0</span></p>
+        </div>
+
+        <div>
+            <h3>Send Voice Commands</h3>
+            <button id="recordButton">Record 5s Command</button>
+            <p id="status"></p>
+            <a id="downloadLink"></a>
+        </div>
+
+        <div>
+            <h3>Session</h3>
+            <button id="logoutButton">Logout</button>
+        </div>
     </main>
     <script type="module" src="js/landing.js"></script>
-  </body>
+</body>
 </html>
