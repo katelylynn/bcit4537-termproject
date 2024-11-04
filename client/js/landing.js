@@ -86,8 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const wavBlob = new Blob([wavData], { type: "audio/wav" });
 
-            // Send the encoded WAV file to the server for transcription
-            sendAudioFile(wavBlob);
+            try {
+                // Send the encoded WAV file to the server for transcription
+                await sendAudioFile(wavBlob);
+                console.log("Audio file sent successfully.");
+            } catch (error) {
+                console.error("Error occurred while sending audio file:", error);
+            }
         
             // Create a download link for the encoded .wav file
             const audioUrl = URL.createObjectURL(wavBlob);
@@ -114,10 +119,16 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append('file', audioBlob, 'audio.wav');
 
         try {
-            const response = await fetch('http://localhost:5001/transcribe', {
+            const response = await fetch('http://127.0.0.1:5002/transcribe', {
                 method: 'POST',
                 body: formData,
             });
+
+            console.log("Fetch response:", response);
+
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.statusText}`);
+            }
 
             const result = await response.json();
             console.log("Transcription from server:", result.transcription);
