@@ -1,4 +1,12 @@
 exports.QUERIES = {
+    CREATE_USER_TABLE: `
+        CREATE TABLE IF NOT EXISTS User (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            email VARCHAR(100) NOT NULL,
+            password CHAR(60) NOT NULL,
+            role ENUM('user', 'admin') NOT NULL
+        );
+    `,
     GET_ALL_USERS: "SELECT * FROM User;",
     GET_USER: "SELECT * FROM User WHERE id = ?;",
     INSERT_USER: "INSERT INTO User (name, role) VALUES (?, ?);",

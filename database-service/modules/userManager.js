@@ -7,6 +7,10 @@ module.exports = class UserManager {
         this.db = db
     }
 
+    createUserTable(cb) {
+        this.db.query(QUERIES.CREATE_USER_TABLE, cb)
+    }
+
     getAllUsers(req, res) {
         // TODO: admins only
 
