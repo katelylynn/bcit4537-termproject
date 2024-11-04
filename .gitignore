@@ -11,7 +11,7 @@ package-lock.json
 .venv/
 
 # unzipped model
-model
+models
 
 # IDE files
 .idea
