@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const { transcribeAudio } = require('../controllers/whisperController');
-const { sendCarCommand } = require('../controllers/carController');
+const CarController = require('../modules/carController');
+const WhisperController = require('../modules/whisperController');
 
 module.exports = class Router {
 
@@ -16,16 +16,18 @@ module.exports = class Router {
     }
 
     exposeRoutes() {
-        this.router.get('/test', (req, res) => res.send("test"));
+        this.router.get('/test', this.transcribeAndControl.bind(this));
         this.router.post('/transcribe-and-control', this.upload.single('file'), this.transcribeAndControl.bind(this));
     }
 
     async transcribeAndControl(req, res) {
         try {
-            // Step 1: Transcribe audio
-    
-            // Step 2: Send command to Car service
-    
+            const command = WhisperController.transcribeAudio();
+            const success = CarController.sendCarCommand(command);
+            if (success) {
+                res.write("success");
+                res.end();
+            }
         } catch (error) {
             res.status(500).json({ error: "Failed to process request" });
         }
