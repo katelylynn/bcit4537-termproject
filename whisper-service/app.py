@@ -3,12 +3,35 @@ from flask_cors import CORS
 import os
 from modules.utils import transcribe_audio  # Import the transcription function
 import tempfile
+import logging
+from logging.handlers import RotatingFileHandler
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}) 
 
+# Set up logging
+log_directory = "/var/log/whisper_service"
+os.makedirs(log_directory, exist_ok=True)  # Ensure the log directory exists
+
+# Define a rotating file handler (limits the log file size and keeps old logs)
+log_file_path = os.path.join(log_directory, "app.log")
+handler = RotatingFileHandler(log_file_path, maxBytes=1000000, backupCount=5)  # 1 MB per file, with 5 backups
+handler.setLevel(logging.DEBUG)
+
+# Format logs for better readability
+formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+handler.setFormatter(formatter)
+
+# Add the handler to the Flask app logger
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.DEBUG)
+
 @app.route('/transcribe', methods=['POST', 'OPTIONS'])
 def transcribe():
+
+    # Log request entry
+    app.logger.info("Received request at /transcribe")
 
     # pre-flight
     if request.method == 'OPTIONS':
@@ -42,7 +65,8 @@ def transcribe():
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_file:
             temp_filepath = temp_file.name
             file.save(temp_filepath)
-            print(f"File saved to temporary file: {temp_filepath}")
+            # print(f"File saved to temporary file: {temp_filepath}")
+            app.logger.info(f"File saved to temporary file: {temp_filepath}")
 
         # Attempt transcription
         transcription = transcribe_audio(temp_filepath)
