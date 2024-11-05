@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const CarController = require('../modules/carController');
+const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 
 module.exports = class Router {
@@ -16,6 +17,8 @@ module.exports = class Router {
     }
 
     exposeRoutes() {
+        this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers)
+
         this.router.get('/test', this.transcribeAndControl.bind(this));
         this.router.post('/transcribe-and-control', this.upload.single('file'), this.transcribeAndControl.bind(this));
     }
