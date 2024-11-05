@@ -76,7 +76,7 @@ export class AudioManager {
         formData.append('file', wavBlob, 'audio.wav');
 
         try {
-            const response = await fetch('http://127.0.0.1:5002/transcribe', {
+            const response = await fetch('https://landdronewhispermodel.online/transcribe', {
                 method: 'POST',
                 body: formData,
             });
