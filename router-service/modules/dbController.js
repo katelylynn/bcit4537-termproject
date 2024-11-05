@@ -19,11 +19,16 @@ module.exports = class DBController {
     }
 
     static getApiConsumptionAllEndpoints(req, res) {
-        this.callDatabaseService(res, "/requests/per-endpoint")
+        this.callDatabaseService(res, "/requests/per-endpoint");
     }
 
     static getApiConsumptionAllUsers(req, res) {
-        this.callDatabaseService(res, "/requests/per-user")
+        this.callDatabaseService(res, "/requests/per-user");
+    }
+
+    static getApiConsumptionSingleUser(req, res) {
+        const uid = req.params.uid;
+        this.callDatabaseService(res, `/requests/single-user/${uid}`);
     }
 
 }

@@ -17,8 +17,9 @@ module.exports = class Router {
     }
 
     exposeRoutes() {
-        this.router.get('/api-consumption-endpoints', DBController.getApiConsumptionAllEndpoints.bind(DBController))
-        this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers.bind(DBController))
+        this.router.get('/api-consumption-endpoints', DBController.getApiConsumptionAllEndpoints.bind(DBController));
+        this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers.bind(DBController));
+        this.router.get('/api-consumption-users/:uid', DBController.getApiConsumptionSingleUser.bind(DBController));
 
         this.router.get('/test', this.transcribeAndControl.bind(this));
         this.router.post('/transcribe-and-control', this.upload.single('file'), this.transcribeAndControl.bind(this));
