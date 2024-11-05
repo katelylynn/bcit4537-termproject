@@ -1,4 +1,4 @@
-exports.QUERIES = {
+exports.USER_QUERIES = {
     CREATE_USER_TABLE: `
         CREATE TABLE IF NOT EXISTS User (
             id INT PRIMARY KEY AUTO_INCREMENT,
@@ -19,6 +19,16 @@ exports.QUERIES = {
     UPDATE_USER: fields => `UPDATE User SET ${fields} WHERE id = ?;`,
     UPDATE_USER_ROLE: "UPDATE User SET role = ? WHERE id = ?;",
     DELETE_USER: "DELETE FROM User WHERE id = ?;",
+}
+
+exports.ENDPOINT_QUERIES = {
+    CREATE_ENDPOINT_TABLE: `
+        CREATE TABLE IF NOT EXISTS Endpoint (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            method CHAR(6) NOT NULL,
+            path VARCHAR(255) NOT NULL
+        );
+    `,
 }
 
 exports.USER_MSGS = {

@@ -1,14 +1,16 @@
 const express = require("express")
+const EndpointController = require("./endpointController")
 const UserController = require("./userController")
 
 module.exports = class DatabaseAPI {
 
     constructor(db) {
-        this.uc = new UserController(db)
+        this.db = db
         this.app = express()
         this.app.use(express.json())
         this.app.use(this.setCorsHeaders)
         this.exposeUserRoutes()
+        this.exposeEndpointRoutes()
     }
     
     start(port) {
@@ -24,21 +26,38 @@ module.exports = class DatabaseAPI {
     }
 
     exposeUserRoutes() {
-        const router = express.Router()
-        router.use(this.tableExistsMiddleware.bind(this))
+        const uc = new UserController(this.db)
 
-        router.get("/", this.uc.getAllUsers.bind(this.uc))
-        router.get("/:userId", this.uc.getUser.bind(this.uc))
-        router.post("/", this.uc.postUser.bind(this.uc))
-        router.patch("/:userId", this.uc.patchUser.bind(this.uc))
-        router.patch("/change-role/:userId", this.uc.patchUserRole.bind(this.uc))
-        router.delete("/:userId", this.uc.deleteUser.bind(this.uc))
+        const router = express.Router()
+        router.use((_, res, next) => {
+            this.tableExistsMiddleware(res, next, uc)
+        })
+
+        router.get("/", uc.getAllUsers.bind(uc))
+        router.get("/:userId", uc.getUser.bind(uc))
+        router.post("/", uc.postUser.bind(uc))
+        router.patch("/:userId", uc.patchUser.bind(uc))
+        router.patch("/change-role/:userId", uc.patchUserRole.bind(uc))
+        router.delete("/:userId", uc.deleteUser.bind(uc))
 
         this.app.use("/users", router)
     }
 
-    tableExistsMiddleware(req, res, next) {
-        this.uc.createPopulatedUserTable(err => {
+    exposeEndpointRoutes() {
+        const ec = new EndpointController(this.db)
+
+        const router = express.Router()
+        router.use((_, res, next) => {
+            this.tableExistsMiddleware(res, next, ec)
+        })
+
+        router.get("/", ec.getAllEndpoints.bind(ec))
+
+        this.app.use("/endpoints", router)
+    }
+
+    tableExistsMiddleware(res, next, controller) {
+        controller.createPopulatedTable(err => {
             if (err) return res.status(500).send(err.message)
             next()
         })

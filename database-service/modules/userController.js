@@ -1,5 +1,5 @@
 require("dotenv").config()
-const { QUERIES, USER_MSGS } = require("../lang/en.js")
+const { USER_QUERIES, USER_MSGS } = require("../lang/en.js")
 
 module.exports = class UserController {
 
@@ -7,17 +7,17 @@ module.exports = class UserController {
         this.db = db
     }
 
-    createPopulatedUserTable(cb) {
-        this.db.query(QUERIES.CREATE_USER_TABLE, err => {
+    createPopulatedTable(cb) {
+        this.db.query(USER_QUERIES.CREATE_USER_TABLE, err => {
             if (err) return err
-            else this.db.query(QUERIES.INSERT_SAMPLE_USERS, cb)
+            else this.db.query(USER_QUERIES.INSERT_SAMPLE_USERS, cb)
         })
     }
 
     getAllUsers(req, res) {
         // TODO: admins only
 
-        this.db.query(QUERIES.GET_ALL_USERS, (err, obj) => {
+        this.db.query(USER_QUERIES.GET_ALL_USERS, (err, obj) => {
             if (err) res.status(500).send(err.message)
             else res.send(JSON.stringify(obj))
         })
@@ -26,7 +26,7 @@ module.exports = class UserController {
     getUser(req, res) {
         const uid = req.params.userId
         
-        this.db.query(QUERIES.GET_USER, (err, obj) => {
+        this.db.query(USER_QUERIES.GET_USER, (err, obj) => {
             if (err) return res.status(500).send(err.message)
             if (obj.length === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.json(obj[0])
@@ -41,7 +41,7 @@ module.exports = class UserController {
             return res.status(400).send(USER_MSGS.ALL_FIELDS_REQUIRED);
         }
 
-        this.db.query(QUERIES.INSERT_USER, (err) => {
+        this.db.query(USER_QUERIES.INSERT_USER, (err) => {
             if (err) return res.status(500).send(USER_MSGS.ERROR_CREATING_USER)
             res.send("User created successfully.")
         }, [email, password, role])
@@ -62,7 +62,7 @@ module.exports = class UserController {
         const values = Object.values(changes)
         values.push(uid)
 
-        this.db.query(QUERIES.UPDATE_USER(fields), (err, obj) => {
+        this.db.query(USER_QUERIES.UPDATE_USER(fields), (err, obj) => {
             if (err) return res.status(500).send(err.message)
             if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.send(USER_MSGS.USER_UPDATED_SUCCESSFULLY)
@@ -83,7 +83,7 @@ module.exports = class UserController {
             return res.status(400).send(USER_MSGS.ROLE_RESTRICTIONS)
         }
 
-        this.db.query(QUERIES.UPDATE_USER_ROLE, (err, obj) => {
+        this.db.query(USER_QUERIES.UPDATE_USER_ROLE, (err, obj) => {
             if (err) return res.status(500).send(err.message)
             if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.send(USER_MSGS.USER_ROLE_UPDATED_SUCCESSFULLY)
@@ -95,7 +95,7 @@ module.exports = class UserController {
 
         const uid = req.params.userId
 
-        this.db.query(QUERIES.DELETE_USER, (err, obj) => {
+        this.db.query(USER_QUERIES.DELETE_USER, (err, obj) => {
             if (err) return res.status(500).send(err.message)
             if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.send(USER_MSGS.USER_DELETED_SUCCESSFULLY)
@@ -103,7 +103,7 @@ module.exports = class UserController {
     }
 
     insertSampleUsers(cb) {
-        this.db.query(QUERIES.INSERT_SAMPLE_USER, cb)
+        this.db.query(USER_QUERIES.INSERT_SAMPLE_USER, cb)
     }
 
 }
