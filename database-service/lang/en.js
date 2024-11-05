@@ -50,6 +50,22 @@ exports.REQUEST_QUERIES = {
     GET_REQUEST: "SELECT id, count FROM Request WHERE user_id = ? AND endpoint_id = ?;",
     INSERT_REQUEST: "INSERT INTO Request (user_id, endpoint_id, count) VALUES (?, ?, ?);",
     UPDATE_REQUEST_COUNT: "UPDATE Request SET count = ? WHERE id = ?;",
+    REQUESTS_PER_ENDPOINT: `
+        SELECT e.method AS method, 
+        e.path AS path, 
+        SUM(r.count) AS total_requests
+        FROM Endpoint e
+        JOIN Request r ON e.id = r.endpoint_id
+        GROUP BY e.id;
+    `,
+    REQUESTS_PER_USER: `
+        SELECT u.email AS user_email, 
+        SUM(r.count) AS total_requests
+        FROM User u
+        JOIN Request r ON u.id = r.user_id
+        GROUP BY u.id;
+    `,
+    REQUESTS_SINGLE_USER: "SELECT SUM(count) AS total_requests FROM Request WHERE user_id = ?;",
 }
 
 exports.MSGS = {

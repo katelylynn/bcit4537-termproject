@@ -26,6 +26,30 @@ module.exports = class RequestController {
             res.json(obj[0])
         }, [userId, endpointId])
     }
+
+    getRequestsOfAllEndpoints(req, res) {
+        this.db.query(REQUEST_QUERIES.REQUESTS_PER_ENDPOINT, (err, obj) => {
+            if (err) return res.status(500).send(err.message)
+            else res.send(JSON.stringify(obj))
+        })
+    }
+
+    getRequestsOfAllUsers(req, res) {
+        this.db.query(REQUEST_QUERIES.REQUESTS_PER_USER, (err, obj) => {
+            if (err) return res.status(500).send(err.message)
+            else res.send(JSON.stringify(obj))
+        })
+    }
+
+    getRequestsForSingleUser(req, res) {
+        const uid = req.params.uid;
+
+        this.db.query(REQUEST_QUERIES.REQUESTS_SINGLE_USER, (err, obj) => {
+            if (err) return res.status(500).send(err.message)
+            if (obj.length === 0) return res.status(404).send(REQUEST_MSGS.REQUEST_NOT_FOUND)
+            else res.json(obj[0])
+        }, [uid])
+    }
     
     incrementRequest(req, res) {
         const { user_id, endpoint_id } = req.body

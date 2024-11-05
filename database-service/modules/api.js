@@ -72,6 +72,9 @@ module.exports = class DatabaseAPI {
         router.get("/", rc.getAllRequests.bind(rc))
         router.get("/", rc.getRequest.bind(rc))
         router.post("/", rc.incrementRequest.bind(rc))
+        router.get("/per-endpoint", rc.getRequestsOfAllEndpoints.bind(rc))
+        router.get("/per-user", rc.getRequestsOfAllUsers.bind(rc))
+        router.get("/single-user/:uid", rc.getRequestsForSingleUser.bind(rc))
 
         this.app.use("/requests", router)
     }
