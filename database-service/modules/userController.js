@@ -1,7 +1,7 @@
 require("dotenv").config()
 const { QUERIES, USER_MSGS } = require("../lang/en.js")
 
-module.exports = class UserManager {
+module.exports = class UserController {
 
     constructor(db) {
         this.db = db
