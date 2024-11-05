@@ -10,6 +10,12 @@ exports.QUERIES = {
     GET_ALL_USERS: "SELECT * FROM User;",
     GET_USER: "SELECT * FROM User WHERE id = ?;",
     INSERT_USER: "INSERT INTO User (email, password, role) VALUES (?, ?, ?);",
+    INSERT_SAMPLE_USERS: `
+        INSERT INTO User (email, password, role) 
+        VALUES 
+        ('user@group7.com', 'group7', 'user'),
+        ('admin@admin.com', '111', 'admin');
+    `,
     UPDATE_USER: fields => `UPDATE User SET ${fields} WHERE id = ?;`,
     UPDATE_USER_ROLE: "UPDATE User SET role = ? WHERE id = ?;",
     DELETE_USER: "DELETE FROM User WHERE id = ?;",

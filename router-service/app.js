@@ -1,12 +1,6 @@
-const express = require('express');
-const router = require('./routes/router');
+const Server = require("./modules/server");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-app.use('/api', router);
-
-app.listen(PORT, () => {
-    console.log(`Router-service running on port ${PORT}`);
-});
+const server = new Server();
+console.log("Starting routing service...")
+server.start(process.env.PORT || 3000);
+console.log("Routing service started!")
