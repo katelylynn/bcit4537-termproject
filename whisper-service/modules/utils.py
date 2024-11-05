@@ -9,7 +9,7 @@ def transcribe_audio(filepath):
     )
 
     # Load the audio file
-    audio, sample_rate = torchaudio.load(filepath)
+    audio, sample_rate = torchaudio.load(filepath, format="wav")
 
     # Debugging information to verify file details
     print(f"Audio file details - Sample Rate: {sample_rate}, Channels: {audio.shape[0]}, Frame Count: {audio.shape[1]}")
