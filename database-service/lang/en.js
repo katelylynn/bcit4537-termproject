@@ -29,16 +29,24 @@ exports.ENDPOINT_QUERIES = {
             path VARCHAR(255) NOT NULL
         );
     `,
+    INSERT_ENDPOINT: "INSERT INTO Endpoint (method, path) VALUES (?, ?);",
 }
 
 exports.USER_MSGS = {
-    USER_NOT_FOUND: "User not found.",
     ALL_FIELDS_REQUIRED: "All fields are required.",
     ERROR_CREATING_USER: "Error creating user.",
     NOT_ALLOWED_TO_MODIFY_ROLE: "Not allowed to modify the role permission.",
     PROVIDE_ROLE: "Must provide role field.",
     ROLE_RESTRICTIONS: "Role must be either user or admin.",
-    USER_UPDATED_SUCCESSFULLY: "User updated successfully.",
+    USER_CREATED_SUCCESSFULLY: "User created successfully.",
+    USER_DELETED_SUCCESSFULLY: "User deleted successfully.",
+    USER_NOT_FOUND: "User not found.",
     USER_ROLE_UPDATED_SUCCESSFULLY: "User role updated successfully.",
-    USER_DELETED_SUCCESSFULLY: "User deleted successfully."
+    USER_UPDATED_SUCCESSFULLY: "User updated successfully.",
+}
+
+exports.ENDPOINT_MSGS = {
+    ENDPOINT_CREATED_SUCCESSFULLY: "Endpoint created successfully.",
+    ENDPOINT_NOT_FOUND: "Endpoint not found.",
+    ERROR_CREATING_ENDPOINT: "Error creating endpoint.",
 }

@@ -52,6 +52,7 @@ module.exports = class DatabaseAPI {
         })
 
         router.get("/", ec.getAllEndpoints.bind(ec))
+        router.post("/", ec.postEndpoint.bind(ec))
 
         this.app.use("/endpoints", router)
     }

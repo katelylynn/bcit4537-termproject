@@ -34,16 +34,16 @@ module.exports = class UserController {
     }
 
     postUser(req, res) {
-        const { email, password, role } = req.body;
+        const { email, password, role } = req.body
 
         // temp validation
         if (!email || !password || !role) {
-            return res.status(400).send(USER_MSGS.ALL_FIELDS_REQUIRED);
+            return res.status(400).send(USER_MSGS.ALL_FIELDS_REQUIRED)
         }
 
         this.db.query(USER_QUERIES.INSERT_USER, (err) => {
             if (err) return res.status(500).send(USER_MSGS.ERROR_CREATING_USER)
-            res.send("User created successfully.")
+            res.send(USER_MSGS.USER_CREATED_SUCCESSFULLY)
         }, [email, password, role])
     }
 
