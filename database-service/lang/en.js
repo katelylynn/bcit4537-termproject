@@ -31,6 +31,7 @@ exports.ENDPOINT_QUERIES = {
         );
     `,
     GET_ALL_ENDPOINTS: "SELECT * FROM Endpoint;",
+    GET_ENDPOINT_ID: "SELECT id FROM Endpoint WHERE method = ? AND path = ?;",
     INSERT_ENDPOINT: "INSERT INTO Endpoint (method, path) VALUES (?, ?);",
 }
 
@@ -86,6 +87,7 @@ exports.USER_MSGS = {
 
 exports.ENDPOINT_MSGS = {
     ENDPOINT_CREATED_SUCCESSFULLY: "Endpoint created successfully.",
+    ENDPOINT_NOT_FOUND: "Endpoint not found.",
     ERROR_CREATING_ENDPOINT: "Error creating endpoint.",
 }
 

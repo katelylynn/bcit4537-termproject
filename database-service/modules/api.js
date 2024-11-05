@@ -55,6 +55,7 @@ module.exports = class DatabaseAPI {
             this.tableExistsMiddleware(res, next, ec)
         })
 
+        router.get("/get-endpointid", ec.getEndpointId.bind(ec))
         router.get("/", ec.getAllEndpoints.bind(ec))
         router.post("/", ec.postEndpoint.bind(ec))
 
@@ -71,7 +72,7 @@ module.exports = class DatabaseAPI {
 
         router.get("/", rc.getAllRequests.bind(rc))
         router.get("/", rc.getRequest.bind(rc))
-        router.post("/", rc.incrementRequest.bind(rc))
+        router.post("/increment", rc.incrementRequest.bind(rc))
         router.get("/per-endpoint", rc.getRequestsOfAllEndpoints.bind(rc))
         router.get("/per-user", rc.getRequestsOfAllUsers.bind(rc))
         router.get("/single-user/:uid", rc.getRequestsForSingleUser.bind(rc))

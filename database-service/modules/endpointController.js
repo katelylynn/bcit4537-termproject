@@ -10,6 +10,16 @@ module.exports = class EndpointController {
         this.db.query(ENDPOINT_QUERIES.CREATE_ENDPOINT_TABLE, cb)
     }
 
+    getEndpointId(req, res) {
+        const { method, path } = req.query
+
+        this.db.query(ENDPOINT_QUERIES.GET_ENDPOINT_ID, (err, obj) => {
+            if (err) return res.status(500).send(err.message)
+            if (obj.length === 0) return res.status(404).send(ENDPOINT_MSGS.ENDPOINT_NOT_FOUND)
+            else res.send(JSON.stringify(obj[0]))
+        }, [method, path])
+    }
+
     getAllEndpoints(req, res) {
         this.db.query(ENDPOINT_QUERIES.GET_ALL_ENDPOINTS, (err, obj) => {
             if (err) res.status(500).send(err.message)
