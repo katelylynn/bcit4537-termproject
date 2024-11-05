@@ -1,12 +1,13 @@
 import WavEncoder from "../libs/wav-encoder.js";
 
 export class AudioManager {
-    constructor(downloadLinkId, recordButtonId, statusId) {
+    constructor(downloadLinkId, recordButtonId, statusId, cb = () => {}) {
         this.downloadLink = document.getElementById(downloadLinkId);
         this.recordButton = document.getElementById(recordButtonId);
         this.status = document.getElementById(statusId);
         this.audioChunks = [];
         this.mediaRecorder = null;
+        this.cb = cb;
 
         console.log("AudioManager initialized");
 
@@ -92,5 +93,7 @@ export class AudioManager {
             this.status.innerText = "Error sending audio.";
             console.error("Error:", error);
         }
+
+        this.cb();
     }
 }
