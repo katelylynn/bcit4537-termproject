@@ -29,11 +29,33 @@ exports.ENDPOINT_QUERIES = {
             path VARCHAR(255) NOT NULL
         );
     `,
+    GET_ALL_ENDPOINTS: "SELECT * FROM Endpoint;",
     INSERT_ENDPOINT: "INSERT INTO Endpoint (method, path) VALUES (?, ?);",
 }
 
-exports.USER_MSGS = {
+exports.REQUEST_QUERIES = {
+    CREATE_REQUEST_TABLE: `
+        CREATE TABLE IF NOT EXISTS Request (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            user_id INT NOT NULL,
+            endpoint_id INT NOT NULL,
+            count INT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE,
+            FOREIGN KEY (endpoint_id) REFERENCES Endpoint(id) ON DELETE CASCADE,
+            UNIQUE (user_id, endpoint_id)
+        );
+    `,
+    GET_ALL_REQUESTS: "SELECT * FROM Request;",
+    GET_REQUEST: "SELECT id, count FROM Request WHERE user_id = ? AND endpoint_id = ?;",
+    INSERT_REQUEST: "INSERT INTO Request (user_id, endpoint_id, count) VALUES (?, ?, ?);",
+    UPDATE_REQUEST_COUNT: "UPDATE Request SET count = ? WHERE id = ?;",
+}
+
+exports.MSGS = {
     ALL_FIELDS_REQUIRED: "All fields are required.",
+}
+
+exports.USER_MSGS = {
     ERROR_CREATING_USER: "Error creating user.",
     NOT_ALLOWED_TO_MODIFY_ROLE: "Not allowed to modify the role permission.",
     PROVIDE_ROLE: "Must provide role field.",
@@ -47,6 +69,12 @@ exports.USER_MSGS = {
 
 exports.ENDPOINT_MSGS = {
     ENDPOINT_CREATED_SUCCESSFULLY: "Endpoint created successfully.",
-    ENDPOINT_NOT_FOUND: "Endpoint not found.",
     ERROR_CREATING_ENDPOINT: "Error creating endpoint.",
+}
+
+exports.REQUEST_MSGS = {
+    ERROR_CREATING_REQUEST: "Error creating request.",
+    ERROR_INCREMENTING_REQUEST: "Error incrementing request.",
+    REQUEST_COUNT_INCREMENTED: "Request count incremented.",
+    REQUEST_NOT_FOUND: "Request not found.",
 }

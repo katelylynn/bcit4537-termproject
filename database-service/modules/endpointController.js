@@ -1,4 +1,4 @@
-const { ENDPOINT_QUERIES, ENDPOINT_MSGS } = require("../lang/en.js")
+const { ENDPOINT_QUERIES, MSGS, ENDPOINT_MSGS } = require("../lang/en.js")
 
 module.exports = class EndpointController {
 
@@ -11,16 +11,18 @@ module.exports = class EndpointController {
     }
 
     getAllEndpoints(req, res) {
-        res.write("test")
-        res.end()
+        this.db.query(ENDPOINT_QUERIES.GET_ALL_ENDPOINTS, (err, obj) => {
+            if (err) res.status(500).send(err.message)
+            else res.send(JSON.stringify(obj))
+        })
     }
 
     postEndpoint(req, res) {
-        const { method, path } = req.body;
+        const { method, path } = req.body
 
         // temp validation
         if (!method || !path) {
-            return res.status(400).send(ENDPOINT_MSGS.ENDPOINT_NOT_FOUND);
+            return res.status(400).send(MSGS.ALL_FIELDS_REQUIRED)
         }
 
         this.db.query(ENDPOINT_QUERIES.INSERT_ENDPOINT, (err) => {

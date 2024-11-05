@@ -1,5 +1,4 @@
-require("dotenv").config()
-const { USER_QUERIES, USER_MSGS } = require("../lang/en.js")
+const { USER_QUERIES, MSGS, USER_MSGS } = require("../lang/en.js")
 
 module.exports = class UserController {
 
@@ -38,7 +37,7 @@ module.exports = class UserController {
 
         // temp validation
         if (!email || !password || !role) {
-            return res.status(400).send(USER_MSGS.ALL_FIELDS_REQUIRED)
+            return res.status(400).send(MSGS.ALL_FIELDS_REQUIRED)
         }
 
         this.db.query(USER_QUERIES.INSERT_USER, (err) => {

@@ -1,6 +1,7 @@
 const express = require("express")
 const EndpointController = require("./endpointController")
 const UserController = require("./userController")
+const RequestController = require("./requestController")
 
 module.exports = class DatabaseAPI {
 
@@ -11,6 +12,7 @@ module.exports = class DatabaseAPI {
         this.app.use(this.setCorsHeaders)
         this.exposeUserRoutes()
         this.exposeEndpointRoutes()
+        this.exposeRequestRoutes()
     }
     
     start(port) {
@@ -55,6 +57,21 @@ module.exports = class DatabaseAPI {
         router.post("/", ec.postEndpoint.bind(ec))
 
         this.app.use("/endpoints", router)
+    }
+
+    exposeRequestRoutes() {
+        const rc = new RequestController(this.db)
+
+        const router = express.Router()
+        router.use((_, res, next) => {
+            this.tableExistsMiddleware(res, next, rc)
+        })
+
+        router.get("/", rc.getAllRequests.bind(rc))
+        router.get("/", rc.getRequest.bind(rc))
+        router.post("/", rc.incrementRequest.bind(rc))
+
+        this.app.use("/requests", router)
     }
 
     tableExistsMiddleware(res, next, controller) {
