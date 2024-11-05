@@ -7,8 +7,11 @@ module.exports = class UserManager {
         this.db = db
     }
 
-    createUserTable(cb) {
-        this.db.query(QUERIES.CREATE_USER_TABLE, cb)
+    createPopulatedUserTable(cb) {
+        this.db.query(QUERIES.CREATE_USER_TABLE, err => {
+            if (err) return err
+            else this.db.query(QUERIES.INSERT_SAMPLE_USERS, cb)
+        })
     }
 
     getAllUsers(req, res) {
@@ -97,6 +100,10 @@ module.exports = class UserManager {
             if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
             res.send(USER_MSGS.USER_DELETED_SUCCESSFULLY)
         }, [uid])
+    }
+
+    insertSampleUsers(cb) {
+        this.db.query(QUERIES.INSERT_SAMPLE_USER, cb)
     }
 
 }

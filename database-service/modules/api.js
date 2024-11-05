@@ -38,9 +38,9 @@ module.exports = class DatabaseAPI {
     }
 
     tableExistsMiddleware(req, res, next) {
-        this.um.createUserTable(err => {
+        this.um.createPopulatedUserTable(err => {
             if (err) return res.status(500).send(err.message)
-            else next()
+            next()
         })
     }
 
