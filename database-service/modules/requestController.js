@@ -6,7 +6,7 @@ module.exports = class RequestController {
         this.db = db
     }
 
-    createPopulatedTable(cb) {
+    createTable(cb) {
         this.db.query(REQUEST_QUERIES.CREATE_REQUEST_TABLE, cb)
     }
     

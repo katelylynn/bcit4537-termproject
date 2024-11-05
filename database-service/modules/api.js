@@ -35,6 +35,8 @@ module.exports = class DatabaseAPI {
             this.tableExistsMiddleware(res, next, uc)
         })
 
+        router.get("/get-userid/:email", uc.getUserId.bind(uc))
+        router.get("/populate", uc.populateTable.bind(uc))
         router.get("/", uc.getAllUsers.bind(uc))
         router.get("/:userId", uc.getUser.bind(uc))
         router.post("/", uc.postUser.bind(uc))
@@ -75,7 +77,7 @@ module.exports = class DatabaseAPI {
     }
 
     tableExistsMiddleware(res, next, controller) {
-        controller.createPopulatedTable(err => {
+        controller.createTable(err => {
             if (err) return res.status(500).send(err.message)
             next()
         })

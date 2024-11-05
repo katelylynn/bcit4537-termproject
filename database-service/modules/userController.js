@@ -6,11 +6,25 @@ module.exports = class UserController {
         this.db = db
     }
 
-    createPopulatedTable(cb) {
-        this.db.query(USER_QUERIES.CREATE_USER_TABLE, err => {
-            if (err) return err
-            else this.db.query(USER_QUERIES.INSERT_SAMPLE_USERS, cb)
+    createTable(cb) {
+        this.db.query(USER_QUERIES.CREATE_USER_TABLE, cb)
+    }
+
+    populateTable(req, res) {
+        this.db.query(USER_QUERIES.INSERT_SAMPLE_USERS, (err) => {
+            if (err) return res.status(500).send(USER_QUERIES.ERROR_CREATING_USER)
+            else res.send(USER_MSGS.USER_CREATED_SUCCESSFULLY)
         })
+    }
+
+    getUserId(req, res) {
+        const email = req.params.email
+
+        this.db.query(USER_QUERIES.GET_USER_ID, (err, obj) => {
+            if (err) return res.status(500).send(err.message)
+            if (obj.length === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
+            else res.send(JSON.stringify(obj[0]))
+        }, [email])
     }
 
     getAllUsers(req, res) {

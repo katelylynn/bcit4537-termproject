@@ -6,7 +6,7 @@ module.exports = class EndpointController {
         this.db = db
     }
 
-    createPopulatedTable(cb) {
+    createTable(cb) {
         this.db.query(ENDPOINT_QUERIES.CREATE_ENDPOINT_TABLE, cb)
     }
 
