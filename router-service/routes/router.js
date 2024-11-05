@@ -6,7 +6,9 @@ const { sendCarCommand } = require('../controllers/carController');
 const router = express.Router();
 const upload = multer(); // For handling file uploads in memory
 
-
+router.get('/test', (req, res) => {
+    sendCarCommand()
+})
 router.post('/transcribe-and-control', upload.single('file'), async (req, res) => {
     try {
         // Step 1: Transcribe audio

@@ -1,8 +1,5 @@
-const axios = require('axios');
-
-const CAR_SERVICE_URL = none;
-
 async function sendCarCommand(command, res) {
+
     try {
 
         // Determine the appropriate car endpoint based on the `command` parameter
