@@ -1,5 +1,5 @@
 const express = require("express");
-const router = require("../routes/router");
+const Router = require("../routes/router");
 require('dotenv').config();
 
 const API_PATH = "/api";
@@ -10,7 +10,7 @@ module.exports = class Server {
         this.app = express();
         this.app.use(express.json());
         this.app.use(this.setCorsHeaders.bind(this));
-        this.app.use(API_PATH, router);
+        this.app.use(API_PATH, (new Router()).getRouter());
     }
     
     start(port) {
