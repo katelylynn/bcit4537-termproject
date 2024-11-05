@@ -1,7 +1,7 @@
 module.exports = class DBController {
 
-    static getApiConsumptionAllUsers(req, res) {
-        fetch(process.env["DB-SERVICE"] + "/requests/per-user")
+    static callDatabaseService(res, path) {
+        fetch(process.env["DB-SERVICE"] + path)
             .then(response => {
                 if (!response.ok) {
                     return res.status(response.status).json({ error: `Error: ${response.statusText}` });
@@ -16,6 +16,14 @@ module.exports = class DBController {
                 console.error('Error fetching data:', error.message);
                 return res.status(500).json({ error: 'Internal server error' });
             });
+    }
+
+    static getApiConsumptionAllEndpoints(req, res) {
+        this.callDatabaseService(res, "/requests/per-endpoint")
+    }
+
+    static getApiConsumptionAllUsers(req, res) {
+        this.callDatabaseService(res, "/requests/per-user")
     }
 
 }
