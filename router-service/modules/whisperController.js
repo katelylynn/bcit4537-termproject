@@ -1,27 +1,42 @@
+const https = require('https');
 const FormData = require('form-data');
-const fetch = require('node-fetch');
 
 module.exports = class WhisperController {
-    static async transcribeAudio(file) {
-        try {
+    static transcribeAudio(file) {
+        return new Promise((resolve, reject) => {
             const form = new FormData();
             form.append('file', file.buffer, { filename: 'audio.wav', contentType: 'audio/wav' });
 
-            const response = await fetch(process.env.WHISPER_SERVICE + '/transcribe', {
+            const options = {
+                hostname: process.env.WHISPER_SERVICE.replace('https://', ''),
+                path: '/transcribe',
                 method: 'POST',
-                body: form,
-                headers: form.getHeaders()
+                headers: form.getHeaders(),
+            };
+
+            const req = https.request(options, (res) => {
+                let data = '';
+
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                res.on('end', () => {
+                    try {
+                        const result = JSON.parse(data);
+                        resolve(result.transcription);
+                    } catch (error) {
+                        reject(new Error("Failed to parse transcription response"));
+                    }
+                });
             });
 
-            if (!response.ok) {
-                throw new Error(`Whisper service error: ${response.statusText}`);
-            }
+            req.on('error', (error) => {
+                console.error("Error in WhisperController:", error);
+                reject(error);
+            });
 
-            const result = await response.json();
-            return result.transcription;
-        } catch (error) {
-            console.error("Error in WhisperController:", error);
-            throw error;
-        }
+            form.pipe(req);
+        });
     }
 }
