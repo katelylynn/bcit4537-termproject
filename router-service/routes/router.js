@@ -35,7 +35,7 @@ module.exports = class Router {
             }   
     
             // Assume the transcription is a valid command for this test
-            const carCommandSuccess = CarController.sendCarCommand(transcription);
+            // const carCommandSuccess = CarController.sendCarCommand(transcription);
     
             // if (carCommandSuccess) {
             //     res.json({ transcription, carCommand: "success" });
