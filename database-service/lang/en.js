@@ -78,7 +78,7 @@ exports.USER_MSGS = {
     NOT_ALLOWED_TO_MODIFY_ROLE: "Not allowed to modify the role permission.",
     PROVIDE_ROLE: "Must provide role field.",
     ROLE_RESTRICTIONS: "Role must be either user or admin.",
-    USER_CREATED_SUCCESSFULLY: "User created successfully.",
+    USER_CREATED_SUCCESSFULLY: "User(s) created successfully.",
     USER_DELETED_SUCCESSFULLY: "User deleted successfully.",
     USER_NOT_FOUND: "User not found.",
     USER_ROLE_UPDATED_SUCCESSFULLY: "User role updated successfully.",
