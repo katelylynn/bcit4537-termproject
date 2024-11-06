@@ -43,7 +43,6 @@ def transcribe():
         else:
             response = make_response(jsonify({"error": "Invalid command", "transcription": transcription}), 400)
 
-        response = make_response(jsonify({"transcription": transcription}), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
