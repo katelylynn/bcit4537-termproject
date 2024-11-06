@@ -82,17 +82,25 @@ export class AudioManager {
             });
 
             if (response.status === 400) {
+                // Handle case when no transcription is received
                 const result = await response.json();
-
-                if (result.errorType === "invalid_command") {
-                console.warn("Invalid command:", result.transcription);
-                this.status.innerText = `Invalid command: ${result.transcription}`;
-            } else {
                 console.warn("Bad request:", result.error);
                 this.status.innerText = `Error: ${result.error}`;
+                return;
             }
-            return;
-            }
+
+            // if (response.status === 400) {
+            //     const result = await response.json();
+
+            //     if (result.errorType === "invalid_command") {
+            //     console.warn("Invalid command:", result.transcription);
+            //     this.status.innerText = `Invalid command: ${result.transcription}`;
+            // } else {
+            //     console.warn("Bad request:", result.error);
+            //     this.status.innerText = `Error: ${result.error}`;
+            // }
+            // return;
+            // }
             
 
             if (!response.ok) {
