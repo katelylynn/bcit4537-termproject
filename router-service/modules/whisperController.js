@@ -25,14 +25,15 @@ module.exports = class WhisperController {
                     try {
 
                         const result = JSON.parse(data);
-                        if (res.statusCode === 200 && result.command) { 
-                            resolve(result);
+                        
+                        // Expecting result.transcription regardless of command status
+                        if (res.statusCode === 200) {
+                            resolve(result.transcription);
                         } else if (res.statusCode === 400) {
-                            reject({ error: result.error, transcription: result.transcription, status: 400 });
+                            reject({ error: result.error, transcription: result.transcription });
                         } else {
                             reject(new Error("Unexpected response from whisper-service"));
                         }
-
                     } catch (error) {
                         reject(new Error("Failed to parse transcription response"));
                     }
