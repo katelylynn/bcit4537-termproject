@@ -58,7 +58,6 @@ def transcribe():
         # SECOND PRINT TEST
         # return jsonify({"transcription": "This is a test"})
 
-        response = make_response(jsonify({"transcription": transcription}), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
