@@ -28,11 +28,11 @@ module.exports = class Router {
     async transcribeAndControl(req, res) {
         try {
             // Only expecting transcription for now, as command won’t be returned as structured
-            const {transcription, command} = await WhisperController.transcribeAudio(req.file);
+            const transcription = await WhisperController.transcribeAudio(req.file);
     
             if (!transcription) {
                 return res.status(400).json({ error: "No transcription received" });
-            }   
+            }
     
             // Assume the transcription is a valid command for this test
             // const carCommandSuccess = CarController.sendCarCommand(transcription);
@@ -45,8 +45,12 @@ module.exports = class Router {
             res.json({transcription});
     
         } catch (error) {
-            console.error("Error in transcribeAndControl:", error);
-            res.status(500).json({ error: "Failed to process request" });
+            if (error.error) {
+                res.status(400).json(error);
+            } else {
+                console.error("Error in transcribeAndControl:", error);
+                res.status(500).json({ error: "Failed to process request" });
+            }
         }
     }
 
