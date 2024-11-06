@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 const DatabaseConnection = require("./modules/db")
 const DatabaseAPI = require("./modules/api")
 

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+</head>
+<body>
+    <div id="loginContainer">
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Login">
+        </form>
+        <label id="logoutLabel" style="display:none; cursor:pointer;">Logout</label>
+    </div>
+    
+    <button id="getSomething" style="display:block;">Get Something</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const logoutLabel = document.getElementById('logoutLabel');
+            const getSomethingButton = document.getElementById('getSomething');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            loginForm.onsubmit = function(e) {
+                e.preventDefault();
+                const username = usernameInput.value;
+                const password = passwordInput.value;
+                const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            // Login successful
+                            alert('Login successful');
+                            loginForm.style.display = 'none';
+                            logoutLabel.style.display = 'block';
+                            logoutLabel.textContent = 'Logout';
+                            // Clear fields after successful login
+                            usernameInput.value = '';
+                            passwordInput.value = '';
+                        } else {
+                            // Login failed
+                            alert('Login failed: ' + xhr.responseText);
+                            // Clear the password field after failed login attempt
+                            passwordInput.value = '';
+                        }
+                    }
+                };
+
+                xhr.open('POST', 'http://localhost:3002/login', true); // Send to router service on port 3002
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({ username, password }));
+            };
+
+            logoutLabel.onclick = function() {
+                const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            alert('You have been logged out.');
+                            loginForm.style.display = 'block';
+                            logoutLabel.style.display = 'none';
+                            logoutLabel.textContent = '';
+                            // Clear fields after logout
+                            usernameInput.value = '';
+                            passwordInput.value = '';
+                        }
+                    }
+                };
+
+                xhr.open('POST', 'http://localhost:3002/logout', true); // Send to router service on port 3002
+                xhr.send();
+            };
+
+            getSomethingButton.onclick = function() {
+                const xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        alert(xhr.responseText);
+                    }
+                };
+
+                xhr.open('GET', 'http://localhost:3002/something', true); // Send to router service on port 3002
+                xhr.send();
+            };
+
+            // Initial setup: hide the logout label and ensure the getSomething button is visible
+            logoutLabel.style.display = 'none';
+            getSomethingButton.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
