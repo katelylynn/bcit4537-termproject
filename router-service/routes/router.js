@@ -22,8 +22,10 @@ module.exports = class Router {
 
     async transcribeAndControl(req, res) {
         try {
-            const command = WhisperController.transcribeAudio();
-            const success = CarController.sendCarCommand(command);
+            const command = WhisperController.transcribeAudio(req.file);
+            console.log("Transcription Result:", command);
+            res.json({ transcription: command });
+            // const success = CarController.sendCarCommand(command);
             if (success) {
                 res.write("success");
                 res.end();

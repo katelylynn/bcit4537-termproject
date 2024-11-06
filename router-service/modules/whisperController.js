@@ -1,19 +1,27 @@
 const FormData = require('form-data');
-const fs = require('fs');
+const fetch = require('node-fetch');
 
 module.exports = class WhisperController {
-
-    static transcribeAudio(req, res) {
-        // code to call whisper model
-        return "turn right";
-
+    static async transcribeAudio(file) {
         try {
+            const form = new FormData();
+            form.append('file', file.buffer, { filename: 'audio.wav', contentType: 'audio/wav' });
 
-            //POST THE .WAV FILE TO WHISPER 
-           
+            const response = await fetch(process.env.WHISPER_SERVICE + '/transcribe', {
+                method: 'POST',
+                body: form,
+                headers: form.getHeaders()
+            });
+
+            if (!response.ok) {
+                throw new Error(`Whisper service error: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            return result.transcription;
         } catch (error) {
-    
+            console.error("Error in WhisperController:", error);
+            throw error;
         }
     }
-
 }
