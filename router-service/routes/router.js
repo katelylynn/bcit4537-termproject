@@ -45,7 +45,6 @@ module.exports = class Router {
             res.json({transcription});
     
         } catch (error) {
-            console.error("Error in transcribeAndControl:", error);
             res.status(500).json({ error: "Failed to process request" });
         }
     }

@@ -1,14 +1,6 @@
 import torchaudio
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 
-VALID_COMMANDS = {
-    "forward": "/forward",
-    "backward": "/backward",
-    "stop": "/stop",
-    "rotate left": "/rotate",
-    "rotate right": "/rotate"
-}
-
 def transcribe_audio(filepath):
     # Load model and processor each time for consistency with the standalone script
     processor = WhisperProcessor.from_pretrained("./models/whisper_tiny_model")
@@ -41,12 +33,6 @@ def transcribe_audio(filepath):
     
     # Decode the transcription
     transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
+    print("Transcription:", transcription)  # For debugging
 
     return transcription
-
-def validate_command(transcription):
-    """Validate if the transcription is a recognized command."""
-    command = VALID_COMMANDS.get(transcription.lower())
-    if command:
-        return command
-    return None

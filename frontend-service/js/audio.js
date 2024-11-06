@@ -80,27 +80,6 @@ export class AudioManager {
                 method: 'POST',
                 body: formData,
             });
-
-            if (response.status === 400) {
-                // Handle case when no transcription is received
-                const result = await response.json();
-                console.warn("Bad request:", result.error);
-                this.status.innerText = `Error: ${result.error}`;
-                return;
-            }
-
-            // if (response.status === 400) {
-            //     const result = await response.json();
-
-            //     if (result.errorType === "invalid_command") {
-            //     console.warn("Invalid command:", result.transcription);
-            //     this.status.innerText = `Invalid command: ${result.transcription}`;
-            // } else {
-            //     console.warn("Bad request:", result.error);
-            //     this.status.innerText = `Error: ${result.error}`;
-            // }
-            // return;
-            // }
             
 
             if (!response.ok) {
