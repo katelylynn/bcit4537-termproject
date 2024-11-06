@@ -7,8 +7,8 @@
 <body>
     <div id="loginContainer">
         <form id="loginForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <input type="submit" value="Login">
@@ -23,12 +23,12 @@
             const loginForm = document.getElementById('loginForm');
             const logoutLabel = document.getElementById('logoutLabel');
             const getSomethingButton = document.getElementById('getSomething');
-            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
             loginForm.onsubmit = function(e) {
                 e.preventDefault();
-                const username = usernameInput.value;
+                const email = emailInput.value;
                 const password = passwordInput.value;
                 const xhr = new XMLHttpRequest();
                 xhr.withCredentials = true;
@@ -42,7 +42,7 @@
                             logoutLabel.style.display = 'block';
                             logoutLabel.textContent = 'Logout';
                             // Clear fields after successful login
-                            usernameInput.value = '';
+                            emailInput.value = '';
                             passwordInput.value = '';
                         } else {
                             // Login failed
@@ -53,9 +53,10 @@
                     }
                 };
 
+                // xhr.open('POST', 'https://bcit4537-termproject-auth-service.onrender.com/login', true); // Send to router service on port 3002
                 xhr.open('POST', 'http://localhost:3002/login', true); // Send to router service on port 3002
                 xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.send(JSON.stringify({ username, password }));
+                xhr.send(JSON.stringify({ email, password }));
             };
 
             logoutLabel.onclick = function() {
@@ -70,12 +71,13 @@
                             logoutLabel.style.display = 'none';
                             logoutLabel.textContent = '';
                             // Clear fields after logout
-                            usernameInput.value = '';
+                            emailInput.value = '';
                             passwordInput.value = '';
                         }
                     }
                 };
 
+                // xhr.open('POST', 'https://bcit4537-termproject-auth-service.onrender.com/logout', true); // Send to router service on port 3002
                 xhr.open('POST', 'http://localhost:3002/logout', true); // Send to router service on port 3002
                 xhr.send();
             };
