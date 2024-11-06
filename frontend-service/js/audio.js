@@ -48,7 +48,6 @@ export class AudioManager {
                     // Send audio file to server
                     await this.sendAudioFile(wavBlob);
 
-                    // Create a download link for debugging
                     const audioUrl = URL.createObjectURL(wavBlob);
                     this.downloadLink.href = audioUrl;
                     this.downloadLink.download = 'recorded_audio.wav';
@@ -63,7 +62,7 @@ export class AudioManager {
                     if (this.mediaRecorder.state !== "inactive") {
                         this.mediaRecorder.stop();
                     }
-                }, 5000); // Record for 5 seconds
+                }, 5000);
             } catch (error) {
                 console.error("Error starting recording:", error);
                 this.status.innerText = "Error accessing microphone";
@@ -77,10 +76,11 @@ export class AudioManager {
         formData.append('file', wavBlob, 'audio.wav');
 
         try {
-            const response = await fetch('https://landdronewhispermodel.online/transcribe', {
+            const response = await fetch('http://localhost:3000/api/transcribe-and-control', {
                 method: 'POST',
                 body: formData,
             });
+            
 
             if (!response.ok) {
                 throw new Error(`Server error: ${response.statusText}`);
