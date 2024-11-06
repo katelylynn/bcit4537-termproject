@@ -1,3 +1,4 @@
+import { Api } from "./api.js"
 import { Auth } from "./auth.js"
 import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
@@ -10,6 +11,7 @@ const LOGOUT_BUTTON_ID = "logoutButton"
 const RECORD_BUTTON_ID = "recordButton"
 const STATUS_ID = "status"
 const USAGE_COUNT_ID = "usageCount"
+const USERS_PATH = "/api-consumption-users/"
 
 class Landing {
 
@@ -18,19 +20,13 @@ class Landing {
     }
 
     updateUserStats() {
-        fetch("http://localhost:3000/api/api-consumption-users/1") // UPDATE BASED ON WHOS LOGGED IN
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                document.getElementById(USAGE_COUNT_ID).innerHTML = data.total_requests
-                if (data.total_requests >= 20) {
-                    document.getElementById(API_USAGE_WARNING_ID).innerHTML = userMessages.warnApiLimit
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error.message)
-            })
+        const hardcoded_id = 1
+        Api.callRouterService(USERS_PATH + hardcoded_id, data => {
+            document.getElementById(USAGE_COUNT_ID).innerHTML = data.total_requests
+            if (data.total_requests >= 20) {
+                document.getElementById(API_USAGE_WARNING_ID).innerHTML = userMessages.warnApiLimit
+            }
+        })
     }
 
 }
