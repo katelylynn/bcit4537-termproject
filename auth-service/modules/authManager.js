@@ -9,15 +9,16 @@ module.exports = class AuthManager {
 
     isValidUser(username, password) {
         // make this a db call eventually
-        if (username !== 'admin' || password !== '111') {
-            return res.status(401).json({ message: 'Unauthorized' });
+        if (username === 'admin' || password === '111') {
+            return true
         }
+        return false
     }
 
     handleLogin(req, res) {
         const { username, password } = req.body;
 
-        if (!isValidUser(username, password)) {
+        if (!this.isValidUser(username, password)) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
