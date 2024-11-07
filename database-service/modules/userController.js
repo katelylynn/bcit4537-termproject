@@ -1,4 +1,7 @@
-const { USER_QUERIES, MSGS, USER_MSGS } = require("../lang/en.js")
+const { STATUSES, USER_QUERIES, MSGS, USER_MSGS } = require("../lang/en.js")
+
+const ADMIN = "admin"
+const USER = "user"
 
 module.exports = class UserController {
 
@@ -6,14 +9,14 @@ module.exports = class UserController {
         this.db = db
     }
 
-    createTable(cb) {
-        this.db.query(USER_QUERIES.CREATE_USER_TABLE, cb)
+    static createTable(cb, db) {
+        db.query(USER_QUERIES.CREATE_USER_TABLE, cb)
     }
 
     populateTable(req, res) {
         this.db.query(USER_QUERIES.INSERT_SAMPLE_USERS, (err) => {
-            if (err) return res.status(500).send(USER_QUERIES.ERROR_CREATING_USER)
-            else res.send(USER_MSGS.USER_CREATED_SUCCESSFULLY)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: USER_QUERIES.ERROR_CREATING_USER })
+            else res.json({ statusText: USER_MSGS.USER_CREATED_SUCCESSFULLY })
         })
     }
 
@@ -21,18 +24,15 @@ module.exports = class UserController {
         const email = req.params.email
 
         this.db.query(USER_QUERIES.GET_USER_ID, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.length === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
-            else res.send(JSON.stringify(obj[0]))
+            if (err) res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj })
         }, [email])
     }
 
     getAllUsers(req, res) {
-        // TODO: admins only
-
         this.db.query(USER_QUERIES.GET_ALL_USERS, (err, obj) => {
-            if (err) res.status(500).send(err.message)
-            else res.send(JSON.stringify(obj))
+            if (err) res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj })
         })
     }
 
@@ -40,23 +40,21 @@ module.exports = class UserController {
         const uid = req.params.userId
         
         this.db.query(USER_QUERIES.GET_USER, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.length === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
-            res.json(obj[0])
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            res.json({ data: obj })
         }, [uid])
     }
 
     postUser(req, res) {
         const { email, password, role } = req.body
 
-        // temp validation
         if (!email || !password || !role) {
-            return res.status(400).send(MSGS.ALL_FIELDS_REQUIRED)
+            return res.status(STATUSES.BAD_REQUEST).json(MSGS.ALL_FIELDS_REQUIRED)
         }
 
         this.db.query(USER_QUERIES.INSERT_USER, (err) => {
-            if (err) return res.status(500).send(USER_MSGS.ERROR_CREATING_USER)
-            res.send(USER_MSGS.USER_CREATED_SUCCESSFULLY)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: USER_MSGS.ERROR_CREATING_USER })
+            res.json({ statusText: USER_MSGS.USER_CREATED_SUCCESSFULLY })
         }, [email, password, role])
     }
 
@@ -68,7 +66,7 @@ module.exports = class UserController {
 
         // prevent changing role
         if (changes.role !== undefined) {
-            return res.status(400).send(USER_MSGS.NOT_ALLOWED_TO_MODIFY_ROLE);
+            return res.status(STATUSES.BAD_REQUEST).json({ error: USER_MSGS.NOT_ALLOWED_TO_MODIFY_ROLE })
         }
 
         const fields = Object.keys(changes).map(field => `${field} = ?`).join(", ")
@@ -76,47 +74,37 @@ module.exports = class UserController {
         values.push(uid)
 
         this.db.query(USER_QUERIES.UPDATE_USER(fields), (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
-            res.send(USER_MSGS.USER_UPDATED_SUCCESSFULLY)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            res.json({ statusText: USER_MSGS.USER_UPDATED_SUCCESSFULLY })
         }, values)
     }
 
     patchUserRole(req, res) {
-        // TODO: admins only
-
         const uid = req.params.userId
         const { role } = req.body
 
         if (role === undefined) {
-            return res.status(400).send(USER_MSGS.PROVIDE_ROLE)
+            return res.status(STATUSES.BAD_REQUEST).json({ error: USER_MSGS.PROVIDE_ROLE })
         }
 
-        if (role !== "user" && role !== "admin") {
-            return res.status(400).send(USER_MSGS.ROLE_RESTRICTIONS)
+        if (role !== USER && role !== ADMIN) {
+            return res.status(STATUSES.BAD_REQUEST).json({ error: USER_MSGS.ROLE_RESTRICTIONS })
         }
 
         this.db.query(USER_QUERIES.UPDATE_USER_ROLE, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
-            res.send(USER_MSGS.USER_ROLE_UPDATED_SUCCESSFULLY)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            res.json({ statusText: USER_MSGS.USER_ROLE_UPDATED_SUCCESSFULLY })
         }, [role, uid])
     }
 
     deleteUser(req, res) {
-        // TODO: admins only
-
         const uid = req.params.userId
 
         this.db.query(USER_QUERIES.DELETE_USER, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.affectedRows === 0) return res.status(404).send(USER_MSGS.USER_NOT_FOUND)
-            res.send(USER_MSGS.USER_DELETED_SUCCESSFULLY)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            if (obj.affectedRows === 0) return res.status(STATUSES.OK).json({ error: USER_MSGS.USER_NOT_FOUND })
+            res.json({ statusText: USER_MSGS.USER_DELETED_SUCCESSFULLY })
         }, [uid])
-    }
-
-    insertSampleUsers(cb) {
-        this.db.query(USER_QUERIES.INSERT_SAMPLE_USER, cb)
     }
 
 }
