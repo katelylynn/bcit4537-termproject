@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 import os
-from modules.utils import transcribe_audio, validate_command
+from modules.utils import transcribe_audio
 import tempfile
 
 app = Flask(__name__)
@@ -36,13 +36,10 @@ def transcribe():
             print(f"File saved to temporary file: {temp_filepath}")
 
         transcription = transcribe_audio(temp_filepath)
-        command = validate_command(transcription)
 
-        if command:
-            response = make_response(jsonify({"transcription": transcription, "command": command}), 200)
-        else:
-            response = make_response(jsonify({"error": "Invalid command", "transcription": transcription}), 400)
+        os.remove(temp_filepath)
 
+        response = make_response(jsonify({"transcription": transcription}), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 

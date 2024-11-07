@@ -43,10 +43,3 @@ def transcribe_audio(filepath):
     transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
 
     return transcription
-
-def validate_command(transcription):
-    """Validate if the transcription is a recognized command."""
-    command = VALID_COMMANDS.get(transcription.lower())
-    if command:
-        return command
-    return None
