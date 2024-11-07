@@ -23,6 +23,7 @@ module.exports = class WhisperController {
 
                 res.on('end', () => {
                     try {
+
                         const result = JSON.parse(data);
                         
                         // Expecting result.transcription regardless of command status
