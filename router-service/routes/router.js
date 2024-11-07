@@ -3,6 +3,7 @@ const multer = require('multer');
 const CarController = require('../modules/carController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
+const { validateCommand } = require('../helpers/whisperCommandValidator');
 
 module.exports = class Router {
 
@@ -27,13 +28,17 @@ module.exports = class Router {
 
     async transcribeAndControl(req, res) {
         try {
-            // Only expecting transcription for now, as command won’t be returned as structured
-            const {transcription, command} = await WhisperController.transcribeAudio(req.file);
-
-            if (!command) {
-                return res.status(400).json({ error: "Invalid command", transcription });
-            }
+            const transcription = await WhisperController.transcribeAudio(req.file);
             
+            const validation = validateCommand(transcription);
+            if (!validation.isValid) {
+                return res.status(400).json({   
+                    errorType: "invalid_command",
+                    error: validation.error,
+                    transcription
+                });
+            }
+
             // Assume the transcription is a valid command for this test
             const carCommandSuccess = CarController.sendCarCommand(transcription);
     
