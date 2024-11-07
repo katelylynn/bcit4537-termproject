@@ -1,3 +1,12 @@
+exports.STATUSES = {
+    OK: 200,
+    CREATED: 201,
+    NO_CONTENT: 204,
+    IM_A_TEAPOT: 218,
+    BAD_REQUEST: 400,
+    INTERNAL_SERVER: 500,
+}
+
 exports.USER_QUERIES = {
     CREATE_USER_TABLE: `
         CREATE TABLE IF NOT EXISTS User (
