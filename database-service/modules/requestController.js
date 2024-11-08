@@ -1,4 +1,4 @@
-const { REQUEST_QUERIES, MSGS, REQUEST_MSGS } = require("../lang/en.js")
+const { STATUSES, REQUEST_QUERIES, MSGS, REQUEST_MSGS } = require("../lang/en.js")
 
 module.exports = class RequestController {
 
@@ -6,74 +6,79 @@ module.exports = class RequestController {
         this.db = db
     }
 
-    createTable(cb) {
-        this.db.query(REQUEST_QUERIES.CREATE_REQUEST_TABLE, cb)
+    static createTable(cb, db) {
+        db.query(REQUEST_QUERIES.CREATE_REQUEST_TABLE, cb)
     }
     
     getAllRequests(req, res) {
         this.db.query(REQUEST_QUERIES.GET_ALL_REQUESTS, (err, obj) => {
-            if (err) res.status(500).send(err.message)
-            else res.send(JSON.stringify(obj))
+            if (err) res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj })
         })
     }
 
     getRequest(req, res) {
         const { userId, endpointId } = req.query
 
+        if (!userId || !endpointId) {
+            return res.status(STATUSES.BAD_REQUEST).json({ error: MSGS.ALL_FIELDS_REQUIRED })
+        }
+
         this.db.query(REQUEST_QUERIES.GET_REQUEST, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.length === 0) return res.status(404).send(REQUEST_MSGS.REQUEST_NOT_FOUND)
-            res.json(obj[0])
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            res.json({ data: obj })
         }, [userId, endpointId])
     }
 
     getRequestsOfAllEndpoints(req, res) {
         this.db.query(REQUEST_QUERIES.REQUESTS_PER_ENDPOINT, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            else res.send(JSON.stringify(obj))
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj })
         })
     }
 
     getRequestsOfAllUsers(req, res) {
         this.db.query(REQUEST_QUERIES.REQUESTS_PER_USER, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            else res.send(JSON.stringify(obj))
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj })
         })
     }
 
     getRequestsForSingleUser(req, res) {
         const uid = req.params.uid;
 
+        if (!uid) {
+            return res.status(STATUSES.BAD_REQUEST).json({ error: MSGS.ALL_FIELDS_REQUIRED })
+        }
+
         this.db.query(REQUEST_QUERIES.REQUESTS_SINGLE_USER, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
-            if (obj.length === 0) return res.status(404).send(REQUEST_MSGS.REQUEST_NOT_FOUND)
-            else res.json(obj[0])
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
+            else res.json({ data: obj})
         }, [uid])
     }
     
     incrementRequest(req, res) {
-        const { user_id, endpoint_id } = req.body
+        const { userId, endpointId } = req.body
 
-        // temp validation
-        if (!user_id || !endpoint_id) {
-            return res.status(400).send(MSGS.ALL_FIELDS_REQUIRED)
+        if (!userId || !endpointId) {
+            return res.status(STATUSES.BAD_REQUEST).json({ error: MSGS.ALL_FIELDS_REQUIRED })
         }
 
         this.db.query(REQUEST_QUERIES.GET_REQUEST, (err, obj) => {
-            if (err) return res.status(500).send(err.message)
+            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
 
             if (obj.length === 0) {
                 this.db.query(REQUEST_QUERIES.INSERT_REQUEST, (err) => {
-                    if (err) return res.status(500).send(REQUEST_MSGS.ERROR_CREATING_REQUEST)
-                    res.send(REQUEST_MSGS.REQUEST_COUNT_INCREMENTED)
-                }, [user_id, endpoint_id, 1])
+                    if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: REQUEST_MSGS.ERROR_CREATING_REQUEST })
+                    res.json({ statusText: REQUEST_MSGS.REQUEST_COUNT_INCREMENTED })
+                }, [userId, endpointId, 1])
             } else {
                 this.db.query(REQUEST_QUERIES.UPDATE_REQUEST_COUNT, (err) => {
-                    if (err) return res.status(500).send(REQUEST_MSGS.ERROR_INCREMENTING_REQUEST)
-                    res.send(REQUEST_MSGS.REQUEST_COUNT_INCREMENTED)
+                    if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: REQUEST_MSGS.ERROR_INCREMENTING_REQUEST })
+                    res.json({ statusText: REQUEST_MSGS.REQUEST_COUNT_INCREMENTED })
                 }, [obj[0].count + 1, obj[0].id])
             } 
-        }, [user_id, endpoint_id])
+        }, [userId, endpointId])
     }
 
 }

@@ -7,7 +7,7 @@
 - [ ] Admin gets to see API consumption per user
 
 Client:
-- [ ] Create project title
+- [X] Create project title
 - [X] Create Login page
 - [ ] Make call to back end to register user
 - [ ] Make call to back end to login user
@@ -26,6 +26,7 @@ Router:
 
 Auth-service:
 - [ ] Use httpOnly cookie and/or JWT for auth
+- [ ] Hash passwords before storing in DB
 
 LLM-service:
 - [ ] Use downloaded pre-trained LLM model
@@ -37,10 +38,9 @@ Car-service:
 
 Database service:
 - [X] Setup a DB
-- [ ] Create user table if not already created
+- [X] Create user table if not already created
 - [ ] Respond with correct status codes
-- [ ] Hash passwords before storing in DB
 - [ ] Ensure CORS is set to only allow requests from router-service
-- [ ] Extract db query strings into const variables
+- [X] Extract db query strings into const variables
 - [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
 - [ ] Limit user's privilege

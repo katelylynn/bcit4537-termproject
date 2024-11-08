@@ -23,8 +23,18 @@ module.exports = class WhisperController {
 
                 res.on('end', () => {
                     try {
+
                         const result = JSON.parse(data);
-                        resolve(result.transcription);
+                        
+                        if (res.statusCode === 200) {
+                            resolve(result.transcription);
+                        } else {
+                            reject({
+                                error: "Transcription failed",
+                                details: result.error || "Unknown error",
+                                transcription: result.transcription || null
+                            });
+                        }   
                     } catch (error) {
                         reject(new Error("Failed to parse transcription response"));
                     }

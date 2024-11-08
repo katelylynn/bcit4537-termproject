@@ -32,11 +32,11 @@ module.exports = class DatabaseAPI {
 
         const router = express.Router()
         router.use((_, res, next) => {
-            this.tableExistsMiddleware(res, next, uc)
+            this.tableExistsMiddleware(res, next, UserController.createTable)
         })
 
         router.get("/get-userid/:email", uc.getUserId.bind(uc))
-        router.get("/populate", uc.populateTable.bind(uc))
+        router.post("/populate", uc.populateTable.bind(uc))
         router.get("/", uc.getAllUsers.bind(uc))
         router.get("/:userId", uc.getUser.bind(uc))
         router.post("/", uc.postUser.bind(uc))
@@ -52,7 +52,7 @@ module.exports = class DatabaseAPI {
 
         const router = express.Router()
         router.use((_, res, next) => {
-            this.tableExistsMiddleware(res, next, ec)
+            this.tableExistsMiddleware(res, next, EndpointController.createTable)
         })
 
         router.get("/get-endpointid", ec.getEndpointId.bind(ec))
@@ -67,10 +67,16 @@ module.exports = class DatabaseAPI {
 
         const router = express.Router()
         router.use((_, res, next) => {
-            this.tableExistsMiddleware(res, next, rc)
+            this.tableExistsMiddleware(res, next, UserController.createTable)
+        })
+        router.use((_, res, next) => {
+            this.tableExistsMiddleware(res, next, EndpointController.createTable)
+        })
+        router.use((_, res, next) => {
+            this.tableExistsMiddleware(res, next, RequestController.createTable)
         })
 
-        router.get("/", rc.getAllRequests.bind(rc))
+        router.get("/all", rc.getAllRequests.bind(rc))
         router.get("/", rc.getRequest.bind(rc))
         router.post("/increment", rc.incrementRequest.bind(rc))
         router.get("/per-endpoint", rc.getRequestsOfAllEndpoints.bind(rc))
@@ -81,10 +87,10 @@ module.exports = class DatabaseAPI {
     }
 
     tableExistsMiddleware(res, next, controller) {
-        controller.createTable(err => {
+        controller(err => {
             if (err) return res.status(500).send(err.message)
             next()
-        })
+        }, this.db)
     }
 
 }
