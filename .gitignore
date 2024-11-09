@@ -16,3 +16,6 @@ models
 # IDE files
 .idea
 __pycache__
+
+# dev environment files
+dev-env/
