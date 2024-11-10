@@ -1,6 +1,11 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
+const UserCredentialsManager = require('./userCredentialsManager');
+
+const SALT_ROUNDS = 10
 
 module.exports = class AuthManager {
+
     constructor(secretKey) {
         console.log(secretKey)
         this.SECRET_KEY = secretKey
@@ -13,6 +18,18 @@ module.exports = class AuthManager {
             return true
         }
         return false
+    }
+
+    handleRegister(req, res) {
+        const { password } = req.body
+
+        delete req.body['password']
+
+        const hashedPassword = bcrypt.hashSync(password, SALT_ROUNDS)
+
+        req.body['hashedPassword'] = hashedPassword
+
+        UserCredentialsManager.registerUser(req, res, hashedPassword)
     }
 
     handleLogin(req, res) {

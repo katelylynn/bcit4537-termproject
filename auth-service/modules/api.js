@@ -18,6 +18,7 @@ module.exports = class AuthService {
     }
     
     exposeRoutes() {
+        this.app.post('/register', this.am.handleRegister.bind(this.am));
         this.app.post('/login', this.am.handleLogin.bind(this.am));
         this.app.post('/logout', this.am.handleLogout.bind(this.am));
         this.app.use(this.am.handleNotFound.bind(this.am));
