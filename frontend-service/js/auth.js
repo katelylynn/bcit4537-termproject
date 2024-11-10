@@ -1,6 +1,7 @@
 import { Api } from "./api.js"
 
 const REGISTER_PATH = "/register"
+const LOGIN_PATH = "/login"
 const RESULT_ELEMENT_ID = "result"
 
 export class Auth {
@@ -17,7 +18,14 @@ export class Auth {
     }
 
     static login(email, password) {
-
+        const body = {
+            'email': email,
+            'password': password
+        }
+        Api.postRouterService(LOGIN_PATH, body, response => {
+            console.log(response)
+            document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
+        })
     }
 
     static forgotPassword(email) {

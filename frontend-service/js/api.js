@@ -16,6 +16,7 @@ export class Api {
     static postRouterService(path, body, cb) {
         fetch(ROUTER_SERVICE + path, {
             "method": "POST",
+            credentials: 'include',
             "headers": {
                 'Content-Type': 'application/json'
             },
