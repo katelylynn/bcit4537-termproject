@@ -12,19 +12,6 @@ module.exports = class AuthManager {
         this.EXPIRATION = '60s'
     }
 
-    async isValidUser(req, res) {
-        const { email, password } = req.body;
-
-        const uid = await UserCredentialsManager.getUid(email)
-        const user = await UserCredentialsManager.getUser(uid)
-        const correctPassword = bcrypt.compareSync(password, user.password)
-        if (correctPassword) {
-            return true
-        }
-
-        return false
-    }
-
     handleRegister(req, res) {
         const { password } = req.body
 
@@ -40,11 +27,15 @@ module.exports = class AuthManager {
     async handleLogin(req, res) {
         const { email, password } = req.body;
 
-        if (! await this.isValidUser(req, res)) {
+        const uid = await UserCredentialsManager.getUid(email)
+        const user = await UserCredentialsManager.getUser(uid)
+        const correctPassword = bcrypt.compareSync(password, user.password)
+
+        if (!correctPassword) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        const token = jwt.sign({ email }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
+        const token = jwt.sign({ user }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
         res.cookie('token', token, { httpOnly: true });
         res.status(200).json({ message: 'Logged in successfully' });
     }
