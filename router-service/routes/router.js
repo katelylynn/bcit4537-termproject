@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const AuthController = require('../modules/authController');
 const CarController = require('../modules/carController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
@@ -23,6 +24,8 @@ module.exports = class Router {
         this.router.get('/api-consumption-users/:uid', DBController.getApiConsumptionSingleUser.bind(DBController));
 
         this.router.post('/post-user', DBController.postUser.bind(DBController));
+        
+        this.router.post('/register',  AuthController.registerUser.bind(AuthController));
 
         this.router.get('/test', this.transcribeAndControl.bind(this));
         this.router.post('/transcribe-and-control', this.upload.single('file'), this.transcribeAndControl.bind(this));
