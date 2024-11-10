@@ -13,4 +13,21 @@ export class Api {
             })
     }
 
+    static postRouterService(path, body, cb) {
+        fetch(ROUTER_SERVICE + path, {
+            "method": "POST",
+            "headers": {
+                'Content-Type': 'application/json'
+            },
+            "body": JSON.stringify(body)
+        })
+            .then(response => {
+                return response.json()
+            })
+            .then(cb)
+            .catch(error => {
+                console.error(error.message)
+            })
+    }
+
 }

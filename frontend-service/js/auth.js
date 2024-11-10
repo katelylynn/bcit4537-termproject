@@ -1,7 +1,19 @@
+import { Api } from "./api.js"
+
+const REGISTER_PATH = "/register"
+const RESULT_ELEMENT_ID = "result"
+
 export class Auth {
 
     static register(email, password) {
-
+        const body = {
+            'email': email,
+            'password': password
+        }
+        Api.postRouterService(REGISTER_PATH, body, response => {
+            console.log(response)
+            document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
+        })
     }
 
     static login(email, password) {
