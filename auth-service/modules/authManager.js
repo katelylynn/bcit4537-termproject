@@ -12,11 +12,16 @@ module.exports = class AuthManager {
         this.EXPIRATION = '60s'
     }
 
-    isValidUser(email, password) {
-        // make this a db call eventually
-        if (email === 'admin' || password === '111') {
+    async isValidUser(req, res) {
+        const { email, password } = req.body;
+
+        const uid = await UserCredentialsManager.getUid(email)
+        const user = await UserCredentialsManager.getUser(uid)
+        const correctPassword = bcrypt.compareSync(password, user.password)
+        if (correctPassword) {
             return true
         }
+
         return false
     }
 
@@ -32,14 +37,13 @@ module.exports = class AuthManager {
         UserCredentialsManager.registerUser(req, res, hashedPassword)
     }
 
-    handleLogin(req, res) {
+    async handleLogin(req, res) {
         const { email, password } = req.body;
 
-        if (!this.isValidUser(email, password)) {
+        if (! await this.isValidUser(req, res)) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        console.log(this.SECRET_KEY)
         const token = jwt.sign({ email }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
         res.cookie('token', token, { httpOnly: true });
         res.status(200).json({ message: 'Logged in successfully' });
