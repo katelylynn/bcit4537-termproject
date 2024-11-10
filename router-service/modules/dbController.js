@@ -49,7 +49,9 @@ module.exports = class DBController {
     }
 
     static getApiConsumptionSingleUser(req, res) {
-        const uid = req.params.uid;
+        console.log(`router dbcontroller singleuserapi params: ${JSON.stringify(req.user)}`)
+        const uid = req.user.user.id;
+        console.log(`router dbcontroller singleuserapi uid: ${uid}`)
         this.callDatabaseService(res, `/requests/single-user/${uid}`);
     }
 
