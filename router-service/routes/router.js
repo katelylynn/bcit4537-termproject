@@ -10,9 +10,16 @@ const { validateCommand } = require('../helpers/whisperCommandValidator');
 
 
 module.exports = class Router {
+
+    EXTERNAL_APIS = {
+        TRANSCRIBE_AND_CONTROL: ["/transcribe-and-control", "post"],
+        EXAMPLE_ENDPOINT: ["/example", "get"],
+    }
+
     constructor() {
         this.router = express.Router();
         this.upload = multer();
+        this.registerEndpoints();
 
         this.router.use(cookieParser())
 
@@ -34,6 +41,23 @@ module.exports = class Router {
         this.exposeRoutes();
     }
 
+    registerEndpoints() {
+        Object.values(this.EXTERNAL_APIS).forEach(value => {
+            fetch(process.env["DB-SERVICE"] + "/endpoints", {
+                "method": "POST",
+                "headers": {
+                    'Content-Type': 'application/json'
+                },
+                "body": JSON.stringify({
+                    method: value[1],
+                    path: value[0]
+                })
+            })
+                .catch(response => {
+                    console.error("Registering endpoints: " + response.statusText);
+                });
+        });
+    }
 
     getRouter() {
         return this.router;
@@ -64,12 +88,13 @@ module.exports = class Router {
         this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
 
         this.router.post('/post-user', DBController.postUser.bind(DBController));
+        this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
 
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
 
-        this.router.get('/test', this.transcribeAndControl.bind(this));
-        this.router.post('/transcribe-and-control', this.upload.single('file'), this.transcribeAndControl.bind(this));
+        // EXTERNAL APIs
+        this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), this.transcribeAndControl.bind(this));
     }
 
     async transcribeAndControl(req, res) {

@@ -67,6 +67,14 @@ module.exports = class DBController {
         this.postDatabaseService(res, `/users/`, body)
     }
 
+    static postEndpoint(req, res) {
+        const body = {
+            'method': req.body.method,
+            'path': req.body.path,
+        }
+        this.postDatabaseService(res, `/endpoints/`, body)
+    }
+
     static getUid(req, res) {
         const email = req.params.email
         this.callDatabaseService(res, `/users/get-userid/${email}`)

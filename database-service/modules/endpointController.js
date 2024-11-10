@@ -39,7 +39,7 @@ module.exports = class EndpointController {
 
         this.db.query(ENDPOINT_QUERIES.INSERT_ENDPOINT, (err) => {
             if (err) res.status(STATUSES.INTERNAL_SERVER).json({ error: ENDPOINT_MSGS.ERROR_CREATING_ENDPOINT })
-            res.status(STATUSES.CREATED).json({ statusText: ENDPOINT_MSGS.ENDPOINT_CREATED_SUCCESSFULLY })
+            else res.status(STATUSES.CREATED).json({ statusText: ENDPOINT_MSGS.ENDPOINT_CREATED_SUCCESSFULLY })
         }, [method, path])
     }
 

@@ -36,7 +36,8 @@ exports.ENDPOINT_QUERIES = {
         CREATE TABLE IF NOT EXISTS Endpoint (
             id INT PRIMARY KEY AUTO_INCREMENT,
             method CHAR(6) NOT NULL,
-            path VARCHAR(255) NOT NULL
+            path VARCHAR(255) NOT NULL,
+            UNIQUE (method, path)
         );
     `,
     GET_ALL_ENDPOINTS: "SELECT * FROM Endpoint;",

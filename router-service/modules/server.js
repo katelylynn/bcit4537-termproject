@@ -18,23 +18,11 @@ module.exports = class Server {
     }
     
     setCorsHeaders(req, res, next) {
-        res.header("Access-Control-Allow-Origin", process.env['FRONTEND-SERVICE']) // this.formatOrigins())
+        res.header("Access-Control-Allow-Origin", process.env['FRONTEND-SERVICE'])
         res.header('Access-Control-Allow-Credentials', 'true')
         res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
         res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With")
         next()
-    }
-
-    formatOrigins() {
-        const services = process.env.SERVICES.split(",");
-
-        let originStr = "";
-        for (const service of services) {
-            const url = process.env[service];
-            if (url) originStr += url + ",";
-        }
-        
-        return originStr.slice(0, -1);
     }
 
 }
