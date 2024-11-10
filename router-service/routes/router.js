@@ -22,6 +22,8 @@ module.exports = class Router {
         this.router.get('/api-consumption-endpoints', DBController.getApiConsumptionAllEndpoints.bind(DBController));
         this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers.bind(DBController));
         this.router.get('/api-consumption-users/:uid', DBController.getApiConsumptionSingleUser.bind(DBController));
+        this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));
+        this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
 
         this.router.post('/post-user', DBController.postUser.bind(DBController));
         
