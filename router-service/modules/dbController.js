@@ -53,11 +53,6 @@ module.exports = class DBController {
         this.callDatabaseService(res, `/requests/single-user/${uid}`);
     }
 
-    static getUserId(req, res) {
-        const email = req.params.email
-        this.callDatabaseService(res, `/users/get-userid/${email}`)
-    }
-
     static postUser(req, res) {
         const email = req.body.email
         const password = req.body.password
@@ -68,6 +63,16 @@ module.exports = class DBController {
             'role': role
         }
         this.postDatabaseService(res, `/users/`, body)
+    }
+
+    static getUid(req, res) {
+        const email = req.params.email
+        this.callDatabaseService(res, `/users/get-userid/${email}`)
+    }
+
+    static getUser(req, res) {
+        const uid = req.params.uid
+        this.callDatabaseService(res, `/users/${uid}`)
     }
 
 }
