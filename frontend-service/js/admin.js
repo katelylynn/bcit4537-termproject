@@ -23,9 +23,9 @@ class Admin {
         let jsonString = '';
         data.forEach(obj => {
             for (const [key, value] of Object.entries(obj)) {
-                jsonString += `${key}: ${value}<br>`;
+                jsonString += `${key}: ${value}\n`;
             }
-            jsonString += '<br>';
+            jsonString += '\n';
         });
         document.getElementById(stat_id).textContent = jsonString
     }
