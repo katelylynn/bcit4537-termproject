@@ -4,43 +4,40 @@
 
 - [X] Follow microservice architecture
 - [ ] Protect project against SQL injection or XSS attack
-- [ ] Admin gets to see API consumption per user
+- [X] Admin gets to see API consumption per user
 
 Client:
 - [X] Create project title
 - [X] Create Login page
-- [ ] Make call to back end to register user
-- [ ] Make call to back end to login user
+- [X] Make call to back end to register user
+- [X] Make call to back end to login user
 - [ ] Make call to back end for forgotten password
 - [X] Create Landing page
-- [ ] Display user's API consumption in the login/landing page
-- [ ] Display all users' API consumption if logged in as admin user
-- [ ] Warn user if they have used up 20 free API calls (continues providing services)
+- [X] Display user's API consumption in the login/landing page
+- [X] Display all users' API consumption if logged in as admin user
+- [X] Warn user if they have used up 20 free API calls (continues providing services)
+- [ ] Logout
 
 Router:
-- [ ] User Registration
-- [ ] User Login
-- [ ] Calls to LLM-service
-- [ ] Calls to car-service
-- [ ] Ensure CORS is set to only allow requests from client
+- [X] User Registration
+- [X] User Login
+- [X] Calls to LLM-service
+- [X] Calls to car-service
+- [X] Ensure CORS is set to only allow requests from client
+- [ ] Show informative message if email is incorrect, not just throwing internal error
 
 Auth-service:
-- [ ] Use httpOnly cookie and/or JWT for auth
-- [ ] Hash passwords before storing in DB
+- [X] Use httpOnly cookie and/or JWT for auth
+- [X] Hash passwords before storing in DB
 
 LLM-service:
-- [ ] Use downloaded pre-trained LLM model
-- [ ] Host LLM model from HuggingFace
-- [ ] Ensure CORS is set to only allow requests from router-service
-
-Car-service:
-- [ ] Ensure CORS is set to only allow requests from router-service
+- [X] Use downloaded pre-trained LLM model
+- [X] Host LLM model from HuggingFace
 
 Database service:
 - [X] Setup a DB
 - [X] Create user table if not already created
-- [ ] Respond with correct status codes
-- [ ] Ensure CORS is set to only allow requests from router-service
+- [X] Respond with correct status codes
 - [X] Extract db query strings into const variables
 - [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
 - [ ] Limit user's privilege

@@ -21,7 +21,7 @@ module.exports = class Router {
 
         this.router.use(cookieParser())
 
-        this.nojwt = ['/register', '/login']
+        this.nojwt = ['/register', '/login', '/logout']
         this.router.use((req, res, next) => {
             // skip jwt verification for server-to-server calls
             // should swap to calls from recognized origin list eventually
@@ -78,10 +78,17 @@ module.exports = class Router {
         }
     }
 
+    allowAdminsOnly(req, res, next) {
+        const urole = req.user.user.role;
+        console.log(urole);
+        if (urole == "admin") next();
+        else return res.status(401).json({ message: 'Unauthorized: Not an admin' });
+    }
+
     exposeRoutes() {
-        this.router.get('/api-consumption-endpoints', DBController.getApiConsumptionAllEndpoints.bind(DBController));
-        this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers.bind(DBController));
-        this.router.get('/api-consumption-users/:uid', DBController.getApiConsumptionSingleUser.bind(DBController));
+        this.router.get('/api-consumption-endpoints', this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
+        this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
+        this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
         this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));
         this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
 
@@ -90,6 +97,7 @@ module.exports = class Router {
 
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
+        this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
 
         // EXTERNAL APIs
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {

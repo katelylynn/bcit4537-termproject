@@ -13,13 +13,6 @@ module.exports = class UserController {
         db.query(USER_QUERIES.CREATE_USER_TABLE, cb)
     }
 
-    populateTable(req, res) {
-        this.db.query(USER_QUERIES.INSERT_SAMPLE_USERS, (err) => {
-            if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: USER_QUERIES.ERROR_CREATING_USER })
-            else res.json({ statusText: USER_MSGS.USER_CREATED_SUCCESSFULLY })
-        })
-    }
-
     getUserId(req, res) {
         const email = req.params.email
 

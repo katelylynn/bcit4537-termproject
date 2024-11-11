@@ -53,7 +53,7 @@ module.exports = class RequestController {
 
         this.db.query(REQUEST_QUERIES.REQUESTS_SINGLE_USER, (err, obj) => {
             if (err) return res.status(STATUSES.INTERNAL_SERVER).json({ error: err.message })
-            else res.json({ data: obj})
+            else res.json({ data: obj })
         }, [uid])
     }
     

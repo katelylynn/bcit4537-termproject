@@ -11,7 +11,7 @@ const LOGOUT_BUTTON_ID = "logoutButton"
 const RECORD_BUTTON_ID = "recordButton"
 const STATUS_ID = "status"
 const USAGE_COUNT_ID = "usageCount"
-const USERS_PATH = "/api-consumption-users/"
+const USERS_PATH = "/api-consumption-user"
 
 class Landing {
 
@@ -20,10 +20,10 @@ class Landing {
     }
 
     updateUserStats() {
-        const hardcoded_id = 1
-        Api.callRouterService(USERS_PATH + hardcoded_id, data => {
-            document.getElementById(USAGE_COUNT_ID).innerHTML = data.total_requests
-            if (data.total_requests >= 20) {
+        Api.callRouterService(USERS_PATH, res => {
+            const totalRequests = res.data[0].total_requests
+            if (totalRequests) document.getElementById(USAGE_COUNT_ID).innerHTML = totalRequests
+            if (totalRequests >= 20) {
                 document.getElementById(API_USAGE_WARNING_ID).innerHTML = userMessages.warnApiLimit
             }
         })
