@@ -9,7 +9,7 @@ module.exports = class AuthManager {
     constructor(secretKey) {
         console.log(secretKey)
         this.SECRET_KEY = secretKey
-        this.EXPIRATION = '60s'
+        this.EXPIRATION = '1h'
     }
 
     handleRegister(req, res) {
