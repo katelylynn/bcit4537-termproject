@@ -22,9 +22,9 @@ class Landing {
     updateUserStats() {
         Api.callRouterService(USERS_PATH, res => {
             const totalRequests = res.data[0].total_requests
-            if (totalRequests) document.getElementById(USAGE_COUNT_ID).innerHTML = totalRequests
+            if (totalRequests) document.getElementById(USAGE_COUNT_ID).textContent = totalRequests
             if (totalRequests >= 20) {
-                document.getElementById(API_USAGE_WARNING_ID).innerHTML = userMessages.warnApiLimit
+                document.getElementById(API_USAGE_WARNING_ID).textContent = userMessages.warnApiLimit
             }
         })
     }

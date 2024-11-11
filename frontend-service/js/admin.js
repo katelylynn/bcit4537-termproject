@@ -27,7 +27,7 @@ class Admin {
             }
             jsonString += '<br>';
         });
-        document.getElementById(stat_id).innerHTML = jsonString
+        document.getElementById(stat_id).textContent = jsonString
     }
 
     updateEndpointStats() {
