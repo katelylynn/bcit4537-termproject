@@ -78,9 +78,16 @@ module.exports = class Router {
         }
     }
 
+    allowAdminsOnly(req, res, next) {
+        const urole = req.user.user.role;
+        console.log(urole);
+        if (urole == "admin") next();
+        else return res.status(401).json({ message: 'Unauthorized: Not an admin' });
+    }
+
     exposeRoutes() {
-        this.router.get('/api-consumption-endpoints', DBController.getApiConsumptionAllEndpoints.bind(DBController));
-        this.router.get('/api-consumption-users', DBController.getApiConsumptionAllUsers.bind(DBController));
+        this.router.get('/api-consumption-endpoints', this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
+        this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
         this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
         this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));
         this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
