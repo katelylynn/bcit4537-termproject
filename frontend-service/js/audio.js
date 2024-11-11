@@ -81,6 +81,7 @@ export class AudioManager {
             const response = await fetch('https://hjdjprojectvillage.online/router-service/api/transcribe-and-control', {
                 method: 'POST',
                 body: formData,
+                credentials: 'include', 
             });
             
             if (response.status === 400) {
