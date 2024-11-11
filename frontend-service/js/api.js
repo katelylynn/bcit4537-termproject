@@ -7,6 +7,10 @@ export class Api {
             credentials: 'include'
         })
             .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html'
+                    return
+                }
                 return response.json()
             })
             .then(cb)
@@ -17,20 +21,24 @@ export class Api {
 
     static postRouterService(path, body, cb) {
         fetch(ROUTER_SERVICE + path, {
-            "method": "POST",
+            method: "POST",
             credentials: 'include',
-            "headers": {
+            headers: {
                 'Content-Type': 'application/json'
             },
-            "body": JSON.stringify(body)
+            body: JSON.stringify(body)
         })
             .then(response => {
-                return response.json()
+                if (response.status === 401) {
+                    window.location.href = '/login.html'
+                    return
+                }
+                return response.json();
             })
             .then(cb)
             .catch(error => {
                 console.error(error.message)
-            })
+            });
     }
 
 }
