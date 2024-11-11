@@ -2,6 +2,7 @@ const https = require('https');
 const FormData = require('form-data');
 const { validateCommand } = require('../helpers/whisperCommandValidator');
 const CarController = require('../modules/carController');
+const DBController = require('./dbController');
 const { ERROR_MESSAGES } = require('../lang/en');
 
 module.exports = class WhisperController {
@@ -49,17 +50,68 @@ module.exports = class WhisperController {
             });
 
             form.pipe(req);
+        }); 
+    }
+
+    // static getEndpointId(method, path) {
+    //     return DBController.getEndpointId(method, path);
+    // }
+
+        // static incrementUserCallCount(userId, endpointId) {
+    //     return DBController.incrementUserCallCount(userId, endpointId);
+    // }
+    
+    static getUserIdFromToken(req) {
+        const userId = req.user?.user?.id;
+        if (!userId) throw new Error('Unauthorized: User ID not found in token');
+        return userId;
+    }
+
+    static async getEndpointId(method, path) {
+        return new Promise((resolve, reject) => {
+            DBController.getEndpointId(method, path, {
+                status: (code) => ({
+                    json: (data) => {
+                        if (code === 200 && data?.data?.length) {
+                            resolve(data.data[0].id);
+                        } else {
+                            reject(new Error(`Failed to get endpoint ID: ${data.error || 'Unknown error'}`));
+                        }
+                    }
+                })
+            });
+        });
+    }
+
+    static async incrementUserCallCount(userId, endpointId) {
+        return new Promise((resolve, reject) => {
+            DBController.incrementUserCallCount(userId, endpointId, {
+                status: (code) => ({
+                    json: (data) => {
+                        if (code === 200) {
+                            resolve(data);
+                        } else {
+                            reject(new Error(`Failed to increment user call count: ${data.error || 'Unknown error'}`));
+                        }
+                    }
+                })
+            });
         });
     }
 
     static async transcribeAndControl(req, res) {
         try {
-            const transcription = await this.transcribeAudio(req.file);
 
             if (!req.file) {
                 return res.status(400).json({ error: "No audio file uploaded." });
             }
 
+            const endpointId = await this.getEndpointId('POST', '/api/transcribe-and-control');
+            const userId = this.getUserIdFromToken(req);
+
+            await this.incrementUserCallCount(userId, endpointId);
+
+            const transcription = await this.transcribeAudio(req.file);
             const validation = validateCommand(transcription);
 
             if (!validation.isValid) {

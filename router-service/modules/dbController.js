@@ -67,12 +67,23 @@ module.exports = class DBController {
         this.postDatabaseService(res, `/users/`, body)
     }
 
+    static getEndpointId(method, path, res) {
+        const queryParams = new URLSearchParams({ method, path }).toString();
+        this.callDatabaseService(res, `/endpoints/get-endpointid?${queryParams}`);
+    }
+    
+
     static postEndpoint(req, res) {
         const body = {
             'method': req.body.method,
             'path': req.body.path,
         }
         this.postDatabaseService(res, `/endpoints/`, body)
+    }
+
+    static incrementUserCallCount(userId, endpointId, res) {
+        const body = { userId, endpointId };
+        this.postDatabaseService(res, `/requests/increment`, body);
     }
 
     static getUid(req, res) {
