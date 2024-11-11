@@ -31,14 +31,14 @@ class Admin {
     }
 
     updateEndpointStats() {
-        Api.callRouterService(ENDPOINTS_PATH, data => {
-            this.updateStats(data, API_CONSUMPTION_STATS_ID)
+        Api.callRouterService(ENDPOINTS_PATH, res => {
+            this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
         })
     }
 
     updateUserStats() {
-        Api.callRouterService(USERS_PATH, data => {
-            this.updateStats(data, USER_CONSUMPTION_STATS_ID)
+        Api.callRouterService(USERS_PATH, res => {
+            this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
         })
     }
 
