@@ -1,17 +1,14 @@
 module.exports = class DBController {
 
     static callDatabaseService(res, path) {
-        console.log(`Calling database service with GET request to: ${path}`);
         fetch(process.env["DB-SERVICE"] + path)
             .then(response => {
-                console.log(`Response status from database service: ${response.status}`);
                 if (!response.ok) {
                     throw response;
                 }
                 return response.json();
             })
             .then(data => {
-                console.log(`Data received from database service GET:`, data);
                 res.status(200).json(data);
             })
             .catch(response => {
@@ -21,21 +18,18 @@ module.exports = class DBController {
     }
 
     static postDatabaseService(res, path, body) {
-        console.log(`Calling database service with POST request to: ${path} and body:`, body);
         fetch(process.env["DB-SERVICE"] + path, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         })
             .then(response => {
-                console.log(`Response status from database service: ${response.status}`);
                 if (!response.ok) {
                     throw response;
                 }
                 return response.json();
             })
             .then(data => {
-                console.log(`Data received from database service POST:`, data);
                 res.status(200).json(data);
             })
             .catch(response => {
