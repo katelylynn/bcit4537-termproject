@@ -26,6 +26,12 @@ export class Auth {
         Api.postRouterService(LOGIN_PATH, body, response => {
             if (response.message) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.message
             if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
+
+            if (response.role && response.role === 'admin') {
+                window.location.href = '/admin.html';
+            } else {
+                window.location.href = '/landing.html';
+            }
         })
     }
 
@@ -34,11 +40,10 @@ export class Auth {
     }
 
     static logout() {
-        const body = {}
+        const body = {};
         Api.postRouterService(LOGOUT_PATH, body, response => {
-            console.log(response)
-            document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
-        })
+            window.location.href = '/login.html';
+        });
     }
 
 }
