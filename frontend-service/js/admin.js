@@ -21,9 +21,9 @@ class Admin {
 
     updateStats(data, stat_id) {
         let jsonString = '';
-        data.forEach((obj, index) => {
+        data.forEach(obj => {
             for (const [key, value] of Object.entries(obj)) {
-                jsonString += `${key.replace(/\d+/, '')}: ${value}<br>`;
+                jsonString += `${key}: ${value}<br>`;
             }
             jsonString += '<br>';
         });
@@ -32,13 +32,13 @@ class Admin {
 
     updateEndpointStats() {
         Api.callRouterService(ENDPOINTS_PATH, res => {
-            this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
+            if (res.data) this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
         })
     }
 
     updateUserStats() {
         Api.callRouterService(USERS_PATH, res => {
-            this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
+            if (res.data) this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
         })
     }
 
