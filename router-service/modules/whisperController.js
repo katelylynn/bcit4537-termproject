@@ -120,7 +120,7 @@ module.exports = class WhisperController {
     
             console.log("Starting transcribeAndControl process");
             
-            const endpointId = await this.getEndpointId('POST', '/api/transcribe-and-control');
+            const endpointId = await this.getEndpointId('POST', '/transcribe-and-control');
             const userId = this.getUserIdFromToken(req);
             await this.incrementUserCallCount(userId, endpointId);
     
