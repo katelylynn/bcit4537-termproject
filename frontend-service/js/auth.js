@@ -12,8 +12,8 @@ export class Auth {
             'password': password
         }
         Api.postRouterService(REGISTER_PATH, body, response => {
-            console.log(response)
-            document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
+            if (response.message) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.message
+            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
         })
     }
 
@@ -23,8 +23,8 @@ export class Auth {
             'password': password
         }
         Api.postRouterService(LOGIN_PATH, body, response => {
-            console.log(response)
-            document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
+            if (response.message) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.message
+            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).innerHTML = response.statusText
         })
     }
 
