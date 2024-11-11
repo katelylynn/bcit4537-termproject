@@ -37,7 +37,7 @@ module.exports = class AuthManager {
 
         const token = jwt.sign({ user }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
         res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None'});
-        res.status(200).json({ message: 'Logged in successfully' });
+        res.status(200).json({ message: 'Logged in successfully', 'role': user.role });
     }
 
     handleLogout(req, res) {
