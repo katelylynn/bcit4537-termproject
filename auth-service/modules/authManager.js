@@ -41,7 +41,7 @@ module.exports = class AuthManager {
     }
 
     handleLogout(req, res) {
-        res.cookie('token', '', { httpOnly: true, maxAge: 0 });
+        res.cookie('token', '', { httpOnly: true, secure: true, sameSite: 'None', maxAge: 0});
         res.status(200).json({ message: 'Logged out successfully' });
     }
 
