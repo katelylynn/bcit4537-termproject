@@ -1,41 +1,45 @@
 module.exports = class DBController {
 
     static callDatabaseService(res, path) {
+        console.log(`Calling database service with GET request to: ${path}`);
         fetch(process.env["DB-SERVICE"] + path)
             .then(response => {
+                console.log(`Response status from database service: ${response.status}`);
                 if (!response.ok) {
                     throw response;
                 }
                 return response.json();
             })
             .then(data => {
+                console.log(`Data received from database service GET:`, data);
                 res.status(200).json(data);
             })
             .catch(response => {
-                console.error('Error fetching data:', response.statusText);
+                console.error('Error in callDatabaseService fetching data:', response.statusText);
                 return res.status(response.status).json({ error: response.statusText });
             });
     }
 
     static postDatabaseService(res, path, body) {
-        fetch(process.env["DB-SERVICE"] + path,{
-            "method": "POST",
-            "headers": {
-                'Content-Type': 'application/json'
-            },
-            "body": JSON.stringify(body)
+        console.log(`Calling database service with POST request to: ${path} and body:`, body);
+        fetch(process.env["DB-SERVICE"] + path, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
         })
             .then(response => {
+                console.log(`Response status from database service: ${response.status}`);
                 if (!response.ok) {
                     throw response;
                 }
                 return response.json();
             })
             .then(data => {
+                console.log(`Data received from database service POST:`, data);
                 res.status(200).json(data);
             })
             .catch(response => {
-                console.error('Error fetching data:', response.statusText);
+                console.error('Error in postDatabaseService fetching data:', response.statusText);
                 return res.status(response.status).json({ error: response.statusText });
             });
     }
