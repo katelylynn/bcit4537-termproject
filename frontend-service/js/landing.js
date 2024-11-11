@@ -22,8 +22,8 @@ class Landing {
     updateUserStats() {
         const hardcoded_id = 1
         Api.callRouterService(USERS_PATH + hardcoded_id, res => {
-            document.getElementById(USAGE_COUNT_ID).innerHTML = res.data.total_requests
-            if (res.data.total_requests >= 20) {
+            document.getElementById(USAGE_COUNT_ID).innerHTML = res.data[0].total_requests
+            if (res.data[0].total_requests >= 20) {
                 document.getElementById(API_USAGE_WARNING_ID).innerHTML = userMessages.warnApiLimit
             }
         })
