@@ -5,15 +5,20 @@ from flask_cors import CORS
 from controllers.transcription_controller import handle_transcription_request
 from lang.en import Messages, MessageKeys
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+ROUTER_SERVICE = os.getenv("ROUTER_SERVICE")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ROUTER_SERVICE}})
 
 @app.before_request
 def handle_preflight():
     if request.method == 'OPTIONS':
         response = app.make_response('', 204)
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Origin'] = ROUTER_SERVICE
         response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
         return response
