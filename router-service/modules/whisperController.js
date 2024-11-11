@@ -1,5 +1,8 @@
 const https = require('https');
 const FormData = require('form-data');
+const { validateCommand } = require('../helpers/whisperCommandValidator');
+const CarController = require('../modules/carController');
+const { ERROR_MESSAGES } = require('../lang/en');
 
 module.exports = class WhisperController {
     static transcribeAudio(file) {
@@ -29,24 +32,48 @@ module.exports = class WhisperController {
                         if (res.statusCode === 200) {
                             resolve(result.transcription);
                         } else {
-                            reject({
-                                error: "Transcription failed",
+                            reject({    
+                                error:  ERROR_MESSAGES.transcriptionFailed,
                                 details: result.error || "Unknown error",
                                 transcription: result.transcription || null
                             });
                         }   
                     } catch (error) {
-                        reject(new Error("Failed to parse transcription response"));
+                        reject(new Error(ERROR_MESSAGES.transcriptionResponseFailed));
                     }
                 });
             });
 
             req.on('error', (error) => {
-                console.error("Error in WhisperController:", error);
                 reject(error);
             });
 
             form.pipe(req);
         });
+    }
+
+    static async transcribeAndControl(req, res) {
+        try {
+            const transcription = await this.transcribeAudio(req.file);
+
+            if (!req.file) {
+                return res.status(400).json({ error: "No audio file uploaded." });
+            }
+
+            const validation = validateCommand(transcription);
+
+            if (!validation.isValid) {
+                return res.status(400).json({
+                    errorType: "invalid_command",
+                    error: ERROR_MESSAGES.invalidCommand,
+                    transcription
+                });
+            }
+
+            const carCommandSuccess = CarController.sendCarCommand(transcription);
+            res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
+        } catch (error) {
+            res.status(500).json({ error: ERROR_MESSAGES.requestProcessFailed });
+        }
     }
 }

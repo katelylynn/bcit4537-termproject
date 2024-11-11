@@ -3,10 +3,8 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const AuthController = require('../modules/authController');
-const CarController = require('../modules/carController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
-const { validateCommand } = require('../helpers/whisperCommandValidator');
 
 
 module.exports = class Router {
@@ -94,39 +92,9 @@ module.exports = class Router {
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
 
         // EXTERNAL APIs
-        this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), this.transcribeAndControl.bind(this));
+        this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
+            WhisperController.transcribeAndControl(req, res);
+        });
     }
 
-    async transcribeAndControl(req, res) {
-        try {
-            const transcription = await WhisperController.transcribeAudio(req.file);
-
-            const validation = validateCommand(transcription);
-            if (!validation.isValid) {
-                return res.status(400).json({
-                    errorType: "invalid_command",
-                    error: validation.error,
-                    transcription
-                });
-            }
-
-            // Assume the transcription is a valid command for this test
-            const carCommandSuccess = CarController.sendCarCommand(transcription);
-    
-            // if (carCommandSuccess) {
-            //     res.json({ transcription, carCommand: "success" });
-            // } else {
-            //     res.status(500).json({ error: "Failed to send command to the car" });
-            // }
-
-            res.json({transcription});
-        } catch (error) {
-            if (error.error) {
-                res.status(400).json(error);
-            } else {
-                console.error("Error in transcribeAndControl:", error);
-                res.status(500).json({ error: "Failed to process request" });
-            }
-        }
-    }
 };
