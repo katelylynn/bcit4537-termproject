@@ -69,4 +69,9 @@ module.exports = class AuthController {
         this.postAuthService(res, `/login/`, body)
     }
 
+    static logoutUser(req, res) {
+        const body = {}
+        this.postAuthService(res, `/logout/`, body)
+    }
+
 }

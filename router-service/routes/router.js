@@ -21,7 +21,7 @@ module.exports = class Router {
 
         this.router.use(cookieParser())
 
-        this.nojwt = ['/register', '/login']
+        this.nojwt = ['/register', '/login', '/logout']
         this.router.use((req, res, next) => {
             // skip jwt verification for server-to-server calls
             // should swap to calls from recognized origin list eventually
@@ -90,6 +90,7 @@ module.exports = class Router {
 
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
+        this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
 
         // EXTERNAL APIs
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
