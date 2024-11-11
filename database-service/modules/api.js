@@ -36,7 +36,6 @@ module.exports = class DatabaseAPI {
         })
 
         router.get("/get-userid/:email", uc.getUserId.bind(uc))
-        router.post("/populate", uc.populateTable.bind(uc))
         router.get("/", uc.getAllUsers.bind(uc))
         router.get("/:userId", uc.getUser.bind(uc))
         router.post("/", uc.postUser.bind(uc))
