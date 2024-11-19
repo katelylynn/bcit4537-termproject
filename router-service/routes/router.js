@@ -86,23 +86,28 @@ module.exports = class Router {
     }
 
     exposeRoutes() {
+        // CLIENT FACING ENDPOINTS
         this.router.get('/api-consumption-endpoints', this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
         this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
         this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
-        this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));
-        this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
-
-        this.router.post('/post-user', DBController.postUser.bind(DBController));
-        this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
+        
+        // implement /user/:uid patch
+        // implement /user/:uid delete
 
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
         this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
 
-        // EXTERNAL APIs
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
             WhisperController.transcribeAndControl(req, res);
         });
+
+        // SERVICE FACING ENDPOINTS
+        this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));
+        this.router.get('/get-user/:uid', DBController.getUser.bind(DBController));
+        this.router.post('/post-user', DBController.postUser.bind(DBController));
+        this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
+        
     }
 
 };
