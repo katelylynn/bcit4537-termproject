@@ -2,6 +2,7 @@ import { Api } from "./api.js"
 import { Auth } from "./auth.js"
 import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
+import { Profile } from "./profile.js"
 
 const API_CONSUMPTION_STATS_ID = "apiConsumptionStats"
 const DOM_CONTENT_LOADED = "DOMContentLoaded"
@@ -31,13 +32,13 @@ class Admin {
     }
 
     updateEndpointStats() {
-        Api.callRouterService(ENDPOINTS_PATH, res => {
+        Api.getRouterService(ENDPOINTS_PATH, res => {
             if (res.data) this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
         })
     }
 
     updateUserStats() {
-        Api.callRouterService(USERS_PATH, res => {
+        Api.getRouterService(USERS_PATH, res => {
             if (res.data) this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
         })
     }
@@ -46,6 +47,8 @@ class Admin {
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
     Initializer.loadUserMessages()
+    new Profile()
+
     const admin = new Admin()
     admin.updateEndpointStats()
     admin.updateUserStats()

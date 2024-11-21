@@ -91,7 +91,7 @@ module.exports = class Router {
         this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
         this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
         
-        this.router.patch('/user', DBController.updateEmail.bind(DBController))
+        this.router.patch('/user/email', DBController.updateEmail.bind(DBController))
         this.router.delete('/user', DBController.deleteUser.bind(DBController))
 
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
