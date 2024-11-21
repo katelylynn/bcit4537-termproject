@@ -6,11 +6,11 @@ const API_PATH = "/api";
 
 module.exports = class Server {
 
-    constructor() {
+    constructor(version) {
         this.app = express();
         this.app.use(express.json());
         this.app.use(this.setCorsHeaders.bind(this));
-        this.app.use(API_PATH, (new Router()).getRouter());
+        this.app.use(API_PATH + "/v" + version, (new Router()).getRouter());
     }
     
     start(port) {

@@ -105,7 +105,7 @@ a. Admin page
 - [X] show APIs stats 
 - [X] After the admin logs in, admin shall see the list of all endpoints and their corresponding stats ( how many times each end point served requests etc)  and users and their API consumption 
 - [ ] Stats for each of the 8 endpoints ( how many times each endpoint served requests) in tabular format.  (Kate)
-  - [ ] Create endpoints on router startup
+  - [X] Create endpoints on router startup
 - [X] Break down of API usages/consumption stats for each user 
 
 
@@ -115,7 +115,7 @@ B. user page
 
 Other Client requirements 
 
-- [ ] 1- Client has to utilize all the endpoints 
+- [X] 1- Client has to utilize all the endpoints 
     - [ ] Router should increment all tracked endpoints (Justin/Kate)
 - [ ] 2- somewhat mobile friendly UX. It would be acceptable as long as buttons/labels etc are visible and legible in mobile, no fancy UI is needed (Harrison)
 - [ ] 3- Proper http status codes to be sent by server and displayed at client side to the user

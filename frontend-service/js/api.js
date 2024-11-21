@@ -1,4 +1,5 @@
-const ROUTER_SERVICE = "https://hjdjprojectvillage.online/router-service/api"
+// const ROUTER_SERVICE = "https://hjdjprojectvillage.online/router-service/api/v1"
+const ROUTER_SERVICE = "http://localhost:3000/api/v1"
 
 export class Api {
 
