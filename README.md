@@ -61,7 +61,7 @@ General
 Authentication: 
 - [X] Users of your app need to register by entering their information such as first name and email address at the client app  ( the authentication is a service happening at the server side ) 
 - [X] Each user receives 20 API calls for free, after that the server tells the client app that this user maxed his/her free API calls and the client displays an appropriate  warning to user but continues providing services 
-    - [ ] Move to server side (Kate)
+    - [ ] Move to server side (Justin / Kate)
 - [X] The authentication has to be token based, httpOnly cookie or jwt etc. you cannot use any third party APIs for authentication
 - [/] follow standard practices 
 
@@ -82,19 +82,19 @@ Recommendations
 
 ### API Server 
 - [X] The client and the server have to be hosted in two totally different origins. 
-- [ ] Your server app has to provide at least 8 endpoints (Kate)
+- [X] Your server app has to provide at least 8 endpoints (Kate)
 
 - [X] At least two have to be on POST methods
-- [ ] At least one DELETE method
-- [ ] At least one PUT/PATCH method 
+- [X] At least one DELETE method
+- [X] At least one PUT/PATCH method 
 - [X] At least one GET method
 
 
 - [X] The RESTful services have to offer all the CRUD operations on the stored data in DB ( e.g. endpoints to read data from DB,  endpoints to write data into DB, endpoints to delete data fromDB, endpoint to update data of DB):
         - [X] Create using Post methods,
         - [X] Read using Get methods,
-        - [ ] Update using PUT or PATCH methods,
-        - [ ] Delete using DELETE  methods
+        - [X] Update using PUT or PATCH methods,
+        - [X] Delete using DELETE  methods
 
 - [X] All connections/requests have to be done over https ( and use of JWT tokens and httpOnly)
 - [X] json format for exchanging payload
@@ -105,6 +105,7 @@ a. Admin page
 - [X] show APIs stats 
 - [X] After the admin logs in, admin shall see the list of all endpoints and their corresponding stats ( how many times each end point served requests etc)  and users and their API consumption 
 - [ ] Stats for each of the 8 endpoints ( how many times each endpoint served requests) in tabular format.  (Kate)
+  - [ ] Create endpoints on router startup
 - [X] Break down of API usages/consumption stats for each user 
 
 
