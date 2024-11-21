@@ -1,4 +1,5 @@
 import { Api } from "./api.js"
+import { Auth } from "./auth.js"
 
 const DELETE = "delete"
 const DELETE_USER_BUTTON_ID = "deleteUserButton"
@@ -29,14 +30,7 @@ export class Profile {
     }
 
     deleteUser() {
-        Api.callRouterService(
-            DELETE_USER_PATH,
-            DELETE,
-            {},
-            () => {
-                window.location.href = '/login.html'
-            },
-        )
+        Api.callRouterService(DELETE_USER_PATH, DELETE, {}, Auth.logout)
     }
 
 }
