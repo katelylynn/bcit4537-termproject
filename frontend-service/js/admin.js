@@ -33,13 +33,13 @@ class Admin {
 
     updateEndpointStats() {
         Api.getRouterService(ENDPOINTS_PATH, res => {
-            if (res.data) this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
+            if (res.data.length) this.updateStats(res.data, API_CONSUMPTION_STATS_ID)
         })
     }
 
     updateUserStats() {
         Api.getRouterService(USERS_PATH, res => {
-            if (res.data) this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
+            if (res.data.length) this.updateStats(res.data, USER_CONSUMPTION_STATS_ID)
         })
     }
 
