@@ -2,6 +2,7 @@ import { Api } from "./api.js"
 import { Auth } from "./auth.js"
 import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
+import { Profile } from "./profile.js"
 import { userMessages } from "../lang/en.js"
 
 const API_USAGE_WARNING_ID = "apiUsageWarning"
@@ -20,7 +21,7 @@ class Landing {
     }
 
     updateUserStats() {
-        Api.callRouterService(USERS_PATH, res => {
+        Api.getRouterService(USERS_PATH, res => {
             const totalRequests = res.data[0].total_requests
             if (totalRequests) document.getElementById(USAGE_COUNT_ID).textContent = totalRequests
             if (totalRequests >= 20) {
@@ -33,6 +34,8 @@ class Landing {
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
     Initializer.loadUserMessages()
+    new Profile()
+
     const land = new Landing()
     land.updateUserStats()
 

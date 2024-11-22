@@ -3,7 +3,7 @@
 ## Project Requirements
 
 - [X] Follow microservice architecture
-- [ ] Protect project against SQL injection or XSS attack
+- [/] Protect project against SQL injection or XSS attack 
 - [X] Admin gets to see API consumption per user
 
 Client:
@@ -11,12 +11,13 @@ Client:
 - [X] Create Login page
 - [X] Make call to back end to register user
 - [X] Make call to back end to login user
-- [ ] Make call to back end for forgotten password
+- [ ] Make call to back end for forgotten password (Harrison)
 - [X] Create Landing page
 - [X] Display user's API consumption in the login/landing page
 - [X] Display all users' API consumption if logged in as admin user
 - [X] Warn user if they have used up 20 free API calls (continues providing services)
-- [ ] Logout
+- [X] Logout
+- [ ] Make proper redirects (Justin)
 
 Router:
 - [X] User Registration
@@ -24,7 +25,7 @@ Router:
 - [X] Calls to LLM-service
 - [X] Calls to car-service
 - [X] Ensure CORS is set to only allow requests from client
-- [ ] Show informative message if email is incorrect, not just throwing internal error
+- [X] Show informative message if email is incorrect, not just throwing internal error
 
 Auth-service:
 - [X] Use httpOnly cookie and/or JWT for auth
@@ -39,83 +40,91 @@ Database service:
 - [X] Create user table if not already created
 - [X] Respond with correct status codes
 - [X] Extract db query strings into const variables
-- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day
-- [ ] Limit user's privilege
+- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day (Kate)
+- [ ] Limit user's privilege (Kate, on db side)
 
 ## Milestone II
 
-- [ ] An API server which provides some services through API
-- [ ] And one client web app that consumes those services 
-- [ ] Your server uses a hosted pre-trained AI/ML models from HuggingFace (if you are using multiple ML models, at least one has to be hosted and downloaded locally and not via using API) *
-- [ ] Client and sever hosted in two different origins (using more than two hosting services is ok too. e.g. as well as two origins, you may want to use Kaggle etc to host your HuggingFace model)
-- [ ] Authentication implementation using httpOnly cookies and JWT ( not using third party APIs)
-- [ ] Admin and users' page implemented
-- [ ] Documentation page of your API using swagger etc. E.g. myAPIserver.xyz/API/v1/docs)
+General
+- [ ] Connect to database service, keep client up (Kate)
+- [ ] Connect the car service to the model service (Harrison)
+    - [ ] Car router logic and controller (Harrison)
+
+- [X] An API server which provides some services through API
+- [X] And one client web app that consumes those services 
+- [X] Your server uses a hosted pre-trained AI/ML models from HuggingFace (if you are using multiple ML models, at least one has to be hosted and downloaded locally and not via using API) *
+- [X] Client and sever hosted in two different origins (using more than two hosting services is ok too. e.g. as well as two origins, you may want to use Kaggle etc to host your HuggingFace model)
+- [X] Authentication implementation using httpOnly cookies and JWT (not using third party APIs)
+- [X] Admin and users' page implemented
+- [ ] Documentation page of your API using swagger etc. E.g. myAPIserver.xyz/API/v1/docs
 
 Authentication: 
-- [ ] Users of your app need to register by entering their information such as first name and email address at the client app  ( the authentication is a service happening at the server side ) 
-- [ ] Each user receives 20 API calls for free, after that the server tells the client app that this user maxed his/her free API calls and the client displays an appropriate  warning to user but continues providing services 
-- [ ] The authentication has to be token based, httpOnly cookie or jwt etc. you cannot use any third party APIs for authentication
-- [ ] follow standard practices  
+- [X] Users of your app need to register by entering their information such as first name and email address at the client app  ( the authentication is a service happening at the server side ) 
+- [X] Each user receives 20 API calls for free, after that the server tells the client app that this user maxed his/her free API calls and the client displays an appropriate  warning to user but continues providing services 
+    - [ ] Move to server side (Kate)
+- [X] The authentication has to be token based, httpOnly cookie or jwt etc. you cannot use any third party APIs for authentication
+- [/] follow standard practices 
 
 Security/Robustness 
-- [ ] Protect your project against SQl injection, XSS etc 
-- [ ] Hash passwords before storage in DB
-- [ ] Take care of CORS and proper header setting at the server side 
-- [ ] User types ( admin, user)
-- [ ] The user shall see his/her API consumption upon the login
-- [ ] There has to be an admin user with more privileges such as monitoring who has consumed how much API, and the stat of API calls . You can manually select a user role in database to be an admin
-- [ ] For signing JWTs its ok to store secrete key hard coded in your nodejs source  ( storing it in environment variable is preferred but not a must) 
+- [X] Protect your project against SQl injection, XSS etc 
+- [X] Hash passwords before storage in DB
+- [X] Take care of CORS and proper header setting at the server side 
+- [X] User types ( admin, user)
+- [X] The user shall see his/her API consumption upon the login
+- [X] There has to be an admin user with more privileges such as monitoring who has consumed how much API, and the stat of API calls . You can manually select a user role in database to be an admin
+- [X] For signing JWTs its ok to store secrete key hard coded in your nodejs source  (storing it in environment variable is preferred but not a must) 
 
 Recommendations 
-- [ ] Please use GitHub so that everyone's contribution is visible. That will be helpful at the time of project assessment which happens in-person where I ask each team member about their contribution 
+- [X] Please use GitHub so that everyone's contribution is visible. That will be helpful at the time of project assessment which happens in-person where I ask each team member about their contribution 
 - [ ] If your server takes a while to respond to API requests, it's advisable to show a loading animation to let users know that their request is still being processed.
-- [ ] Using third party* APIs for authentication is not allowed. 
-- [ ] Using any third party libraries not recommended either. Implement the whole authentication yourself 
+- [X] Using third party* APIs for authentication is not allowed. 
+- [X] Using any third party libraries not recommended either. Implement the whole authentication yourself 
 
 ### API Server 
-- [ ] The client and the server have to be hosted in two totally different origins. 
-- [ ] Your server app has to provide at least 8 endpoints
-- [ ] At least two have to be on POST methods
+- [X] The client and the server have to be hosted in two totally different origins. 
+- [ ] Your server app has to provide at least 8 endpoints (Kate)
+
+- [X] At least two have to be on POST methods
 - [ ] At least one DELETE method
 - [ ] At least one PUT/PATCH method 
-- [ ] At least one GET method
+- [X] At least one GET method
 
 
-- [ ] The RESTful services have to offer all the CRUD operations on the stored data in DB ( e.g. endpoints to read data from DB,  endpoints to write data into DB, endpoints to delete data fromDB, endpoint to update data of DB):
-        - [ ] Create using Post methods,
-        - [ ] Read using Get methods,
+- [X] The RESTful services have to offer all the CRUD operations on the stored data in DB ( e.g. endpoints to read data from DB,  endpoints to write data into DB, endpoints to delete data fromDB, endpoint to update data of DB):
+        - [X] Create using Post methods,
+        - [X] Read using Get methods,
         - [ ] Update using PUT or PATCH methods,
         - [ ] Delete using DELETE  methods
 
-- [ ] All connections/requests have to be done over https ( and use of JWT tokens and httpOnly)
-- [ ] json format for exchanging payload 
+- [X] All connections/requests have to be done over https ( and use of JWT tokens and httpOnly)
+- [X] json format for exchanging payload
 
 
 ### Client app 
 a. Admin page
-- [ ] show APIs stats 
-- [ ] After the admin logs in, admin shall see the list of all endpoints and their corresponding stats ( how many times each end point served requests etc)  and users and their API consumption 
-- [ ] Stats for each of  the 8 endpoints ( how many times each endpoint served requests) in tabular format. 
-- [ ] Another table to display to admin for
-- [ ] Break down of API usages/consumption stats for each user 
+- [X] show APIs stats 
+- [X] After the admin logs in, admin shall see the list of all endpoints and their corresponding stats ( how many times each end point served requests etc)  and users and their API consumption 
+- [ ] Stats for each of the 8 endpoints ( how many times each endpoint served requests) in tabular format.  (Kate)
+- [X] Break down of API usages/consumption stats for each user 
 
 
 B. user page
-- [ ] The user shall see his/her API consumption* upon the login at the profile landing page
-- [ ] *: total API consumptions or individual APIs consumption ( whichever you prefer) 
+- [X] The user shall see his/her API consumption* upon the login at the profile landing page
+- [X] *: total API consumptions or individual APIs consumption ( whichever you prefer) 
 
 Other Client requirements 
 
-- [ ] 1- Client has to utilize all the endpoints
-- [ ] 2- somewhat mobile friendly UX. It would be acceptable as long as buttons/labels etc are visible and legible in mobile, no fancy UI is needed 
+- [ ] 1- Client has to utilize all the endpoints 
+    - [ ] Router should increment all tracked endpoints (Justin/Kate)
+- [ ] 2- somewhat mobile friendly UX. It would be acceptable as long as buttons/labels etc are visible and legible in mobile, no fancy UI is needed (Harrison)
 - [ ] 3- Proper http status codes to be sent by server and displayed at client side to the user
-- [ ] 4- Descriptive user messages 
-- [ ] 5- All user message strings must be stored in a separate file 
-- [ ] 6- proper DB design. Each entity has to have its own table . 
+    - [ ] Needs to display full page error message (Justin)
+- [X] 4- Descriptive user messages 
+- [ ] 5- All user message strings must be stored in a separate file (All)
+- [X] 6- proper DB design. Each entity has to have its own table . 
 e.g. Do not put users info and their API usage stat in the same DB table. Those are two different entities. 
-Each column has to have only one purpose, e.g. for the language table of your last lab assignment , you should not use language codes such as EN, JP and primary keys for the language table. Use a unique integer number to represent primary keys 
-- [ ] 7- Proper API documentation for developers to use your API service using swagger (https://swagger.io/solutions/api-documentation/)
+- [X] Each column has to have only one purpose, e.g. for the language table of your last lab assignment , you should not use language codes such as EN, JP and primary keys for the language table. - [X] Use a unique integer number to represent primary keys 
+- [ ] 7- Proper API documentation for developers to use your API service using swagger (https://swagger.io/solutions/api-documentation/) (All)
     The documentation should specify at least the following:
     - [ ] A description of available resources and their URI ( end points)
     - [ ] Available HTTP methods for each resource in the API
@@ -123,29 +132,29 @@ Each column has to have only one purpose, e.g. for the language table of your la
     - [ ] Examples of JSON representation of client payload for the services
     - [ ] The url of API documentation must end with /doc/ e.g. example.com/doc ( returns documentation about your API) 
 
-- [ ] 8- Proper API versioning e.g. http://api.example.com/v1 
-- [ ] 9-Input validation 
-    These apply to both your apps, the client an the server 
-    If an email is expected to input, you must validate the input to be in the format of an email ( e.g. at some text with an @ followed by a domain name. You can use existing regex samples from the net. 
-    If a number is expected to input, your app has to return an error if something else gets entered 
-    Never trust input at the server side either. You need to do a sanity check ( input validation) at the end point of APIs as well
+- [ ] 8- Proper API versioning e.g. http://api.example.com/v1 (add v1 in path, all)
+- [ ] 9-Input validation    (Justin)
+    - [ ] These apply to both your apps, the client an the server 
+    - [ ] If an email is expected to input, you must validate the input to be in the format of an email ( e.g. at some text with an @ followed by a domain name. You can use existing regex samples from the net. 
+    - [ ] If a number is expected to input, your app has to return an error if something else gets entered 
+    - [ ] Never trust input at the server side either. You need to do a sanity check ( input validation) at the end point of APIs as well
 
-- [ ] 10- Attribution to chatGPT or any resources at the comment section of learning hub and and also in your source code
-- [ ] 11- Every member has to be 100% familiar with the entire project code and details and be able to answer questions otherwise there will be deductions 
+- [ ] 10- Attribution to chatGPT or any resources at the comment section of learning hub and and also in your source code (Harrison, Justin)
+- [ ] 11- Every member has to be 100% familiar with the entire project code and details and be able to answer questions otherwise there will be deductions
 
 ### Coding style
-- [ ] Modular folder structure: separate folders for HTML, JS and CSS ( although I mentioned no fancy UI is needed, as long as buttons and inputs etc are visible in desktop and mobile)
-- [ ] Clean code: good organization using modules
-All user message strings to be stored  in a separate file ( no hard-coded string messages in your code)
-- [ ] For variable declaration first use const, then let; never var
+- [X] Modular folder structure: separate folders for HTML, JS and CSS ( although I mentioned no fancy UI is needed, as long as buttons and inputs etc are visible in desktop and mobile)
+- [X] Clean code: good organization using modules
+- [ ] All user message strings to be stored in a separate file ( no hard-coded string messages in your code) (all)
+- [ ] For variable declaration first use const, then let; never var (all check; Harrison - landing)
 
-Recommended but not required :
-- [ ] Implement OOP  ( use classes like the begging of the term)
+Recommended but not required:
+- [/] Implement OOP  ( use classes like the begging of the term)
 - [ ] All functions have to be arrow functions
 - [ ] Separation of concerns, meaning each function has to do one thing 
 - [ ] Short function declaration ( preferably not more than 15 lines)
 
-No third party APIs is allowed to use for authentication 
+- [X] No third party APIs is allowed to use for authentication 
 
 
 Deliverable 
@@ -185,7 +194,7 @@ Deductions
 few but not limited to 
     (-1-3) Wrong API design and implementation at server side
     (- 1 -2) Wrong CRUD implementation in DB 
-    (-1 -2) for no proper  API security using tokens as described in server specifications above. 
+    (-1 -2) for no proper API security using tokens as described in server specifications above. 
     (-1) for no API documentation 
     (-1-2) For a buggy frontend client application 
     (-1) For not properly generating http status codes
@@ -197,4 +206,4 @@ few but not limited to
 BONUS 
 
 - [ ] +0.5 (5%) : For the user registration/login you don't need to implement forgot password feature. However if you do so, you will get 0.5 ( 5%) bonus
-- [ ] +1 (10%): If your term project is AI/ML powered, you will get additional 10% ( you will be marked from 11 instead of 10)
+- [X] +1 (10%): If your term project is AI/ML powered, you will get additional 10% ( you will be marked from 11 instead of 10)
