@@ -12,8 +12,7 @@ const VALID_COMMANDS = {
     "forward": "/forward",
     "backward": "/backward",
     "stop": "/stop",
-    "rotate left": "/rotate",
-    "rotate right": "/rotate"
+    "rotate": "/rotate",
 };
 
 module.exports = { ERROR_MESSAGES, VALID_COMMANDS };

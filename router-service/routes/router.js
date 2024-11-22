@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const AuthController = require('../modules/authController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
+const CarController = require('../modules/carController');
 
 
 module.exports = class Router {
@@ -97,6 +98,10 @@ module.exports = class Router {
         this.router.post('/register', AuthController.registerUser.bind(AuthController));
         this.router.post('/login', AuthController.loginUser.bind(AuthController));
         this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
+
+        // this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
+        //     WhisperController.transcribeAndControl(req, res, CarController);
+        // });
 
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
             WhisperController.transcribeAndControl(req, res);

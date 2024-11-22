@@ -1,34 +1,68 @@
+const https = require('https');
+const { URL } = require('url');
+require('dotenv').config();
+
+const CAR_SERVICE_URL = process.env.CAR_SERVICE;
+
 module.exports = class CarController {
+    /**
+     * Sends a command to the car service.
+     * @param {string} command - The command to send (e.g., /forward, /rotate).
+     * @param {Object} params - The parameters for the command (e.g., speed, angle, direction).
+     * @returns {Object} - The result of the car service interaction.
+     */
+    static async sendCarCommand(command, params) {
+        return new Promise((resolve, reject) => {
+            const endpoint = `${CAR_SERVICE_URL}${command}`;
+            const url = new URL(endpoint);
 
-    static sendCarCommand(command, res) {
-        // code to send command
-        return true; // success!
+            const options = {
+                hostname: url.hostname,
+                port: 443,
+                path: url.pathname,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': Buffer.byteLength(JSON.stringify(params)),
+                },
+            };
 
-        try {
+            const req = https.request(options, (res) => {
+                let data = '';
 
-            // Determine the appropriate car endpoint based on the `command` parameter
-            // e.g., "move forward" -> `${CAR_SERVICE_URL}/forward`
-            //       "move backward" -> `${CAR_SERVICE_URL}/backward`
-            //       "stop" -> `${CAR_SERVICE_URL}/stop`
-    
-            let carEndpoint;
-            let payload = { speed: 1.0 }; // Default payload; modify as needed
-    
-            // Map the command to a car endpoint and any necessary payload
-            // Use a switch-case or if-else statement to check the value of `command`
-    
-            // Send the command to the determined endpoint using axios
-            // e.g., `await axios.post(carEndpoint, payload);`
-    
-            // Respond with the car service's response
-            // Use `res.json(response.data);` to send the result back to the client
-    
-        } catch (error) {
-    
-            // Handle errors: log the error and send a response to the client
-            // e.g., `res.status(500).json({ error: "Failed to send command to car" });`
-    
-        }
+                // Collect data from the response
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                res.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(data);
+
+                        if (res.statusCode === 200) {
+                            resolve({ success: true, data: parsedData });
+                        } else {
+                            reject({
+                                success: false,
+                                error: `Car service returned status ${res.statusCode}: ${parsedData.error || 'Unknown error'}`,
+                            });
+                        }
+                    } catch (err) {
+                        reject({
+                            success: false,
+                            error: `Failed to parse response from car service: ${err.message}`,
+                        });
+                    }
+                });
+            });
+
+            req.on('error', (err) => {
+                reject({ success: false, error: `Request error: ${err.message}` });
+            });
+
+            // Write the request body and end the request
+            req.write(JSON.stringify(params));
+            req.end();
+        });
     }
-
-}
+};

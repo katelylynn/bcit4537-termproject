@@ -117,11 +117,18 @@ module.exports = class WhisperController {
                 });
             }
     
-            const carCommandSuccess = CarController.sendCarCommand(transcription);
-            res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
+            const carCommandResult = await CarController.sendCarCommand(command, params);
+
+            if (!carCommandResult.success) {
+                return res.status(500).json({ error: carCommandResult.error });
+            }
+
+            res.json({ transcription, carCommand: "success", carResponse: carCommandResult.data });
+
+            // const carCommandSuccess = CarController.sendCarCommand(transcription);
+            // res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
         } catch (error) {
             res.status(500).json({ error: ERROR_MESSAGES.requestProcessFailed });
         }
     }
-    
 }
