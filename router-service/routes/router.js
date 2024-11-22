@@ -10,8 +10,15 @@ const WhisperController = require('../modules/whisperController');
 module.exports = class Router {
 
     EXTERNAL_APIS = {
+        API_CONSUMPTION_ENDPOINTS: ["/api-consumption-endpoints", "get"],
+        API_CONSUMPTION_USERS: ["/api-consumption-users", "get"],
+        API_CONSUMPTION_USER: ["/api-consumption-user", "get"],
+        UPDATE_USER_EMAIL: ["/user/email", "patch"],
+        DELETE_USER: ["/user", "delete"],
+        REGISTER: ["/register", "post"],
+        LOGIN: ["/login", "post"],
+        LOGOUT: ["/logout", "post"],
         TRANSCRIBE_AND_CONTROL: ["/transcribe-and-control", "post"],
-        EXAMPLE_ENDPOINT: ["/example", "get"],
     }
 
     constructor() {
@@ -80,23 +87,22 @@ module.exports = class Router {
 
     allowAdminsOnly(req, res, next) {
         const urole = req.user.user.role;
-        console.log(urole);
         if (urole == "admin") next();
         else return res.status(401).json({ message: 'Unauthorized: Not an admin' });
     }
 
     exposeRoutes() {
         // CLIENT FACING ENDPOINTS
-        this.router.get('/api-consumption-endpoints', this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
-        this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
-        this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_ENDPOINTS[0], this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USERS[0], this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USER[0], DBController.getApiConsumptionSingleUser.bind(DBController));
         
-        this.router.patch('/user/email', DBController.updateEmail.bind(DBController))
-        this.router.delete('/user', DBController.deleteUser.bind(DBController))
+        this.router.patch(this.EXTERNAL_APIS.UPDATE_USER_EMAIL[0], DBController.updateEmail.bind(DBController))
+        this.router.delete(this.EXTERNAL_APIS.DELETE_USER[0], DBController.deleteUser.bind(DBController))
 
-        this.router.post('/register', AuthController.registerUser.bind(AuthController));
-        this.router.post('/login', AuthController.loginUser.bind(AuthController));
-        this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
+        this.router.post(this.EXTERNAL_APIS.REGISTER[0], AuthController.registerUser.bind(AuthController));
+        this.router.post(this.EXTERNAL_APIS.LOGIN[0], AuthController.loginUser.bind(AuthController));
+        this.router.post(this.EXTERNAL_APIS.LOGOUT[0], AuthController.logoutUser.bind(AuthController));
 
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
             WhisperController.transcribeAndControl(req, res);
