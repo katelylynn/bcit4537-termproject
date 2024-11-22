@@ -2,7 +2,7 @@ const ROUTER_SERVICE = "https://hjdjprojectvillage.online/router-service/api"
 
 export class Api {
 
-    static callRouterService(path, cb) {
+    static getRouterService(path, cb) {
         fetch(ROUTER_SERVICE + path, {
             credentials: 'include'
         })
@@ -22,6 +22,28 @@ export class Api {
     static postRouterService(path, body, cb) {
         fetch(ROUTER_SERVICE + path, {
             method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html'
+                    return
+                }
+                return response.json();
+            })
+            .then(cb)
+            .catch(error => {
+                console.error(error.message)
+            });
+    }
+
+    static callRouterService(path, method, body, cb) {
+        fetch(ROUTER_SERVICE + path, {
+            method: method,
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
