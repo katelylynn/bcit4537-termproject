@@ -11,8 +11,14 @@ const CarController = require('../modules/carController');
 module.exports = class Router {
 
     EXTERNAL_APIS = {
+        API_CONSUMPTION_ENDPOINTS: ["/api-consumption-endpoints", "get"],
+        API_CONSUMPTION_USERS: ["/api-consumption-users", "get"],
+        API_CONSUMPTION_USER: ["/api-consumption-user", "get"],
+        UPDATE_USER_EMAIL: ["/user/email", "patch"],
+        DELETE_USER: ["/user", "delete"],
         TRANSCRIBE_AND_CONTROL: ["/transcribe-and-control", "post"],
-        EXAMPLE_ENDPOINT: ["/example", "get"],
+        JUSTIN_1: ["/justin1", "post"],
+        JUSTIN_2: ["/justin2", "post"],
     }
 
     constructor() {
@@ -81,31 +87,80 @@ module.exports = class Router {
 
     allowAdminsOnly(req, res, next) {
         const urole = req.user.user.role;
-        console.log(urole);
         if (urole == "admin") next();
         else return res.status(401).json({ message: 'Unauthorized: Not an admin' });
     }
 
+    async getEndpointId(method, path) {
+        return new Promise((resolve, reject) => {
+            DBController.getEndpointId(method, path, {
+                status: (code) => ({
+                    json: (data) => {
+                        if (code === 200 && data?.data?.length) {
+                            resolve(data.data[0].id);
+                        } else {
+                            reject(
+                                new Error(
+                                    ERROR_MESSAGES.endpointIdFailed.replace("{error}", data.error || "Unknown error")
+                                )
+                            );
+                        }
+                    }
+                })
+            });
+        });
+    }
+    
+    async incrementUserCallCount(userId, endpointId) {
+        return new Promise((resolve, reject) => {
+            DBController.incrementUserCallCount(userId, endpointId, {
+                status: (code) => ({
+                    json: (data) => {
+                        if (code === 200) {
+                            resolve(data);
+                        } else {
+                            reject(
+                                new Error(
+                                    ERROR_MESSAGES.incrementCallCountFailed.replace(
+                                        "{error}",
+                                        data.error || "Unknown error"
+                                    )
+                                )
+                            );
+                        }
+                    }
+                })
+            });
+        });
+    }
+
+    async requestCountMiddleware(req, res, next) {
+        const endpointId = await this.getEndpointId(req.method, req.url);
+        const userId = req.user.user.id;
+        await this.incrementUserCallCount(userId, endpointId);
+        next();
+    }
+
     exposeRoutes() {
         // CLIENT FACING ENDPOINTS
-        this.router.get('/api-consumption-endpoints', this.allowAdminsOnly, DBController.getApiConsumptionAllEndpoints.bind(DBController));
-        this.router.get('/api-consumption-users', this.allowAdminsOnly, DBController.getApiConsumptionAllUsers.bind(DBController));
-        this.router.get('/api-consumption-user', DBController.getApiConsumptionSingleUser.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_ENDPOINTS[0], [this.allowAdminsOnly, this.requestCountMiddleware.bind(this)], DBController.getApiConsumptionAllEndpoints.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USERS[0], [this.allowAdminsOnly, this.requestCountMiddleware.bind(this)], DBController.getApiConsumptionAllUsers.bind(DBController));
+        this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USER[0], this.requestCountMiddleware.bind(this), DBController.getApiConsumptionSingleUser.bind(DBController));
         
-        this.router.patch('/user/email', DBController.updateEmail.bind(DBController))
-        this.router.delete('/user', DBController.deleteUser.bind(DBController))
-
-        this.router.post('/register', AuthController.registerUser.bind(AuthController));
-        this.router.post('/login', AuthController.loginUser.bind(AuthController));
-        this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
-
-        // this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
-        //     WhisperController.transcribeAndControl(req, res, CarController);
-        // });
-
+        this.router.post(this.EXTERNAL_APIS.JUSTIN_1[0], this.requestCountMiddleware.bind(this), CarController.justin1.bind(CarController));
+        this.router.post(this.EXTERNAL_APIS.JUSTIN_2[0], this.requestCountMiddleware.bind(this), CarController.justin2.bind(CarController))
+        
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
             WhisperController.transcribeAndControl(req, res);
         });
+
+        this.router.patch(this.EXTERNAL_APIS.UPDATE_USER_EMAIL[0], this.requestCountMiddleware.bind(this), DBController.updateEmail.bind(DBController))
+        this.router.delete(this.EXTERNAL_APIS.DELETE_USER[0], this.requestCountMiddleware.bind(this), DBController.deleteUser.bind(DBController))
+
+        // AUTH ENDPOINTS
+        this.router.post('/register', AuthController.registerUser.bind(AuthController));
+        this.router.post('/login', AuthController.loginUser.bind(AuthController));
+        this.router.post('/logout', AuthController.logoutUser.bind(AuthController));
 
         // SERVICE FACING ENDPOINTS
         this.router.get('/get-uid/:email', DBController.getUid.bind(DBController));

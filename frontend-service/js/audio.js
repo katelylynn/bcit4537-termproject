@@ -78,7 +78,7 @@ export class AudioManager {
         formData.append('file', wavBlob, 'audio.wav');
 
         try {
-            const response = await fetch('https://hjdjprojectvillage.online/router-service/api/transcribe-and-control', {
+            const response = await fetch('https://hjdjprojectvillage.online/router-service/api/v1/transcribe-and-control', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include', 
