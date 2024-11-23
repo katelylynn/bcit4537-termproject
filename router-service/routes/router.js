@@ -142,7 +142,7 @@ module.exports = class Router {
     async requestCountMiddleware(req, res, next) {
         const endpointId = await this.getEndpointId(req.method, req.url);
         const userId = req.user.user.id;
-        await this.incrementUserCallCount(userId, endpointId);
+        // await this.incrementUserCallCount(userId, endpointId);
         next();
     }
 
