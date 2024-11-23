@@ -41,7 +41,7 @@ Database service:
 - [X] Respond with correct status codes
 - [X] Extract db query strings into const variables
 - [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day (Kate)
-- [ ] Limit user's privilege (Kate, on db side)
+- [X] Limit user's privilege (Kate, on db side)
 
 ## Milestone II
 
@@ -133,7 +133,7 @@ e.g. Do not put users info and their API usage stat in the same DB table. Those 
     - [ ] Examples of JSON representation of client payload for the services
     - [ ] The url of API documentation must end with /doc/ e.g. example.com/doc ( returns documentation about your API) 
 
-- [ ] 8- Proper API versioning e.g. http://api.example.com/v1 (add v1 in path, all)
+- [X] 8- Proper API versioning e.g. http://api.example.com/v1 (add v1 in path, all)
 - [ ] 9-Input validation    (Justin)
     - [ ] These apply to both your apps, the client an the server 
     - [ ] If an email is expected to input, you must validate the input to be in the format of an email ( e.g. at some text with an @ followed by a domain name. You can use existing regex samples from the net. 
