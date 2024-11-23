@@ -63,59 +63,11 @@ module.exports = class WhisperController {
         }
     }
     
-    static async getEndpointId(method, path) {
-        return new Promise((resolve, reject) => {
-            DBController.getEndpointId(method, path, {
-                status: (code) => ({
-                    json: (data) => {
-                        if (code === 200 && data?.data?.length) {
-                            resolve(data.data[0].id);
-                        } else {
-                            reject(
-                                new Error(
-                                    ERROR_MESSAGES.endpointIdFailed.replace("{error}", data.error || "Unknown error")
-                                )
-                            );
-                        }
-                    }
-                })
-            });
-        });
-    }
-    
-    static async incrementUserCallCount(userId, endpointId) {
-        return new Promise((resolve, reject) => {
-            DBController.incrementUserCallCount(userId, endpointId, {
-                status: (code) => ({
-                    json: (data) => {
-                        if (code === 200) {
-                            resolve(data);
-                        } else {
-                            reject(
-                                new Error(
-                                    ERROR_MESSAGES.incrementCallCountFailed.replace(
-                                        "{error}",
-                                        data.error || "Unknown error"
-                                    )
-                                )
-                            );
-                        }
-                    }
-                })
-            });
-        });
-    }
-    
     static async transcribeAndControl(req, res) {
         try {
             if (!req.file) {
                 return res.status(400).json({ error: ERROR_MESSAGES.noAudioFile });
             }
-    
-            
-            const endpointId = await this.getEndpointId('POST', '/transcribe-and-control');
-            const userId = this.getUserIdFromToken(req);
-            await this.incrementUserCallCount(userId, endpointId);
     
             const transcription = await this.transcribeAudio(req.file);
     

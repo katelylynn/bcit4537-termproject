@@ -65,4 +65,13 @@ module.exports = class CarController {
             req.end();
         });
     }
-};
+
+    static justin1(req, res) {
+
+    }
+
+    static justin2(req, res) {
+
+    }
+
+}
