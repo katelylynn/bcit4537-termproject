@@ -13,14 +13,26 @@ function validateCommand(transcription) {
     switch (command) {
         case "forward": 
         case "backward":
-            if (args.length !== 2) {
+            if (args.length === 0) {
+                result.params = { speed: 1, angle: 0 };
+            } 
+            else if (args.length === 1) {
+                const speed = Number(args[0]);
+                if (!isValidSpeed(speed)) {
+                    return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
+                }
+                result.params = { speed, angle: 0 };
+            } 
+            else if (args.length === 2) {
+                const [speed, angle] = args.map(Number);
+                if (!isValidSpeed(speed) || !isValidAngle(angle)) {
+                    return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
+                }
+                result.params = { speed, angle };
+            } 
+            else {
                 return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
             }
-            const [speed, angle] = args.map(Number);
-            if (!isValidSpeed(speed) || !isValidAngle(angle)) {
-                return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
-            }
-            result.params = { speed, angle };
             break;
 
         case "rotate":
