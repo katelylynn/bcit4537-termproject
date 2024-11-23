@@ -41,7 +41,7 @@ Database service:
 - [X] Respond with correct status codes
 - [X] Extract db query strings into const variables
 - [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day (Kate)
-- [ ] Limit user's privilege (Kate, on db side)
+- [X] Limit user's privilege (Kate, on db side)
 
 ## Milestone II
 
@@ -104,7 +104,7 @@ Recommendations
 a. Admin page
 - [X] show APIs stats 
 - [X] After the admin logs in, admin shall see the list of all endpoints and their corresponding stats ( how many times each end point served requests etc)  and users and their API consumption 
-- [ ] Stats for each of the 8 endpoints ( how many times each endpoint served requests) in tabular format.  (Kate)
+- [X] Stats for each of the 8 endpoints ( how many times each endpoint served requests) in tabular format.  (Kate)
   - [X] Create endpoints on router startup
 - [X] Break down of API usages/consumption stats for each user 
 
@@ -116,7 +116,7 @@ B. user page
 Other Client requirements 
 
 - [X] 1- Client has to utilize all the endpoints 
-    - [ ] Router should increment all tracked endpoints (Justin/Kate)
+    - [X] Router should increment all tracked endpoints (Justin/Kate)
 - [ ] 2- somewhat mobile friendly UX. It would be acceptable as long as buttons/labels etc are visible and legible in mobile, no fancy UI is needed (Harrison)
 - [ ] 3- Proper http status codes to be sent by server and displayed at client side to the user
     - [ ] Needs to display full page error message (Justin)
@@ -133,7 +133,7 @@ e.g. Do not put users info and their API usage stat in the same DB table. Those 
     - [ ] Examples of JSON representation of client payload for the services
     - [ ] The url of API documentation must end with /doc/ e.g. example.com/doc ( returns documentation about your API) 
 
-- [ ] 8- Proper API versioning e.g. http://api.example.com/v1 (add v1 in path, all)
+- [X] 8- Proper API versioning e.g. http://api.example.com/v1 (add v1 in path, all)
 - [ ] 9-Input validation    (Justin)
     - [ ] These apply to both your apps, the client an the server 
     - [ ] If an email is expected to input, you must validate the input to be in the format of an email ( e.g. at some text with an @ followed by a domain name. You can use existing regex samples from the net. 
