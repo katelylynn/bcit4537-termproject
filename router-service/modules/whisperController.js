@@ -80,7 +80,9 @@ module.exports = class WhisperController {
                 });
             }
     
+            console.log("Sending car command");
             const carCommandResult = await CarController.sendCarCommand(command, params);
+            console.log("Car Command Result:", carCommandResult);
 
             if (!carCommandResult.success) {
                 return res.status(500).json({ error: carCommandResult.error });
