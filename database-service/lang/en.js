@@ -58,9 +58,9 @@ exports.REQUEST_QUERIES = {
     REQUESTS_PER_ENDPOINT: `
         SELECT e.method AS method, 
         e.path AS path, 
-        SUM(r.count) AS total_requests
+        COALESCE(SUM(r.count), 0) AS total_requests
         FROM Endpoint e
-        JOIN Request r ON e.id = r.endpoint_id
+        LEFT JOIN Request r ON e.id = r.endpoint_id
         GROUP BY e.id;
     `,
     REQUESTS_PER_USER: `

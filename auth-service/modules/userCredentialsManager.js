@@ -60,12 +60,12 @@ module.exports = class UserCredentialsManager {
     }
 
     static async getUid(email) {
-        const data = await this.getRouterValue(`/api/get-uid/${email}`)
+        const data = await this.getRouterValue(`/api/v1/get-uid/${email}`)
         return data['data'][0]['id']
     }
 
     static async getUser(uid) {
-        const data = await this.getRouterValue(`/api/get-user/${uid}`)
+        const data = await this.getRouterValue(`/api/v1/get-user/${uid}`)
         return data['data'][0]
     }
 
@@ -79,7 +79,7 @@ module.exports = class UserCredentialsManager {
             'role': role
         }
         
-        this.postRouter(res, "/api/post-user", body)
+        this.postRouter(res, "/api/v1/post-user", body)
     }
 
 }
