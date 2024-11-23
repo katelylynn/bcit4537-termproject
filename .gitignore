@@ -23,3 +23,6 @@ dev-env/
 # vim files
 *.swp
 *.swo
+
+# unit tests
+tests/
