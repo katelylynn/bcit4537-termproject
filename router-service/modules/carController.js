@@ -1,5 +1,6 @@
 const https = require('https');
 const { URL } = require('url');
+const { ERROR_MESSAGES } = require('../lang/en');
 require('dotenv').config();
 
 const CAR_SERVICE_URL = process.env.CAR_SERVICE;
