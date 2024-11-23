@@ -47,8 +47,8 @@ Database service:
 
 General
 - [ ] Connect to database service, keep client up (Kate)
-- [ ] Connect the car service to the model service (Harrison)
-    - [ ] Car router logic and controller (Harrison)
+- [X] Connect the car service to the model service (Harrison)
+    - [X] Car router logic and controller (Harrison)
 
 - [X] An API server which provides some services through API
 - [X] And one client web app that consumes those services 
