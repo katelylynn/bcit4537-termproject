@@ -56,7 +56,7 @@ module.exports = class WhisperController {
     static getUserIdFromToken(req) {
         try {
             const userId = req.user?.user?.id;
-            if (!userId) throw new Error('Unauthorized: User ID not found in token');
+            if (!userId) throw new Error(ERROR_MESSAGES.userIdNotFound);
             return userId;
         } catch (error) {
             throw error;
@@ -66,7 +66,7 @@ module.exports = class WhisperController {
     static async transcribeAndControl(req, res) {
         try {
             if (!req.file) {
-                return res.status(400).json({ error: "No audio file uploaded." });
+                return res.status(400).json({ error: ERROR_MESSAGES.noAudioFile });
             }
     
             const transcription = await this.transcribeAudio(req.file);
@@ -80,11 +80,18 @@ module.exports = class WhisperController {
                 });
             }
     
-            const carCommandSuccess = CarController.sendCarCommand(transcription);
-            res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
+            const carCommandResult = await CarController.sendCarCommand(command, params);
+
+            if (!carCommandResult.success) {
+                return res.status(500).json({ error: carCommandResult.error });
+            }
+
+            res.json({ transcription, carCommand: "success", carResponse: carCommandResult.data });
+
+            // const carCommandSuccess = CarController.sendCarCommand(transcription);
+            // res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
         } catch (error) {
             res.status(500).json({ error: ERROR_MESSAGES.requestProcessFailed });
         }
     }
-    
 }
