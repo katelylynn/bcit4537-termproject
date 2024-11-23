@@ -18,40 +18,25 @@ module.exports = class DBController {
     }
 
     static postDatabaseService(res, path, body) {
-        const url = process.env["DB-SERVICE"] + path;
-    
-        console.log('postDatabaseService - Sending request to:', url);
-        console.log('postDatabaseService - Request body:', body);
-    
-        fetch(url, {
+        fetch(process.env["DB-SERVICE"] + path, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         })
             .then(response => {
-                console.log('postDatabaseService - Response status:', response.status);
                 if (!response.ok) {
-                    console.error('postDatabaseService - Response not OK:', {
-                        status: response.status,
-                        statusText: response.statusText
-                    });
-                    throw response; // Ensure this is caught in the catch block below.
+                    throw response;
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('postDatabaseService - Response data:', data);
                 res.status(200).json(data);
             })
             .catch(response => {
-                console.error('postDatabaseService - Caught error:', {
-                    status: response.status,
-                    statusText: response.statusText
-                });
-                res.status(response.status).json({ error: response.statusText || 'Unknown error' });
+                console.error('Error in postDatabaseService fetching data:', response.statusText);
+                return res.status(response.status).json({ error: response.statusText });
             });
     }
-    
 
     static callDatabaseService(res, method, path, body) {
         fetch(process.env["DB-SERVICE"] + path, {
