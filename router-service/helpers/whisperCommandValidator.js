@@ -1,4 +1,6 @@
 const { VALID_COMMANDS, ERROR_MESSAGES } = require('../lang/en');
+const { convertWordsToNumbers } = require('../helpers/convertWordsToNumbers');
+const { processNegativeValues } = require('../helpers/processNegativeValues');
 
 function validateCommand(transcription) {
     const sanitizedTranscription = transcription.toLowerCase().trim().replace(/[.,!?]/g, "");
@@ -11,25 +13,32 @@ function validateCommand(transcription) {
         return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
     }
 
+    const processedArgs = convertWordsToNumbers(args);
+    console.log("convertWordsToNumbers - Processed args:", processedArgs);
+
+    const convertedArgs = processNegativeValues(processedArgs);
+    console.log("processNegativeValues - Converted args:", convertedArgs);
+
+
     const result = { isValid: true, command: VALID_COMMANDS[command], params: {} };
 
     switch (command) {
         case "forward":     
         case "backward":
             console.log("FORWARD OR BACKWARD")
-            if (args.length === 0) {
+            if (convertedArgs.length === 0) {
                 result.params = { speed: 1, angle: 0 };
             } 
-            else if (args.length === 1) {
-                const speed = Number(args[0]);
+            else if (convertedArgs.length === 1) {
+                const speed = Number(convertedArgs[0]);
                 if (!isValidSpeed(speed)) {
                     console.error("validateCommand - Invalid speed:", speed);
                     return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
                 }
                 result.params = { speed, angle: 0 };
             } 
-            else if (args.length === 2) {
-                const [speed, angle] = args.map(Number);
+            else if (convertedArgs.length === 2) {
+                const [speed, angle] = convertedArgs.map(Number);
                 if (!isValidSpeed(speed) || !isValidAngle(angle)) {
                     return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
                 }
@@ -41,10 +50,10 @@ function validateCommand(transcription) {
             break;
 
         case "rotate":
-            if (args.length !== 2) {
+            if (convertedArgs.length !== 2) {
                 return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
             }
-            const [rotateSpeed, direction] = [Number(args[0]), args[1]];
+            const [rotateSpeed, direction] = [Number(convertedArgs[0]), convertedArgs[1]];
             if (!isValidSpeed(rotateSpeed) || !isValidDirection(direction)) {
                 return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
             }
@@ -52,7 +61,7 @@ function validateCommand(transcription) {
             break;
 
         case "stop":
-            if (args.length !== 0) {
+            if (convertedArgs.length !== 0) {
                 return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
             }
             break;
