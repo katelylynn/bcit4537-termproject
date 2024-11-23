@@ -30,7 +30,6 @@ module.exports = class CarController {
             const req = https.request(options, (res) => {
                 let data = '';
 
-                // Collect data from the response
                 res.on('data', (chunk) => {
                     data += chunk;
                 });
@@ -44,23 +43,24 @@ module.exports = class CarController {
                         } else {
                             reject({
                                 success: false,
-                                error: `Car service returned status ${res.statusCode}: ${parsedData.error || 'Unknown error'}`,
+                                error: ERROR_MESSAGES.carServiceError
+                                    .replace('{statusCode}', res.statusCode)
+                                    .replace('{error}', parsedData.error || ERROR_MESSAGES.carServiceUnknownError),
                             });
                         }
                     } catch (err) {
                         reject({
                             success: false,
-                            error: `Failed to parse response from car service: ${err.message}`,
+                             error: ERROR_MESSAGES.carServiceParseError.replace('{error}', err.message),
                         });
                     }
                 });
             });
 
             req.on('error', (err) => {
-                reject({ success: false, error: `Request error: ${err.message}` });
+                reject({ success: false, error: ERROR_MESSAGES.carServiceRequestError.replace('{error}', err.message) });
             });
 
-            // Write the request body and end the request
             req.write(JSON.stringify(params));
             req.end();
         });
