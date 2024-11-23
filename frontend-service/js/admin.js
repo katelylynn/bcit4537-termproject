@@ -21,15 +21,23 @@ class Admin {
     }
 
     updateStats(data, stat_id) {
-        let jsonString = '';
-        data.forEach(obj => {
-            for (const [key, value] of Object.entries(obj)) {
-                jsonString += `${key}: ${value}\n`;
-            }
-            jsonString += '\n';
+        if (!data || data.length === 0) return;
+
+        const tableBody = document.getElementById(stat_id).querySelector('tbody');
+        tableBody.innerHTML = '';
+    
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            
+            Object.entries(item).forEach(([key, value]) => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+            });
+    
+            tableBody.appendChild(row);
         });
-        document.getElementById(stat_id).textContent = jsonString
-    }
+    }    
 
     updateEndpointStats() {
         Api.getRouterService(ENDPOINTS_PATH, res => {

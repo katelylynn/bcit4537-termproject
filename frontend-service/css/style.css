@@ -1,3 +1,20 @@
 div {
     padding: 5pt 0;
 }
+
+table {
+    width: auto;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
