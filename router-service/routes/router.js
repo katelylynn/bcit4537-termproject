@@ -113,27 +113,31 @@ module.exports = class Router {
     }
     
     async incrementUserCallCount(userId, endpointId) {
+        console.log('incrementUserCallCount called with:', { userId, endpointId });
+    
         return new Promise((resolve, reject) => {
             DBController.incrementUserCallCount(userId, endpointId, {
                 status: (code) => ({
                     json: (data) => {
+                        console.log('DBController response:', { code, data });
                         if (code === 200) {
                             resolve(data);
                         } else {
-                            reject(
-                                new Error(
-                                    ERROR_MESSAGES.incrementCallCountFailed.replace(
-                                        "{error}",
-                                        data.error || "Unknown error"
-                                    )
+                            const error = new Error(
+                                ERROR_MESSAGES.incrementCallCountFailed.replace(
+                                    "{error}",
+                                    data.error || "Unknown error"
                                 )
                             );
+                            console.error('incrementUserCallCount error:', error.message); // Log error message
+                            reject(error);
                         }
                     }
                 })
             });
         });
     }
+    
 
     async requestCountMiddleware(req, res, next) {
         const endpointId = await this.getEndpointId(req.method, req.url);
