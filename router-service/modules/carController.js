@@ -31,4 +31,12 @@ module.exports = class CarController {
         }
     }
 
+    static justin1(req, res) {
+
+    }
+
+    static justin2(req, res) {
+
+    }
+
 }
