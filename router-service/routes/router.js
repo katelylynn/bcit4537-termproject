@@ -6,8 +6,7 @@ const AuthController = require('../modules/authController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 const CarController = require('../modules/carController');
-const { ERROR_MESSAGES } = require('../lang/en');
-
+const path = require('path');
 
 module.exports = class Router {
 
@@ -169,6 +168,15 @@ module.exports = class Router {
         this.router.post('/post-user', DBController.postUser.bind(DBController));
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
+        // SERVER-SIDE RENDERING
+        this.router.get('/landing', (req, res) => {
+            res.sendFile(path.join(__dirname, '../html', 'landing.html'));
+        });
+        
+        this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
+            res.sendFile(path.join(__dirname, '../html', 'admin.html'));
+        });
+
     }
 
 };
