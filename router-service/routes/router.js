@@ -171,8 +171,13 @@ module.exports = class Router {
         // SERVER-SIDE RENDERING
         this.router.get('/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
-            console.log("Serving landing page from:", filePath); // Debugging the resolved path
-            res.sendFile(filePath);
+            try {
+                console.log("Serving landing.html from:", filePath);
+                res.sendFile(filePath);
+            } catch (err) {
+                console.error("Error serving landing.html:", err.message);
+                res.status(500).send("Internal Server Error");
+            }
         });
         
         this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
