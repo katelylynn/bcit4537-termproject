@@ -28,9 +28,9 @@ export class Auth {
             if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText
 
             if (response.role && response.role === 'admin') {
-                window.location.href = '/admin.html';
+                window.location.href = 'https://hjdjprojectvillage.online/router-service/api/v1/admin';
             } else {
-                window.location.href = '/landing.html';
+                window.location.href = 'https://hjdjprojectvillage.online/router-service/api/v1/landing';
             }
         })
     }
@@ -42,7 +42,7 @@ export class Auth {
     static logout() {
         const body = {};
         Api.postRouterService(LOGOUT_PATH, body, response => {
-            window.location.href = '/login.html';
+            window.location.href = 'https://bcit4537-termproject-frontend.up.railway.app/login.html';
         });
     }
 
