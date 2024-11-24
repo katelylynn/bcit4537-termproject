@@ -7,6 +7,7 @@ const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 const CarController = require('../modules/carController');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = class Router {
 
@@ -169,17 +170,18 @@ module.exports = class Router {
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
         // SERVER-SIDE RENDERING
-        this.router.get('/landing', (req, res) => {
+        this.router.get('/api/v1/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
-            try {
-                console.log("Serving landing.html from:", filePath);
-                res.sendFile(filePath);
-            } catch (err) {
-                console.error("Error serving landing.html:", err.message);
-                res.status(500).send("Internal Server Error");
-            }
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading landing.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the landing page" });
+                }
+                res.setHeader('Content-Type', 'text/html'); // Set the correct content type
+                res.status(200).send(data); 
+            });
         });
-        
+
         this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
             res.sendFile(path.join(__dirname, '../html', 'admin.html'));
         });
