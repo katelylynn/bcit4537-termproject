@@ -170,7 +170,9 @@ module.exports = class Router {
         
         // SERVER-SIDE RENDERING
         this.router.get('/landing', (req, res) => {
-            res.sendFile(path.join(__dirname, '../html', 'landing.html'));
+            const filePath = path.join(__dirname, '../html', 'landing.html');
+            console.log("Serving landing page from:", filePath); // Debugging the resolved path
+            res.sendFile(filePath);
         });
         
         this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
