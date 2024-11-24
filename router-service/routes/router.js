@@ -6,7 +6,8 @@ const AuthController = require('../modules/authController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 const CarController = require('../modules/carController');
-
+const path = require('path');
+const fs = require('fs');
 
 module.exports = class Router {
 
@@ -28,7 +29,7 @@ module.exports = class Router {
 
         this.router.use(cookieParser())
 
-        this.nojwt = ['/register', '/login', '/logout']
+        this.nojwt = ['/register', '/login', '/logout', '/landing']
         this.router.use((req, res, next) => {
             // skip jwt verification for server-to-server calls
             // should swap to calls from recognized origin list eventually
@@ -168,6 +169,23 @@ module.exports = class Router {
         this.router.post('/post-user', DBController.postUser.bind(DBController));
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
+        // SERVER-SIDE RENDERING
+        this.router.get('/landing', (req, res) => {
+            const filePath = path.join(__dirname, '../html', 'landing.html');
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading landing.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the landing page" });
+                }
+                res.setHeader('Content-Type', 'text/html'); // Set the correct content type
+                res.status(200).send(data); 
+            });
+        });
+
+        this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
+            res.sendFile(path.join(__dirname, '../html', 'admin.html'));
+        });
+
     }
 
 };
