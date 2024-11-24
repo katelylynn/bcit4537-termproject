@@ -21,9 +21,11 @@ module.exports = class DatabaseConnection {
         })
     
         this.con.on("error", (err) => {
-            if (err.code === "PROTOCOL_CONNECTION_LOST") {
+            if (err.code === '4031') {
                 console.log("Connection lost. Reconnecting...")
-                this.connect()
+                setTimeout(() => {
+                    this.connect();
+                }, 5000);
             } else {
                 console.error("Database error:", err)
             }
