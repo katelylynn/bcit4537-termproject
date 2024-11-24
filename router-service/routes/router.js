@@ -170,7 +170,7 @@ module.exports = class Router {
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
         // SERVER-SIDE RENDERING
-        this.router.get('/api/v1/landing', (req, res) => {
+        this.router.get('/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
