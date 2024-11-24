@@ -6,6 +6,7 @@ const AuthController = require('../modules/authController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 const CarController = require('../modules/carController');
+const { ERROR_MESSAGES } = require('../lang/en');
 const path = require('path');
 const fs = require('fs');
 
