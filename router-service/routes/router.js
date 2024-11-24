@@ -114,6 +114,8 @@ module.exports = class Router {
     }
     
     async incrementUserCallCount(userId, endpointId) {
+        console.log("Endpoint ID: ", endpointId)
+
         return new Promise((resolve, reject) => {
             DBController.incrementUserCallCount(userId, endpointId, {
                 status: (code) => ({
