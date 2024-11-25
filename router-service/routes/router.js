@@ -195,7 +195,7 @@ module.exports = class Router {
                 console.log("Full file content:", data);
 
                 // Extract content using regex
-                const content = data.match(/<div id="landing-content">([\s\S]*?)<\/div>/i)?.[1];
+                const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
                 console.log("Extracted content:", content);
                 if (content) {
                     res.setHeader('Content-Type', 'text/html');
