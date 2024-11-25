@@ -30,7 +30,7 @@ module.exports = class Router {
 
         this.router.use(cookieParser())
 
-        this.nojwt = ['/register', '/login', '/logout']
+        this.nojwt = ['/register', '/login', '/logout', '/landing']
         this.router.use((req, res, next) => {
             // skip jwt verification for server-to-server calls
             // should swap to calls from recognized origin list eventually
