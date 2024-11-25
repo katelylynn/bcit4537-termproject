@@ -207,7 +207,21 @@ module.exports = class Router {
         });
 
         this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
-            res.sendFile(path.join(__dirname, '../html', 'admin.html'));
+            const filePath = path.join(__dirname, '../html', 'admin.html');
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading admin.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the admin page" });
+                }
+        
+                const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+                if (content) {
+                    res.setHeader('Content-Type', 'text/html');
+                    res.status(200).send(content.trim());
+                } else {
+                    res.status(500).json({ error: "Failed to extract admin content" });
+                }
+            });
         });
 
     }

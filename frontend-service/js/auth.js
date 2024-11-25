@@ -27,10 +27,15 @@ export class Auth {
             if (response.message) document.getElementById(RESULT_ELEMENT_ID).textContent = response.message;
             if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText;
 
-            if (response.message) {
-                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message;
+            if (response.role) {
+                const url = response.role === "admin"
+                    ? '/frontend-service/admin.html'
+                    : "/frontend-service/landing.html";
+                    // ? '/admin.html'
+                    // : "/landing.html";
 
-                window.location.href = "/frontend-service/landing.html";
+                window.location.href = url;
+
             } else {
                 console.error("Login failed:", response.message || "Unknown error");
                 document.getElementById(RESULT_ELEMENT_ID).textContent = response.message || "Login failed. Please try again.";

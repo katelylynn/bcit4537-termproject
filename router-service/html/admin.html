@@ -1,88 +1,78 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Voice Activated Land-Bound Drone - Admin Panel</title>
-    <link rel="stylesheet" href="https://bcit4537-termproject-frontend.up.railway.app/css/style.css">
-  </head>
 
-  <body>
-    <main>
-      <h2>Admin Dashboard</h2>
-      <p>Monitor API usage statistics and user consumption details.</p>
+<main id="admin-content">
+  <h2>Admin Dashboard</h2>
+  <p>Monitor API usage statistics and user consumption details.</p>
 
+  <div>
+    <h3>API Consumption Stats</h3>
+    <table id="apiConsumptionStats">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Total Requests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3">No calls have been made.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h3>User API Consumption Stats</h3>
+    <table id="userConsumptionStats">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Total Requests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3">No calls have been made.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h3>Send Voice Commands</h3>
+    <button id="recordButton">Record 5s Command</button>
+    <p id="status"></p>
+    <a id="downloadLink"></a>
+  </div>
+
+  <div>
+    <h3>Profile</h3>
+    <div>
       <div>
-        <h3>API Consumption Stats</h3>
-        <table id="apiConsumptionStats">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Path</th>
-              <th>Total Requests</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="3">No calls have been made.</td>
-            </tr>
-          </tbody>
-        </table>
+        <label>Update Email:</label>
       </div>
-
       <div>
-        <h3>User API Consumption Stats</h3>
-        <table id="userConsumptionStats">
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Total Requests</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="3">No calls have been made.</td>
-            </tr>
-          </tbody>
-        </table>
+        <input id="emailInput" placeholder="Enter email here" />
+        <button id="emailButton">Submit</button>
       </div>
-
       <div>
-        <h3>Send Voice Commands</h3>
-        <button id="recordButton">Record 5s Command</button>
-        <p id="status"></p>
-        <a id="downloadLink"></a>
+        <p id="result"></p>
       </div>
-
       <div>
-        <h3>Profile</h3>
-        <div>
-          <div>
-            <label>Update Email:</label>
-          </div>
-          <div>
-            <input id="emailInput" placeholder="Enter email here" />
-            <button id="emailButton">Submit</button>
-          </div>
-          <div>
-            <p id="result"></p>
-          </div>
-          <div>
-            <label>===== DANGER =====</label>
-          </div>
-          <div>
-            <button id="deleteUserButton">Delete Account</button>
-          </div>
-          <div>
-            <label>===================</label>
-          </div>
-        </div>
+        <label>===== DANGER =====</label>
       </div>
-
       <div>
-        <h3>Session</h3>
-        <button id="logoutButton">Logout</button>
+        <button id="deleteUserButton">Delete Account</button>
       </div>
-    </main>
-    <script type="module" src="js/admin.js"></script>
-  </body>
-</html>
+      <div>
+        <label>===================</label>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>Session</h3>
+    <button id="logoutButton">Logout</button>
+  </div>
+</main>
+
