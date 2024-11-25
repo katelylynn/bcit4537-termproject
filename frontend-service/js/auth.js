@@ -17,23 +17,28 @@ export class Auth {
             if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText
         })
     }
-
     static login(email, password) {
         const body = {
-            'email': email,
-            'password': password
-        }
-        Api.postRouterService(LOGIN_PATH, body, response => {
-            if (response.message) document.getElementById(RESULT_ELEMENT_ID).textContent = response.message
-            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText
+            email: email,
+            password: password,
+        };
+    
+        Api.postRouterService(LOGIN_PATH, body, (response) => {
+            if (response.message) document.getElementById(RESULT_ELEMENT_ID).textContent = response.message;
+            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText;
 
-            if (response.role && response.role === 'admin') {
-                window.location.href = 'https://hjdjprojectvillage.online/router-service/api/v1/admin';
+            if (response.message) {
+                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message;
+
+                window.location.href = "/frontend-service/landing.html";
             } else {
-                window.location.href = 'https://hjdjprojectvillage.online/router-service/api/v1/landing';
+                console.error("Login failed:", response.message || "Unknown error");
+                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message || "Login failed. Please try again.";
             }
-        })
+
+        });
     }
+    
 
     static forgotPassword(email) {
         console.log("todo implement forgot password")
