@@ -173,6 +173,17 @@ module.exports = class Router {
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
         // SERVER-SIDE RENDERING
+        // this.router.get('/landing', (req, res) => {
+        //     const filePath = path.join(__dirname, '../html', 'landing.html');
+        //     fs.readFile(filePath, 'utf8', (err, data) => {
+        //         if (err) {
+        //             console.error("Error reading landing.html:", err.message);
+        //             return res.status(500).json({ error: "Failed to load the landing page" });
+        //         }
+        //         res.setHeader('Content-Type', 'text/html');
+        //         res.status(200).send(data); 
+        //     });
+        // });
         this.router.get('/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
             fs.readFile(filePath, 'utf8', (err, data) => {
@@ -180,8 +191,14 @@ module.exports = class Router {
                     console.error("Error reading landing.html:", err.message);
                     return res.status(500).json({ error: "Failed to load the landing page" });
                 }
-                res.setHeader('Content-Type', 'text/html'); // Set the correct content type
-                res.status(200).send(data); 
+                // Extract the inner content of the #landing-content div
+                const content = data.match(/<div id="landing-content">([\s\S]*?)<\/div>/i)?.[1];
+                if (content) {
+                    res.setHeader('Content-Type', 'text/html');
+                    res.status(200).send(content.trim()); // Trim unnecessary whitespace
+                } else {
+                    res.status(500).json({ error: "Failed to extract main content" });
+                }
             });
         });
 
