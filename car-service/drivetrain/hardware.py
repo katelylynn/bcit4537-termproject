@@ -37,6 +37,7 @@ class TwoWheelDrive:
                        right_calibration=1.0):
         """
         Drivetrain with motor control pins and optional calibration.
+
         :param left_motor_pins: forward and backward pins for left
         :param right_motor_pins: forward and backward pins for right
         :param left_calibration: Calibration factor for left motor
@@ -47,63 +48,96 @@ class TwoWheelDrive:
         self.left_calibration = left_calibration
         self.right_calibration = right_calibration
 
-    def forward(self, speed=1.0, angle=0.0):
+    def _validate_and_scale_speed(self, speed: int) -> float:
+        """Validate and scale the speed from 1-10 to 0.1-1.0."""
+        if not isinstance(speed, int) or not (0 <= speed <= 10):
+            raise ValueError("Speed must be an integer between 0 and 10.")
+        return speed / 10
+
+    def _validate_and_scale_angle(self, angle: int) -> float:
+        """Validate and scale the angle from -10 to 10 to -1.0 to 1.0."""
+        if not isinstance(angle, int) or not (-10 <= angle <= 10):
+            raise ValueError("Angle must be an integer between -10 and 10.")
+        return max(-1.0, min(angle / 10, 1.0))  # Clamp the scaled value
+
+    def forward(self, speed=1, angle=0):
+        speed = self._validate_and_scale_speed(speed)
+        angle = self._validate_and_scale_angle(angle)
+
+        if speed == 0:  # Stop motors if speed is 0
+            self.stop()
+            return
+        
         left_speed = max(0, min(speed * (1 - angle) * self.left_calibration, 1)) * 100
         right_speed = max(0, min(speed * (1 + angle) * self.right_calibration, 1)) * 100
-        
+
         left_pwm.ChangeDutyCycle(left_speed)
         right_pwm.ChangeDutyCycle(right_speed)
-        
+
         GPIO.output(self.left_motor_pins[0], GPIO.HIGH)
         GPIO.output(self.left_motor_pins[1], GPIO.LOW)
         GPIO.output(self.right_motor_pins[0], GPIO.HIGH)
         GPIO.output(self.right_motor_pins[1], GPIO.LOW)
 
-        print(f"TWO_WHEEL_DRIVE: Moving forward with speed {left_speed}, {right_speed}, turning angle {angle}")
+        print(f"TWO_WHEEL_DRIVE: Moving forward with speed {speed * 10}, turning angle {angle * 10}")
 
-    def backward(self, speed=1.0, angle=0.0):
+    def backward(self, speed=1, angle=0):
+        speed = self._validate_and_scale_speed(speed)
+        angle = self._validate_and_scale_angle(angle)
+
+        if speed == 0:  # Stop motors if speed is 0
+            self.stop()
+            return
+        
         left_speed = max(0, min(speed * (1 - angle) * self.left_calibration, 1)) * 100
         right_speed = max(0, min(speed * (1 + angle) * self.right_calibration, 1)) * 100
-        
+
         left_pwm.ChangeDutyCycle(left_speed)
         right_pwm.ChangeDutyCycle(right_speed)
-        
+
         GPIO.output(self.left_motor_pins[0], GPIO.LOW)
         GPIO.output(self.left_motor_pins[1], GPIO.HIGH)
         GPIO.output(self.right_motor_pins[0], GPIO.LOW)
         GPIO.output(self.right_motor_pins[1], GPIO.HIGH)
 
-        print(f"TWO_WHEEL_DRIVE: Moving backward with speed {speed}, turning angle {angle}")
+        print(f"TWO_WHEEL_DRIVE: Moving backward with speed {speed * 10}, turning angle {angle * 10}")
 
-    def stationary_rotate(self, direction="left", speed=1.0):
-        speed = max(0, min(speed, 1)) * 100
-        
+    def stationary_rotate(self, direction="left", speed=1):
+        speed = self._validate_and_scale_speed(speed)
+
+        if speed == 0:  # Stop motors if speed is 0
+            self.stop()
+            return
+
         if direction == "left":
-            left_pwm.ChangeDutyCycle(speed * self.left_calibration)
-            right_pwm.ChangeDutyCycle(speed * self.right_calibration)
-            
+            left_pwm.ChangeDutyCycle(speed * 100 * self.left_calibration)
+            right_pwm.ChangeDutyCycle(speed * 100 * self.right_calibration)
+
             GPIO.output(self.left_motor_pins[0], GPIO.LOW)
             GPIO.output(self.left_motor_pins[1], GPIO.HIGH)
             GPIO.output(self.right_motor_pins[0], GPIO.HIGH)
             GPIO.output(self.right_motor_pins[1], GPIO.LOW)
 
-            print(f"TWO_WHEEL_DRIVE: Rotating left in place with speed {speed}")
+            print(f"TWO_WHEEL_DRIVE: Rotating left in place with speed {speed * 10}")
 
         elif direction == "right":
-            left_pwm.ChangeDutyCycle(speed * self.left_calibration)
-            right_pwm.ChangeDutyCycle(speed * self.right_calibration)
-            
+            left_pwm.ChangeDutyCycle(speed * 100 * self.left_calibration)
+            right_pwm.ChangeDutyCycle(speed * 100 * self.right_calibration)
+
             GPIO.output(self.left_motor_pins[0], GPIO.HIGH)
             GPIO.output(self.left_motor_pins[1], GPIO.LOW)
             GPIO.output(self.right_motor_pins[0], GPIO.LOW)
             GPIO.output(self.right_motor_pins[1], GPIO.HIGH)
 
-            print(f"TWO_WHEEL_DRIVE: Rotating right in place with speed {speed}")
+            print(f"TWO_WHEEL_DRIVE: Rotating right in place with speed {speed * 10}")
+
+        else:
+            raise ValueError("Direction must be 'left' or 'right'")
 
     def stop(self):
         left_pwm.ChangeDutyCycle(0)
         right_pwm.ChangeDutyCycle(0)
-        
+
         GPIO.output(self.left_motor_pins[0], GPIO.LOW)
         GPIO.output(self.left_motor_pins[1], GPIO.LOW)
         GPIO.output(self.right_motor_pins[0], GPIO.LOW)
@@ -111,32 +145,22 @@ class TwoWheelDrive:
 
         print("TWO_WHEEL_DRIVE: Motors stopped")
 
-    def set_calibration(self, left_calibration, right_calibration):
-        """
-        Sets the calibration factor for each side's motor
-        
-        :param left_calibration: Calibration factor for left motor
-        :param right_calibration: Calibration factor for right motor
-        """
-        self.left_calibration = left_calibration
-        self.right_calibration = right_calibration
-
-        print("TWO_WHEEL_DRIVE: left and right calibration set to {left_calibration}, {right_calibration}")
-
 
 if __name__ == "__main__":
-    twd = TwoWheelDrive(left_motor_pins=(5, 6), right_motor_pins=(17, 27), left_calibration=1.0, right_calibration=0.9)
-
     try:
-        twd.forward(speed=0.8, angle=0.2)  # Forward with slight right turn
+        twd = TwoWheelDrive(left_motor_pins=(5, 6), right_motor_pins=(17, 27), left_calibration=1.0, right_calibration=0.9)
+        twd.forward(speed=8, angle=2)
         sleep(1)
-        twd.backward(speed=0.8, angle=-0.3)  # Backward with slight left turn
+        twd.backward(speed=8, angle=-3)
         sleep(1)
-        twd.stationary_rotate(direction="left", speed=0.7)  # Stationary rotate left
+        twd.stationary_rotate(direction="left", speed=7)
         sleep(1)
-        twd.stationary_rotate(direction="right", speed=0.7)  # Stationary rotate right
+        twd.stationary_rotate(direction="right", speed=7)
         sleep(1)
         twd.stop()
     except KeyboardInterrupt:
+        print("Exiting... Cleaning up GPIO.")
         GPIO.cleanup()
-        print("GPIO Clean up")
+    except Exception as e:
+        print(f"Error: {e}")
+        GPIO.cleanup()

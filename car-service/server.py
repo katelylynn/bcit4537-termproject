@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from drivetrain.simulation import TwoWheelDrive
 
 app = Flask(__name__)
-twd = TwoWheelDrive(left_motor_pins=(17, 18), right_motor_pins=(22, 23))
+twd = TwoWheelDrive(left_motor_pins=(5, 6), right_motor_pins=(17, 27), left_calibration=1.0, right_calibration=1.0)
 
 @app.route("/forward", methods=["POST"])
 def forward():

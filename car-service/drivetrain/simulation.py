@@ -49,8 +49,17 @@ class TwoWheelDrive:
         angle = self._validate_and_scale_angle(angle)
         left_speed = speed * (1 - angle) * self.left_calibration
         right_speed = speed * (1 + angle) * self.right_calibration
-        self.left_motor.forward(max(0, min(left_speed, 1)))
-        self.right_motor.forward(max(0, min(right_speed, 1)))
+
+        left_final = max(0, min(left_speed, 1))
+        right_final = max(0, min(right_speed, 1))
+
+        print("==========")
+        print(f"left_final: {left_final}")
+        print(f"right_final: {right_final}")
+
+        self.left_motor.forward(left_final)
+        self.right_motor.forward(right_final)
+
         print(f"TWO_WHEEL_DRIVE: Moving forward with speed {speed * 10}, turning angle {angle * 10}")
 
     def backward(self, speed=1, angle=0):
@@ -112,7 +121,10 @@ if __name__ == "__main__":
 
     twd = TwoWheelDrive(left_motor_pins=(17, 18), right_motor_pins=(22, 23), left_calibration=1.0, right_calibration=0.9)
 
-    twd.forward(speed=8, angle=2)  # Forward with slight right turn
+    twd.forward(speed=10, angle=-10)  # Forward with slight right turn
+    twd.forward(speed=10, angle=0)  # Forward with slight right turn
+    twd.forward(speed=10, angle=10)  # Forward with slight right turn
+    twd.forward(speed=10, angle=2)  # Forward with slight right turn
     sleep(1)
     twd.backward(speed=8, angle=-3)  # Backward with slight left turn
     sleep(1)
