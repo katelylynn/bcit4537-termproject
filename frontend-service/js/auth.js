@@ -30,8 +30,6 @@ export class Auth {
 
             if (response.role) {
                 const url = response.role === "admin"
-                    // ? '/frontend-service/admin.html'
-                    // : "/frontend-service/landing.html";
                     ? '/admin.html'
                     : "/landing.html";
 

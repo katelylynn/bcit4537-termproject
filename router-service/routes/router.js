@@ -184,12 +184,7 @@ module.exports = class Router {
                     console.error("Error reading landing.html:", err.message);
                     return res.status(500).json({ error: ERROR_MESSAGES.landingPageFail });
                 }
-                        // Log the full file content
-                console.log("Full file content:", data);
-
-                // Extract content using regex
                 const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
-                console.log("Extracted content:", content);
                 if (content) {
                     res.setHeader('Content-Type', 'text/html');
                     res.status(200).send(content.trim());

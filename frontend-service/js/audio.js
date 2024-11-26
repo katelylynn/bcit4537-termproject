@@ -15,15 +15,11 @@ export class AudioManager {
         this.audioChunks = [];
         this.mediaRecorder = null;
         this.cb = cb;
-
-        // console.log("AudioManager initialized");
-
         this.setupRecording();
     }
 
     setupRecording() {
         this.recordButton.addEventListener("click", async () => {
-            // console.log("Record button clicked");
 
             try {
                 this.status.innerText = userMessages.recording;
@@ -31,21 +27,17 @@ export class AudioManager {
                 this.mediaRecorder = new MediaRecorder(stream);
 
                 this.mediaRecorder.ondataavailable = (event) => {
-                    // console.log("Data available from media recorder");
                     this.audioChunks.push(event.data);
                 };
 
                 this.mediaRecorder.onstop = async () => {
-                    // console.log("Recording stopped");
                     this.status.innerText = userMessages.recordingStopped;
                     const audioBlob = new Blob(this.audioChunks, { type: "audio/webm" });
                     const arrayBuffer = await audioBlob.arrayBuffer();
                     
-                    // Create an AudioContext with 16kHz sample rate
                     const audioContext = new AudioContext({ sampleRate: 16000 });
                     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-                    // Encode to WAV format
                     const wavData = await WavEncoder.encode({
                         sampleRate: 16000,
                         channelData: [audioBuffer.getChannelData(0)]
@@ -53,7 +45,6 @@ export class AudioManager {
 
                     const wavBlob = new Blob([wavData], { type: "audio/wav" });
                     
-                    // Send audio file to server
                     await this.sendAudioFile(wavBlob);
 
                     const audioUrl = URL.createObjectURL(wavBlob);
@@ -71,14 +62,12 @@ export class AudioManager {
                     }
                 }, 3000);
             } catch (error) {
-                // console.error("Error starting recording:", error);
                 this.status.innerText = userMessages.micError;
             }
         });
     }
 
     async sendAudioFile(wavBlob) {
-        // console.log("Sending audio file to server...");
         const formData = new FormData();
         formData.append('file', wavBlob, 'audio.wav');
 
@@ -93,15 +82,8 @@ export class AudioManager {
                 const result = await response.json();
 
                 if (result.errorType === "invalid_command") {
-                console.warn("Invalid command:", result.transcription);
-                console.log(`Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`);
-                // this.status.innerText = `Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`;
                 this.status.innerText = userMessages.invalidCommand(result.transcription, userMessages.validCommands);
-                setTimeout(() => {
-                    // console.log("Status element after update:", this.status.innerText);
-                }, 1000);
             } else {
-                // console.warn("Bad request:", result.error);
                 this.status.innerText = userMessages.badRequestError(result.error);
             }
             return;
@@ -112,13 +94,10 @@ export class AudioManager {
             }
 
             const result = await response.json();
-            console.log("Transcription from server:", result.transcription);
             this.status.innerText = userMessages.transcription(result.transcription);
         } catch (error) {
             this.status.innerText = userMessages.audioSendError;
-            console.error("Error:", error);
         }
-
         this.cb();
     }
 }
