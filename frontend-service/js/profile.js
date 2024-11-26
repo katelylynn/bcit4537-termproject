@@ -17,7 +17,19 @@ export class Profile {
         document.getElementById(DELETE_USER_BUTTON_ID).onclick = this.deleteUser
     }
 
+    static validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
     updateEmail() {
+        const email = document.getElementById(EMAIL_INPUT_ID).value
+
+        if (!Login.validateEmail(email)) {
+            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            return
+        }
+
         Api.callRouterService(
             EMAIL_UPDATE_PATH, 
             PATCH, 
