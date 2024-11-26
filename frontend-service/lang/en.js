@@ -52,4 +52,7 @@ export const userMessages = {
     sessionHeader: "Session",
     apiUsage: "API Calls Made: ",
     passwordLabel: "Password:",
+    carDonutButton: "DO A DONUT",
+    carStopButton: "STOP",
+    carControlHeader: "Car Control",
 }
