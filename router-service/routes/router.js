@@ -181,7 +181,6 @@ module.exports = class Router {
             const filePath = path.join(__dirname, '../html', 'landing.html');
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
-                    console.error("Error reading landing.html:", err.message);
                     return res.status(500).json({ error: ERROR_MESSAGES.landingPageFail });
                 }
                 const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
