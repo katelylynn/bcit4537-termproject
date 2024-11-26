@@ -6,29 +6,42 @@ const EMAIL_INPUT_ID = "emailInput"
 const LOGIN_BUTTON_ID = "loginButton"
 const PASSWORD_INPUT_ID = "passwordInput"
 const REGISTER_BUTTON_ID = "registerButton"
+const RESULT_ELEMENT_ID = "result"
 
 class Login {
-    // Proxy for Auth class that specifically handles input and button events.
-
     constructor() {
         document.getElementById(REGISTER_BUTTON_ID).onclick = this.register
         document.getElementById(LOGIN_BUTTON_ID).onclick = this.login
     }
 
+    static validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
     register() {
-        Auth.register(
-            document.getElementById(EMAIL_INPUT_ID).value,
-            document.getElementById(PASSWORD_INPUT_ID).value
-        )
+        const email = document.getElementById(EMAIL_INPUT_ID).value
+        const password = document.getElementById(PASSWORD_INPUT_ID).value
+
+        if (!Login.validateEmail(email)) {
+            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            return
+        }
+
+        Auth.register(email, password)
     }
 
     login() {
-        Auth.login(
-            document.getElementById(EMAIL_INPUT_ID).value,
-            document.getElementById(PASSWORD_INPUT_ID).value
-        )
-    }
+        const email = document.getElementById(EMAIL_INPUT_ID).value
+        const password = document.getElementById(PASSWORD_INPUT_ID).value
 
+        if (!Login.validateEmail(email)) {
+            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            return
+        }
+
+        Auth.login(email, password)
+    }
 }
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
