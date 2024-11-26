@@ -55,4 +55,5 @@ export const userMessages = {
     carDonutButton: "DO A DONUT",
     carStopButton: "STOP",
     carControlHeader: "Car Control",
+    invalidEmailFormat: "Invalid email format. Please try again."
 }

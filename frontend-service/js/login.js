@@ -1,5 +1,6 @@
 import { Auth } from "./auth.js"
 import { Initializer } from "./initializer.js"
+import { userMessages } from "../lang/en.js"
 
 const DOM_CONTENT_LOADED = "DOMContentLoaded"
 const EMAIL_INPUT_ID = "emailInput"
@@ -24,7 +25,7 @@ class Login {
         const password = document.getElementById(PASSWORD_INPUT_ID).value
 
         if (!Login.validateEmail(email)) {
-            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            document.getElementById(RESULT_ELEMENT_ID).textContent = userMessages.invalidEmailFormat
             return
         }
 
@@ -36,7 +37,7 @@ class Login {
         const password = document.getElementById(PASSWORD_INPUT_ID).value
 
         if (!Login.validateEmail(email)) {
-            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            document.getElementById(RESULT_ELEMENT_ID).textContent = userMessages.invalidEmailFormat
             return
         }
 

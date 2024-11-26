@@ -1,5 +1,6 @@
 import { Api } from "./api.js"
 import { Auth } from "./auth.js"
+import { userMessages } from "../lang/en.js"
 
 const DELETE = "delete"
 const DELETE_USER_BUTTON_ID = "deleteUserButton"
@@ -26,7 +27,7 @@ export class Profile {
         const email = document.getElementById(EMAIL_INPUT_ID).value
 
         if (!Profile.validateEmail(email)) {
-            document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
+            document.getElementById(RESULT_ELEMENT_ID).textContent = userMessages.invalidEmailFormat
             return
         }
 
