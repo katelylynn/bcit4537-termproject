@@ -1,3 +1,9 @@
+/*This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ */
+
 const express = require('express');
 const AuthManager = require('./authManager.js');
 

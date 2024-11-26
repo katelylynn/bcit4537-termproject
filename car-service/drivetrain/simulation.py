@@ -1,3 +1,9 @@
+"""This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ """
+
 from gpiozero import Motor, Device
 from gpiozero.pins.mock import MockFactory, MockPWMPin
 from typing import Tuple
