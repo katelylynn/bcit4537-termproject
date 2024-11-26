@@ -30,7 +30,7 @@ module.exports = class Router {
 
         this.router.use(cookieParser())
 
-        this.nojwt = ['/register', '/login', '/logout']
+        this.nojwt = ['/register', '/login', '/logout', '/docs']
         this.router.use((req, res, next) => {
             // skip jwt verification for server-to-server calls
             // should swap to calls from recognized origin list eventually
@@ -221,6 +221,19 @@ module.exports = class Router {
                 } else {
                     res.status(500).json({ error: "Failed to extract admin content" });
                 }
+            });
+        });
+
+        // DOCS
+        this.router.get('/docs', (req, res) => {
+            const filePath = path.join(__dirname, '../html', 'docs.html'); 
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading landing.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the landing page" });
+                }
+                res.setHeader('Content-Type', 'text/html');
+                res.status(200).send(data); 
             });
         });
 

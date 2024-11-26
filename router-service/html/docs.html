@@ -1,0 +1,804 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Land Bound Drone API</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>Land Bound Drone API</h1>
+    <div class="app-desc">API for sending control commands to a remote-controlled car and tracking user API consumption. This API allows developers to issue movement commands to the car and monitor usage statistics to ensure efficient operation.</div>
+    <div class="app-desc">Contact Info: <a href="contact@group7.com">contact@group7.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/router-service/api/v1</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+    <ol>
+      <li>APIKey KeyParamName:access_token KeyInQuery:true KeyInHeader:false</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Admin">Admin</a></h4>
+  <ul>
+  <li><a href="#apiConsumptionEndpointsGet"><code><span class="http-method">get</span> /api-consumption-endpoints</code></a></li>
+  <li><a href="#apiConsumptionUsersGet"><code><span class="http-method">get</span> /api-consumption-users</code></a></li>
+  </ul>
+  <h4><a href="#HtmlPage">HtmlPage</a></h4>
+  <ul>
+  <li><a href="#adminGet"><code><span class="http-method">get</span> /admin</code></a></li>
+  <li><a href="#landingGet"><code><span class="http-method">get</span> /landing</code></a></li>
+  </ul>
+  <h4><a href="#User">User</a></h4>
+  <ul>
+  <li><a href="#apiConsumptionUserGet"><code><span class="http-method">get</span> /api-consumption-user</code></a></li>
+  <li><a href="#justin1Post"><code><span class="http-method">post</span> /justin1</code></a></li>
+  <li><a href="#justin2Post"><code><span class="http-method">post</span> /justin2</code></a></li>
+  <li><a href="#transcribeAndControlPost"><code><span class="http-method">post</span> /transcribe-and-control</code></a></li>
+  <li><a href="#userDelete"><code><span class="http-method">delete</span> /user</code></a></li>
+  <li><a href="#userEmailPatch"><code><span class="http-method">patch</span> /user/email</code></a></li>
+  </ul>
+
+  <h1><a name="Admin">Admin</a></h1>
+  <div class="method"><a name="apiConsumptionEndpointsGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api-consumption-endpoints</code></pre></div>
+    <div class="method-summary">Get API consumption stats by endpoints (<span class="nickname">apiConsumptionEndpointsGet</span>)</div>
+    <div class="method-notes">Fetches a list of API endpoints and their total number of requests from the database.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200">inline_response_200</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "path" : "/api-consumption-endpoints",
+    "method" : "get",
+    "total_requests" : 21
+  }, {
+    "path" : "/api-consumption-endpoints",
+    "method" : "get",
+    "total_requests" : 21
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    List of API endpoints and their stats
+        <a href="#inline_response_200">inline_response_200</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="apiConsumptionUsersGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api-consumption-users</code></pre></div>
+    <div class="method-summary">Get API consumption stats by users (<span class="nickname">apiConsumptionUsersGet</span>)</div>
+    <div class="method-notes">Retrieves the total number of requests made by each user from the database.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_1">inline_response_200_1</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "user_email" : "admin@admin.com",
+    "total_requests" : "46"
+  }, {
+    "user_email" : "admin@admin.com",
+    "total_requests" : "46"
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    List of users and their total requests
+        <a href="#inline_response_200_1">inline_response_200_1</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="HtmlPage">HtmlPage</a></h1>
+  <div class="method"><a name="adminGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /admin</code></pre></div>
+    <div class="method-summary">Admin page (<span class="nickname">adminGet</span>)</div>
+    <div class="method-notes">Returns the admin-specific HTML page showing stats and configuration options.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>"<html><body><h1>Admin Page</h1><p>Admin-specific stats</p></body></html>"</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>text/html</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    HTML content for the admin page
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="landingGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /landing</code></pre></div>
+    <div class="method-summary">Landing page (<span class="nickname">landingGet</span>)</div>
+    <div class="method-notes">Returns the user-specific HTML page showing user stats and personal data.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      String
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>"<html><body><h1>User Page</h1><p>User-specific stats</p></body></html>"</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>text/html</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    HTML content for the landing page
+        <a href="#String">String</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="User">User</a></h1>
+  <div class="method"><a name="apiConsumptionUserGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /api-consumption-user</code></pre></div>
+    <div class="method-summary">Get API consumption stats for a single user (<span class="nickname">apiConsumptionUserGet</span>)</div>
+    <div class="method-notes">Retrieves the total number of requests made by the authenticated user from the database. Includes a warning message if the user has exceeded the free API call limit (20 requests).</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_2">inline_response_200_2</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "data" : [ {
+    "total_requests" : "73",
+    "warning" : "Warning! You have passed the 20 free API calls limit."
+  }, {
+    "total_requests" : "73",
+    "warning" : "Warning! You have passed the 20 free API calls limit."
+  } ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Total requests made by the authenticated user
+        <a href="#inline_response_200_2">inline_response_200_2</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="justin1Post"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /justin1</code></pre></div>
+    <div class="method-summary">Example Justin endpoint 1 (<span class="nickname">justin1Post</span>)</div>
+    <div class="method-notes">Example endpoint for creating or managing custom data in the database.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#justin1_body">justin1_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Request processed successfully
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="justin2Post"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /justin2</code></pre></div>
+    <div class="method-summary">Example Justin endpoint 2 (<span class="nickname">justin2Post</span>)</div>
+    <div class="method-notes">Another example endpoint for creating or managing custom data in the database.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#justin2_body">justin2_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Request processed successfully
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="transcribeAndControlPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /transcribe-and-control</code></pre></div>
+    <div class="method-summary">Send a voice command to the car (<span class="nickname">transcribeAndControlPost</span>)</div>
+    <div class="method-notes">Transcribes an audio file uploaded by the user into a command for the RC car. Returns the transcription, the result of the car command, and any additional response data.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>multipart/form-data</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Form parameters</h3>
+    <div class="field-items">
+      <div class="param">file (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Form Parameter</span> &mdash;  format: binary</div>    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_3">inline_response_200_3</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "transcription" : "move forward",
+  "carResponse" : {
+    "status" : "completed",
+    "speed" : "10",
+    "direction" : "forward"
+  },
+  "carCommand" : "success"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Transcription and car command executed successfully
+        <a href="#inline_response_200_3">inline_response_200_3</a>
+    <h4 class="field-label">400</h4>
+    Invalid request or transcription failed validation
+        <a href="#inline_response_400">inline_response_400</a>
+    <h4 class="field-label">500</h4>
+    Internal server error during request processing
+        <a href="#inline_response_500">inline_response_500</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="userDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /user</code></pre></div>
+    <div class="method-summary">Delete user (<span class="nickname">userDelete</span>)</div>
+    <div class="method-notes">Deletes the account of the authenticated user from the database. The user's ID (<code>req.user.user.id</code>) is derived from the <code>access_token</code> cookie used for authentication.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    User deleted successfully
+        <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized. The user is not authenticated or the cookie is invalid.
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="userEmailPatch"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="patch"><code class="huge"><span class="http-method">patch</span> /user/email</code></pre></div>
+    <div class="method-summary">Update user email (<span class="nickname">userEmailPatch</span>)</div>
+    <div class="method-notes">Updates the email address of the authenticated user in the database. The <code>userId</code> is derived internally from the <code>access_token</code> cookie (<code>req.user.user.id</code>).</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#user_email_body">user_email_body</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+            <div class="param-desc"><span class="param-type">example: <code>{
+  &quot;email&quot; : &quot;user@example.com&quot;
+}</code></span></div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Email updated successfully
+        <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized. The user is not authenticated or the cookie is invalid.
+        <a href="#"></a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
+    <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+    <li><a href="#inline_response_200_1_data"><code>inline_response_200_1_data</code></a></li>
+    <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
+    <li><a href="#inline_response_200_2_data"><code>inline_response_200_2_data</code></a></li>
+    <li><a href="#inline_response_200_3"><code>inline_response_200_3</code></a></li>
+    <li><a href="#inline_response_200_data"><code>inline_response_200_data</code></a></li>
+    <li><a href="#inline_response_400"><code>inline_response_400</code></a></li>
+    <li><a href="#inline_response_500"><code>inline_response_500</code></a></li>
+    <li><a href="#justin1_body"><code>justin1_body</code></a></li>
+    <li><a href="#justin2_body"><code>justin2_body</code></a></li>
+    <li><a href="#transcribeandcontrol_body"><code>transcribeandcontrol_body</code></a></li>
+    <li><a href="#user_email_body"><code>user_email_body</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_data">array[inline_response_200_data]</a></span> Array containing endpoint stats. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_1"><code>inline_response_200_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_1_data">array[inline_response_200_1_data]</a></span> Array containing user stats. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_1_data"><code>inline_response_200_1_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">user_email (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The email of the user. </div>
+          <div class="param-desc"><span class="param-type">example: admin@admin.com</span></div>
+<div class="param">total_requests (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The total number of requests made by the user. </div>
+          <div class="param-desc"><span class="param-type">example: 46</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_2"><code>inline_response_200_2</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#inline_response_200_2_data">array[inline_response_200_2_data]</a></span> Array containing the consumption stats for the authenticated user. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_2_data"><code>inline_response_200_2_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">total_requests (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The total number of API requests made by the user. </div>
+          <div class="param-desc"><span class="param-type">example: 73</span></div>
+<div class="param">warning (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A warning message if the user has exceeded 20 API requests. </div>
+          <div class="param-desc"><span class="param-type">example: Warning! You have passed the 20 free API calls limit.</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_3"><code>inline_response_200_3</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">transcription (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The transcribed text from the audio file. </div>
+          <div class="param-desc"><span class="param-type">example: move forward</span></div>
+<div class="param">carCommand (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Status of the car command execution. </div>
+          <div class="param-desc"><span class="param-type">example: success</span></div>
+<div class="param">carResponse (optional)</div><div class="param-desc"><span class="param-type"><a href="#object">Object</a></span> The response data from the RC car after executing the command. </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;status&quot;:&quot;completed&quot;,&quot;speed&quot;:&quot;10&quot;,&quot;direction&quot;:&quot;forward&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_data"><code>inline_response_200_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">method (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The HTTP method for the endpoint. </div>
+          <div class="param-desc"><span class="param-type">example: get</span></div>
+<div class="param">path (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The API path for the endpoint. </div>
+          <div class="param-desc"><span class="param-type">example: /api-consumption-endpoints</span></div>
+<div class="param">total_requests (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The total number of requests made to the endpoint. </div>
+          <div class="param-desc"><span class="param-type">example: 21</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_400"><code>inline_response_400</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">errorType (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The type of error encountered (e.g., &amp;quot;no_audio_file&amp;quot; or &amp;quot;invalid_command&amp;quot;). </div>
+          <div class="param-desc"><span class="param-type">example: invalid_command</span></div>
+<div class="param">error (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> A detailed error message. </div>
+          <div class="param-desc"><span class="param-type">example: Invalid command transcribed from the audio file.</span></div>
+<div class="param">transcription (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The raw transcription result from the audio file (if available). </div>
+          <div class="param-desc"><span class="param-type">example: turn left three times</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_500"><code>inline_response_500</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">error (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Error message describing the failure. </div>
+          <div class="param-desc"><span class="param-type">example: Failed to process the request. Please try again later.</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="justin1_body"><code>justin1_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Sample data</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="justin2_body"><code>justin2_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Another sample data</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="transcribeandcontrol_body"><code>transcribeandcontrol_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">file (optional)</div><div class="param-desc"><span class="param-type"><a href="#binary">byte[]</a></span> The audio file to be transcribed. format: binary</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="user_email_body"><code>user_email_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">email (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The new email address to set for the authenticated user. </div>
+          <div class="param-desc"><span class="param-type">example: example@example.com</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
