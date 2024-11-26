@@ -41,7 +41,7 @@ export const userMessages = {
     noCallsApiConsumption: "No calls have been made.",
     noCallsUserConsumption: "No calls have been made.",
     sendCommandsHeader: "Send Voice Commands",
-    recordButton: "Record 5s Command",
+    recordButton: "Record 3s Command",
     profileHeader: "Profile",
     updateEmailLabel: "Update Email:",
     emailButton: "Submit",
