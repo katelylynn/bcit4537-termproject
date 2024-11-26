@@ -69,7 +69,7 @@ export class AudioManager {
                     if (this.mediaRecorder.state !== "inactive") {
                         this.mediaRecorder.stop();
                     }
-                }, 5000);
+                }, 2000);
             } catch (error) {
                 // console.error("Error starting recording:", error);
                 this.status.innerText = userMessages.micError;
