@@ -93,27 +93,3 @@ module.exports = class UserCredentialsManager {
     }
 
 }
-
-
-// callDatabaseService(res, path) {
-//     fetch(process.env["ROUTER-SERVICE"] + path)
-//         .then(response => {
-//             if (!response.ok) {
-//                 return res.status(response.status).json({ error: `Error: ${response.statusText}` });
-//             }
-
-//             return response.json();
-//         })
-//         .then(data => {
-//             res.status(200).json(data);
-//         })
-//         .catch(error => {
-//             console.error('Error fetching data:', error.message);
-//             return res.status(500).json({ error: 'Internal server error' });
-//         });
-// }
-
-// getApiConsumptionSingleUser(req, res) {
-//     const uid = req.params.uid;
-//     this.callDatabaseService(res, `/requests/single-user/${uid}`);
-// }
