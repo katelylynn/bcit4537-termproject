@@ -2,7 +2,6 @@ const https = require('https');
 const FormData = require('form-data');
 const { validateCommand } = require('../helpers/whisperCommandValidator');
 const CarController = require('../modules/carController');
-const DBController = require('./dbController');
 const { ERROR_MESSAGES } = require('../lang/en');
 
 module.exports = class WhisperController {
