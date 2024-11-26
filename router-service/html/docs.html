@@ -208,8 +208,8 @@
   <h4><a href="#User">User</a></h4>
   <ul>
   <li><a href="#apiConsumptionUserGet"><code><span class="http-method">get</span> /api-consumption-user</code></a></li>
-  <li><a href="#justin1Post"><code><span class="http-method">post</span> /justin1</code></a></li>
-  <li><a href="#justin2Post"><code><span class="http-method">post</span> /justin2</code></a></li>
+  <li><a href="#donutPost"><code><span class="http-method">post</span> /donut</code></a></li>
+  <li><a href="#stopPost"><code><span class="http-method">post</span> /stop</code></a></li>
   <li><a href="#transcribeAndControlPost"><code><span class="http-method">post</span> /transcribe-and-control</code></a></li>
   <li><a href="#userDelete"><code><span class="http-method">delete</span> /user</code></a></li>
   <li><a href="#userEmailPatch"><code><span class="http-method">patch</span> /user/email</code></a></li>
@@ -449,12 +449,12 @@
         <a href="#inline_response_200_2">inline_response_200_2</a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="justin1Post"></a>
+  <div class="method"><a name="donutPost"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /justin1</code></pre></div>
-    <div class="method-summary">Example Justin endpoint 1 (<span class="nickname">justin1Post</span>)</div>
-    <div class="method-notes">Example endpoint for creating or managing custom data in the database.</div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /donut</code></pre></div>
+    <div class="method-summary">Makes the car do donuts (<span class="nickname">donutPost</span>)</div>
+    <div class="method-notes">Emulates doing donuts like a real car, by going full speed with max rightward steer</div>
 
 
     <h3 class="field-label">Consumes</h3>
@@ -465,7 +465,7 @@
 
     <h3 class="field-label">Request body</h3>
     <div class="field-items">
-      <div class="param">body <a href="#justin1_body">justin1_body</a> (required)</div>
+      <div class="param">body <a href="#donut_body">donut_body</a> (required)</div>
       
             <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
@@ -476,23 +476,47 @@
     </div>  <!-- field-items -->
 
 
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_4">inline_response_200_4</a>
+      
+    </div>
 
     <!--Todo: process Response Object and its headers, schema, examples -->
 
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "angle" : 10,
+  "speed" : 10,
+  "status" : "move forward"
+}</code></pre>
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    Request processed successfully
-        <a href="#"></a>
+    Car donut command initiated successfully
+        <a href="#inline_response_200_4">inline_response_200_4</a>
+    <h4 class="field-label">401</h4>
+    Insufficient permissions error
+        <a href="#inline_response_401">inline_response_401</a>
+    <h4 class="field-label">500</h4>
+    Internal server error during request processing
+        <a href="#inline_response_500">inline_response_500</a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="justin2Post"></a>
+  <div class="method"><a name="stopPost"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /justin2</code></pre></div>
-    <div class="method-summary">Example Justin endpoint 2 (<span class="nickname">justin2Post</span>)</div>
-    <div class="method-notes">Another example endpoint for creating or managing custom data in the database.</div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /stop</code></pre></div>
+    <div class="method-summary">Makes the car stop the motors (<span class="nickname">stopPost</span>)</div>
+    <div class="method-notes">Stops the motors of the car</div>
 
 
     <h3 class="field-label">Consumes</h3>
@@ -503,7 +527,7 @@
 
     <h3 class="field-label">Request body</h3>
     <div class="field-items">
-      <div class="param">body <a href="#justin2_body">justin2_body</a> (required)</div>
+      <div class="param">body <a href="#object">object</a> (required)</div>
       
             <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
                 </div>  <!-- field-items -->
@@ -514,15 +538,37 @@
     </div>  <!-- field-items -->
 
 
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#inline_response_200_5">inline_response_200_5</a>
+      
+    </div>
 
     <!--Todo: process Response Object and its headers, schema, examples -->
 
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "status" : "stopped"
+}</code></pre>
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    Request processed successfully
-        <a href="#"></a>
+    Car stopped successfully
+        <a href="#inline_response_200_5">inline_response_200_5</a>
+    <h4 class="field-label">401</h4>
+    Insufficient permissions error
+        <a href="#inline_response_401">inline_response_401</a>
+    <h4 class="field-label">500</h4>
+    Internal server error during request processing
+        <a href="#inline_response_500">inline_response_500</a>
   </div> <!-- method -->
   <hr/>
   <div class="method"><a name="transcribeAndControlPost"></a>
@@ -669,21 +715,31 @@
 
   <h3>Table of Contents</h3>
   <ol>
+    <li><a href="#donut_body"><code>donut_body</code></a></li>
     <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
     <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
     <li><a href="#inline_response_200_1_data"><code>inline_response_200_1_data</code></a></li>
     <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
     <li><a href="#inline_response_200_2_data"><code>inline_response_200_2_data</code></a></li>
     <li><a href="#inline_response_200_3"><code>inline_response_200_3</code></a></li>
+    <li><a href="#inline_response_200_4"><code>inline_response_200_4</code></a></li>
+    <li><a href="#inline_response_200_5"><code>inline_response_200_5</code></a></li>
     <li><a href="#inline_response_200_data"><code>inline_response_200_data</code></a></li>
     <li><a href="#inline_response_400"><code>inline_response_400</code></a></li>
+    <li><a href="#inline_response_401"><code>inline_response_401</code></a></li>
     <li><a href="#inline_response_500"><code>inline_response_500</code></a></li>
-    <li><a href="#justin1_body"><code>justin1_body</code></a></li>
-    <li><a href="#justin2_body"><code>justin2_body</code></a></li>
     <li><a href="#transcribeandcontrol_body"><code>transcribeandcontrol_body</code></a></li>
     <li><a href="#user_email_body"><code>user_email_body</code></a></li>
   </ol>
 
+  <div class="model">
+    <h3><a name="donut_body"><code>donut_body</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">speed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The speed at which to perform the donuts </div>
+          <div class="param-desc"><span class="param-type">example: 10</span></div>
+    </div>  <!-- field-items -->
+  </div>
   <div class="model">
     <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
     
@@ -738,6 +794,26 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="inline_response_200_4"><code>inline_response_200_4</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The low-level action that the car is performing </div>
+          <div class="param-desc"><span class="param-type">example: move forward</span></div>
+<div class="param">speed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The speed at which the donuts are being performed </div>
+          <div class="param-desc"><span class="param-type">example: 10</span></div>
+<div class="param">angle (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> The angle at which the donuts are being performed </div>
+          <div class="param-desc"><span class="param-type">example: 10</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_5"><code>inline_response_200_5</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">status (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> The low-level action that the car is performing </div>
+          <div class="param-desc"><span class="param-type">example: stopped</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="inline_response_200_data"><code>inline_response_200_data</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
@@ -762,27 +838,19 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="inline_response_401"><code>inline_response_401</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">error (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Error message describing the failure. </div>
+          <div class="param-desc"><span class="param-type">example: Unauthorized. The user is not authenticated or the cookie is invalid.</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="inline_response_500"><code>inline_response_500</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
       <div class="param">error (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Error message describing the failure. </div>
           <div class="param-desc"><span class="param-type">example: Failed to process the request. Please try again later.</span></div>
-    </div>  <!-- field-items -->
-  </div>
-  <div class="model">
-    <h3><a name="justin1_body"><code>justin1_body</code></a> <a class="up" href="#__Models">Up</a></h3>
-    
-    <div class="field-items">
-      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: Sample data</span></div>
-    </div>  <!-- field-items -->
-  </div>
-  <div class="model">
-    <h3><a name="justin2_body"><code>justin2_body</code></a> <a class="up" href="#__Models">Up</a></h3>
-    
-    <div class="field-items">
-      <div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: Another sample data</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
