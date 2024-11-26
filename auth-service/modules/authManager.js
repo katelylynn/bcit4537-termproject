@@ -1,3 +1,9 @@
+/*This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ */
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 const UserCredentialsManager = require('./userCredentialsManager');
@@ -33,29 +39,29 @@ module.exports = class AuthManager {
         console.log(`reached after uid and user fetch with uid ${uid}, and user ${user}`)
 
         if (!uid || !user) {
-            return res.status(401).json({ message: 'User not found' });
+            return res.status(401).json({ message: userMessages.userNotFound });
         }
 
         const correctPassword = bcrypt.compareSync(password, user.password)
 
         if (!correctPassword) {
-            return res.status(401).json({ message: 'Invalid Password' });
+            return res.status(401).json({ message: userMessages.invalidPassword });
         }
 
         console.log(`reached after password confirmation`)
 
         const token = jwt.sign({ user }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
         res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None'});
-        res.status(200).json({ message: 'Logged in successfully', 'role': user.role });
+        res.status(200).json({ message: userMessages.loginSuccess, 'role': user.role });
     }
 
     handleLogout(req, res) {
         res.cookie('token', '', { httpOnly: true, secure: true, sameSite: 'None', maxAge: 0});
-        res.status(200).json({ message: 'Logged out successfully' });
+        res.status(200).json({ message: userMessages.logoutSuccess  });
     }
 
     handleNotFound(req, res) {
-        res.status(404).json({ message: '404 Not Found' });
+        res.status(404).json({ message: userMessages.notFound });
     }
 
 }
