@@ -101,3 +101,11 @@ exports.REQUEST_MSGS = {
     REQUEST_COUNT_INCREMENTED: "Request count incremented.",
     REQUEST_NOT_FOUND: "Request not found.",
 }
+
+exports.LOGS = {
+    DB_CONNECTED: "Connected to DB",
+    DB_CONNECTION_LOST: "Connection lost. Reconnecting...",
+    DB_ERROR: "Database error:",
+    SERVER_START: "Starting API server...",
+    SERVER_STARTED: "API server started!",
+}

@@ -1,3 +1,5 @@
+const { ERROR_MESSAGES } = require('../lang/en');
+
 module.exports = class AuthController {
 
     static callAuthService(res, path) {
@@ -45,7 +47,7 @@ module.exports = class AuthController {
             })
             .catch(error => {
                 console.error('Error fetching data:', error.message || error.statusText);
-                res.status(error.status || 500).json({ error: error.message || 'Internal Server Error' });
+                res.status(error.status || 500).json({ error: error.message || ERROR_MESSAGES.internalServerError });
             });
     }
 

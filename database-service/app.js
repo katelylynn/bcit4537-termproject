@@ -1,4 +1,5 @@
 require("dotenv").config()
+const { LOGS } = require("./lang/en.js")
 
 const DatabaseConnection = require("./modules/db")
 const DatabaseAPI = require("./modules/api")
@@ -11,6 +12,6 @@ const db = new DatabaseConnection(
 )
 
 const api = new DatabaseAPI(db)
-console.log("Starting API Server...")
-api.start(8080)
-console.log("API Server Started!")
+console.log(LOGS.SERVER_START)
+api.start(port=8080)
+console.log(LOGS.SERVER_STARTED)

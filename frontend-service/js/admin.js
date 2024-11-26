@@ -4,9 +4,9 @@ import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
 import { Profile } from "./profile.js"
 import { CarControl } from "./carControl.js"
+import { userMessages } from "../lang/en.js"
 
 const API_CONSUMPTION_STATS_ID = "apiConsumptionStats"
-const DOM_CONTENT_LOADED = "DOMContentLoaded"
 const DOWNLOAD_LINK_ID = "downloadLink"
 const ENDPOINTS_PATH = "/api-consumption-endpoints"
 const LOGOUT_BUTTON_ID = "logoutButton"
@@ -55,14 +55,14 @@ class Admin {
 
 }
 
-document.addEventListener(DOM_CONTENT_LOADED, () => {
+document.addEventListener("DOMContentLoaded", () => {
     fetch(ADMIN_CONTENT_URL, {
         method: "GET",
         credentials: "include",
     })
         .then((response) => {
             if (!response.ok) {
-                throw new Error(`Failed to load admin content: ${response.statusText}`);
+                throw new Error(`${userMessages.adminContentFail}: ${response.statusText}`);
             }
             return response.text();
         })
@@ -86,8 +86,8 @@ document.addEventListener(DOM_CONTENT_LOADED, () => {
             document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout;
         })
         .catch((error) => {
-            console.error("Error loading admin page content:", error.message);
+            console.error(userMessages.adminContentFail, error.message);
             const adminContent = document.getElementById("admin-content");
-            adminContent.textContent = "Error loading admin content. Please try again later.";
+            adminContent.textContent = userMessages.adminContentFail;
         });
 })

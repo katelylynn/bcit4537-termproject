@@ -7,7 +7,6 @@ import { CarControl } from "./carControl.js"
 import { userMessages } from "../lang/en.js"
 
 const API_USAGE_WARNING_ID = "apiUsageWarning"
-const DOM_CONTENT_LOADED = "DOMContentLoaded"
 const DOWNLOAD_LINK_ID = "downloadLink"
 const LOGOUT_BUTTON_ID = "logoutButton"
 const RECORD_BUTTON_ID = "recordButton"
@@ -34,14 +33,14 @@ class Landing {
 
 }
 
-document.addEventListener(DOM_CONTENT_LOADED, () => {
+document.addEventListener("DOMContentLoaded", () => {
     fetch(LANDING_CONTENT_URL, {
         method: "GET",
         credentials: "include",
     })
         .then((response) => {
             if (!response.ok) {
-                throw new Error(`Failed to load content: ${response.statusText}`);
+                throw new Error(`${userMessages.contentLoadError} ${response.statusText}`);
             }
             return response.text();
         })
@@ -66,8 +65,8 @@ document.addEventListener(DOM_CONTENT_LOADED, () => {
             document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout;
         })
         .catch((error) => {
-            console.error("Error loading landing page content:", error.message);
+            console.error(userMessages.contentLoadError, error.message);
             document.getElementById("main-content").textContent =
-                "<p>Error loading content. Please try again later.</p>";
+                `<p>${userMessages.contentLoadError}</p>`;
         });
 })

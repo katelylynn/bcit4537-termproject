@@ -18,3 +18,191 @@ th, td {
 th {
     background-color: #f4f4f4;
 }
+
+#status {
+    white-space: pre-wrap;
+}
+
+/* General Reset */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.6;
+    background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmRsaXpjNnE4bDRnbXQwN3lmazF6Z3J6dGF1YTRzdmMwMXU2cG9xbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H67pMosNMPkGCLNe9g/giphy.gif') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* Global Styling */
+main {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h2, h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 2em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.8em;
+    color: #444;
+}
+
+h3 {
+    font-size: 1.5em;
+    color: #555;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+}
+
+/* Form Styling */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #98cc74;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #85b963;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Status and Notifications */
+#status, #result {
+    font-style: italic;
+    color: #555;
+    padding: 10px;
+    background: #f4f4f4;
+    border-left: 4px solid #98cc74;
+    margin-top: 10px;
+}
+
+/* Landing Page Enhancements */
+#landingHeader, #adminHeader {
+    text-align: center;
+    font-size: 1.5em;
+    color: #444;
+}
+
+#apiUsageWarning {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+#recordButton {
+    background-color: #337ab7;
+    color: white;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+#recordButton:hover {
+    background-color: #285e8e;
+}
+
+#downloadLink {
+    display: inline-block;
+    margin-top: 10px;
+    color: #337ab7;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#downloadLink:hover {
+    text-decoration: underline;
+}
+
+/* Admin Page Specifics */
+#admin-content {
+    text-align: center;
+}
+
+#admin-content table {
+    text-align: center;
+}
+
+#gif-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#gif-container iframe {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        padding: 10px;
+    }
+
+    table, th, td {
+        font-size: 0.9em;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.2em;
+    }
+
+    button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+}

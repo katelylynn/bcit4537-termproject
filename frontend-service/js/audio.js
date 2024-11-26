@@ -69,7 +69,7 @@ export class AudioManager {
                     if (this.mediaRecorder.state !== "inactive") {
                         this.mediaRecorder.stop();
                     }
-                }, 5000);
+                }, 3000);
             } catch (error) {
                 // console.error("Error starting recording:", error);
                 this.status.innerText = userMessages.micError;
@@ -93,10 +93,10 @@ export class AudioManager {
                 const result = await response.json();
 
                 if (result.errorType === "invalid_command") {
-                // console.warn("Invalid command:", result.transcription);
-                // console.log("Updating status with invalid command message");
+                console.warn("Invalid command:", result.transcription);
+                console.log(`Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`);
                 // this.status.innerText = `Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`;
-                this.status.innerText = userMessages.invalidCommand(result.transcription, VALID_COMMANDS);
+                this.status.innerText = userMessages.invalidCommand(result.transcription, userMessages.validCommands);
                 setTimeout(() => {
                     // console.log("Status element after update:", this.status.innerText);
                 }, 1000);
@@ -108,15 +108,15 @@ export class AudioManager {
             }
 
             if (!response.ok) {
-                throw new Error(`Server error: ${response.statusText}`);
+                throw new Error(`${userMessages.serverError} ${response.statusText}`);
             }
 
             const result = await response.json();
-            // console.log("Transcription from server:", result.transcription);
+            console.log("Transcription from server:", result.transcription);
             this.status.innerText = userMessages.transcription(result.transcription);
         } catch (error) {
             this.status.innerText = userMessages.audioSendError;
-            // console.error("Error:", error);
+            console.error("Error:", error);
         }
 
         this.cb();
