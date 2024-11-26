@@ -40,13 +40,13 @@ Database service:
 - [X] Create user table if not already created
 - [X] Respond with correct status codes
 - [X] Extract db query strings into const variables
-- [ ] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day (Kate)
+- [/] FIX: DB connection automatically closes if you leave the hosted app deployed for like a day (Kate)
 - [X] Limit user's privilege (Kate, on db side)
 
 ## Milestone II
 
 General
-- [ ] Connect to database service, keep client up (Kate)
+- [/] Connect to database service, keep client up (Kate)
 - [X] Connect the car service to the model service (Harrison)
     - [X] Car router logic and controller (Harrison)
 
@@ -61,7 +61,7 @@ General
 Authentication: 
 - [X] Users of your app need to register by entering their information such as first name and email address at the client app  ( the authentication is a service happening at the server side ) 
 - [X] Each user receives 20 API calls for free, after that the server tells the client app that this user maxed his/her free API calls and the client displays an appropriate  warning to user but continues providing services 
-    - [ ] Move to server side (Justin / Kate)
+    - [X] Move to server side (Justin / Kate)
 - [X] The authentication has to be token based, httpOnly cookie or jwt etc. you cannot use any third party APIs for authentication
 - [/] follow standard practices 
 
@@ -140,7 +140,7 @@ e.g. Do not put users info and their API usage stat in the same DB table. Those 
     - [ ] If a number is expected to input, your app has to return an error if something else gets entered 
     - [ ] Never trust input at the server side either. You need to do a sanity check ( input validation) at the end point of APIs as well
 
-- [ ] 10- Attribution to chatGPT or any resources at the comment section of learning hub and and also in your source code (Harrison, Justin)
+- [ ] 10- Attribution to chatGPT or any resources at the comment section of learning hub and and also in your source code (Harrison, Justin, Kate)
 - [ ] 11- Every member has to be 100% familiar with the entire project code and details and be able to answer questions otherwise there will be deductions
 
 ### Coding style

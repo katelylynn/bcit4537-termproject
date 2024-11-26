@@ -22,6 +22,10 @@ const VALID_COMMANDS = {
     "rotate": "/rotate",
 };
 
+const WARNING_MESSAGES = {
+    consumptionLimit: "Warning! You have passed the 20 free API calls limit.",
+}
+
 const WORD_TO_NUMBER = {
     "zero": 0,
     "one": 1,
@@ -36,4 +40,4 @@ const WORD_TO_NUMBER = {
     "ten": 10
 };
 
-module.exports = { ERROR_MESSAGES, VALID_COMMANDS, WORD_TO_NUMBER };
+module.exports = { ERROR_MESSAGES, VALID_COMMANDS, WARNING_MESSAGES, WORD_TO_NUMBER };

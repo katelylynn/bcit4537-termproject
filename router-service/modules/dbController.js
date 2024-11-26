@@ -1,3 +1,5 @@
+const { WARNING_MESSAGES } = require('../lang/en');
+
 module.exports = class DBController {
 
     static getDatabaseService(res, path) {
@@ -69,11 +71,26 @@ module.exports = class DBController {
     }
 
     static getApiConsumptionSingleUser(req, res) {
-        console.log(`router dbcontroller singleuserapi params: ${JSON.stringify(req.user)}`)
         const uid = req.user.user.id;
-        console.log(`router dbcontroller singleuserapi uid: ${uid}`)
-        this.getDatabaseService(res, `/requests/single-user/${uid}`);
+        fetch(`${process.env["DB-SERVICE"]}/requests/single-user/${uid}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw response;
+                }
+                return response.json();
+            })
+            .then(response => {
+                if (response.data[0].total_requests >= 20) {
+                    response.data[0].warning = WARNING_MESSAGES.consumptionLimit;
+                }
+                res.status(200).json(response);
+            })
+            .catch(response => {
+                console.error('Error in getDatabaseService fetching data:', response.statusText);
+                res.status(500).json({ error: response.statusText });
+            });
     }
+    
 
     static postUser(req, res) {
         const email = req.body.email
