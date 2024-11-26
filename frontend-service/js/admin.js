@@ -3,6 +3,7 @@ import { Auth } from "./auth.js"
 import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
 import { Profile } from "./profile.js"
+import { CarControl } from "./carControl.js"
 
 const API_CONSUMPTION_STATS_ID = "apiConsumptionStats"
 const DOM_CONTENT_LOADED = "DOMContentLoaded"
@@ -77,6 +78,7 @@ document.addEventListener(DOM_CONTENT_LOADED, () => {
 
             Initializer.loadUserMessages();
             new Profile();
+            new CarControl();
             const admin = new Admin();
             admin.updateEndpointStats();
             admin.updateUserStats();

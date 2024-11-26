@@ -3,6 +3,7 @@ import { Auth } from "./auth.js"
 import { AudioManager } from "./audio.js"
 import { Initializer } from "./initializer.js"
 import { Profile } from "./profile.js"
+import { CarControl } from "./carControl.js"
 import { userMessages } from "../lang/en.js"
 
 const API_USAGE_WARNING_ID = "apiUsageWarning"
@@ -57,6 +58,7 @@ document.addEventListener(DOM_CONTENT_LOADED, () => {
 
             Initializer.loadUserMessages();
             new Profile();
+            new CarControl();
 
             const land = new Landing();
             land.updateUserStats();
