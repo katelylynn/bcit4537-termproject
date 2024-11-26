@@ -30,6 +30,8 @@ body {
     color: #333;
     background-color: #f9f9f9;
     line-height: 1.6;
+    background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmRsaXpjNnE4bDRnbXQwN3lmazF6Z3J6dGF1YTRzdmMwMXU2cG9xbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/H67pMosNMPkGCLNe9g/giphy.gif') no-repeat center center fixed;
+    background-size: cover;
 }
 
 /* Global Styling */
