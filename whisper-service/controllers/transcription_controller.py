@@ -1,4 +1,9 @@
 """ Handles transcription-related requests. """
+""" This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ """
 
 from flask import jsonify, make_response
 from modules.transcribe_audio import transcribe_audio

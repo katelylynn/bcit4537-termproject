@@ -1,3 +1,9 @@
+/*This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ */
+
 const express = require('express');
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
@@ -172,18 +178,7 @@ module.exports = class Router {
         this.router.post('/post-user', DBController.postUser.bind(DBController));
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
-        // SERVER-SIDE RENDERING
-        // this.router.get('/landing', (req, res) => {
-        //     const filePath = path.join(__dirname, '../html', 'landing.html');
-        //     fs.readFile(filePath, 'utf8', (err, data) => {
-        //         if (err) {
-        //             console.error("Error reading landing.html:", err.message);
-        //             return res.status(500).json({ error: "Failed to load the landing page" });
-        //         }
-        //         res.setHeader('Content-Type', 'text/html');
-        //         res.status(200).send(data); 
-        //     });
-        // });
+ 
         this.router.get('/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
             fs.readFile(filePath, 'utf8', (err, data) => {
@@ -199,7 +194,7 @@ module.exports = class Router {
                 console.log("Extracted content:", content);
                 if (content) {
                     res.setHeader('Content-Type', 'text/html');
-                    res.status(200).send(content.trim()); // Trim unnecessary whitespace
+                    res.status(200).send(content.trim());
                 } else {
                     res.status(500).json({ error: "Failed to extract main content" });
                 }

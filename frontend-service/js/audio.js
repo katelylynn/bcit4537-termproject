@@ -1,7 +1,11 @@
+/*This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ */
+
 import WavEncoder from "../libs/wav-encoder.js";
 import { userMessages } from "../lang/en.js";
-
-
 
 export class AudioManager {
     constructor(downloadLinkId, recordButtonId, statusId, cb = () => {}) {
