@@ -28,15 +28,12 @@ module.exports = class AuthController {
             body: JSON.stringify(body),
         })
             .then(response => {
-                // Forward status code and body
                 const setCookieHeader = response.headers.get('set-cookie');
                 
-                // Forward `Set-Cookie` header if present
                 if (setCookieHeader) {
                     res.setHeader('set-cookie', setCookieHeader);
                 }
 
-                // Return the response JSON
                 return response.json().then(data => ({
                     status: response.status,
                     data
