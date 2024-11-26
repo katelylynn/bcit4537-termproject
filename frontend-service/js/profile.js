@@ -25,7 +25,7 @@ export class Profile {
     updateEmail() {
         const email = document.getElementById(EMAIL_INPUT_ID).value
 
-        if (!Login.validateEmail(email)) {
+        if (!Profile.validateEmail(email)) {
             document.getElementById(RESULT_ELEMENT_ID).textContent = "Invalid email format. Please try again."
             return
         }
