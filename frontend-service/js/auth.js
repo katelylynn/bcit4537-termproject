@@ -1,3 +1,4 @@
+import { userMessages } from "../lang/en.js"
 import { Api } from "./api.js"
 
 const REGISTER_PATH = "/register"
@@ -38,15 +39,10 @@ export class Auth {
 
             } else {
                 console.error("Login failed:", response.message || "Unknown error");
-                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message || "Login failed. Please try again.";
+                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message || userMessages.loginFailed;
             }
 
         });
-    }
-    
-
-    static forgotPassword(email) {
-        console.log("todo implement forgot password")
     }
 
     static logout() {

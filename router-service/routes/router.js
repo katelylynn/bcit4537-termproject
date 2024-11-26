@@ -80,7 +80,7 @@ module.exports = class Router {
         const token = req.cookies?.token
 
         if (!token) {
-            return res.status(401).json({ message: 'Unauthorized: No token provided' })
+            return res.status(401).json({ message: ERROR_MESSAGES.noTokenProvided })
         }
 
         try {
@@ -89,14 +89,14 @@ module.exports = class Router {
             next()
         } catch (err) {
             console.error('JWT Verification Error:', err.message)
-            return res.status(401).json({ message: 'Unauthorized: Invalid token' })
+            return res.status(401).json({ message: ERROR_MESSAGES.invalidToken })
         }
     }
 
     allowAdminsOnly(req, res, next) {
         const urole = req.user.user.role;
         if (urole == "admin") next();
-        else return res.status(401).json({ message: 'Unauthorized: Not an admin' });
+        else return res.status(401).json({ message: ERROR_MESSAGES.notAnAdmin });
     }
 
     async getEndpointId(method, path) {
@@ -109,7 +109,7 @@ module.exports = class Router {
                         } else {
                             reject(
                                 new Error(
-                                    ERROR_MESSAGES.endpointIdFailed.replace("{error}", data.error || "Unknown error")
+                                    ERROR_MESSAGES.endpointIdFailed.replace("{error}", data.error || ERROR_MESSAGES.unknownError)
                                 )
                             );
                         }
@@ -120,8 +120,6 @@ module.exports = class Router {
     }
     
     async incrementUserCallCount(userId, endpointId) {
-        console.log("Endpoint ID: ", endpointId)
-
         return new Promise((resolve, reject) => {
             DBController.incrementUserCallCount(userId, endpointId, {
                 status: (code) => ({
@@ -133,7 +131,7 @@ module.exports = class Router {
                                 new Error(
                                     ERROR_MESSAGES.incrementCallCountFailed.replace(
                                         "{error}",
-                                        data.error || "Unknown error"
+                                        data.error || ERROR_MESSAGES.unknownError
                                     )
                                 )
                             );
@@ -184,7 +182,7 @@ module.exports = class Router {
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
                     console.error("Error reading landing.html:", err.message);
-                    return res.status(500).json({ error: "Failed to load the landing page" });
+                    return res.status(500).json({ error: ERROR_MESSAGES.landingPageFail });
                 }
                         // Log the full file content
                 console.log("Full file content:", data);
@@ -196,7 +194,7 @@ module.exports = class Router {
                     res.setHeader('Content-Type', 'text/html');
                     res.status(200).send(content.trim());
                 } else {
-                    res.status(500).json({ error: "Failed to extract main content" });
+                    res.status(500).json({ error: ERROR_MESSAGES.extractContentFail });
                 }
             });
         });
@@ -206,7 +204,7 @@ module.exports = class Router {
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
                     console.error("Error reading admin.html:", err.message);
-                    return res.status(500).json({ error: "Failed to load the admin page" });
+                    return res.status(500).json({ error: ERROR_MESSAGES.adminPageFail });
                 }
         
                 const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
@@ -214,7 +212,7 @@ module.exports = class Router {
                     res.setHeader('Content-Type', 'text/html');
                     res.status(200).send(content.trim());
                 } else {
-                    res.status(500).json({ error: "Failed to extract admin content" });
+                    res.status(500).json({ error: ERROR_MESSAGES.extractContentFail });
                 }
             });
         });
@@ -225,7 +223,7 @@ module.exports = class Router {
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
                     console.error("Error reading landing.html:", err.message);
-                    return res.status(500).json({ error: "Failed to load the landing page" });
+                    return res.status(500).json({ error: ERROR_MESSAGES.docPageFail });
                 }
                 res.setHeader('Content-Type', 'text/html');
                 res.status(200).send(data); 

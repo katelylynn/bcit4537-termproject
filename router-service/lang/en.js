@@ -13,6 +13,15 @@ const ERROR_MESSAGES = {
     carServiceUnknownError: "Car service returned status {statusCode}: Unknown error",
     carServiceParseError: "Failed to parse response from car service: {error}",
     carServiceRequestError: "Request error: {error}",
+    internalServerError: "Internal Server Error",
+    noTokenProvided: "Unauthorized: No token provided",
+    invalidToken: "Unauthorized: Invalid token",
+    notAnAdmin: "Unauthorized: Not an admin",
+    unknownError: "Unknown error",
+    landingPageFail: "Failed to load the landing page",
+    extractContentFail: "Failed to extract content",
+    adminPageFail: "Failed to load the admin page",
+    docPageFail: "Failed to load the docs",
 };
 
 const VALID_COMMANDS = {
