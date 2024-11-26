@@ -1,6 +1,7 @@
 import WavEncoder from "../libs/wav-encoder.js";
+import { userMessages } from "../lang/en.js";
 
-const VALID_COMMANDS = ["forward", "backward", "stop", "rotate left", "rotate right"];
+
 
 export class AudioManager {
     constructor(downloadLinkId, recordButtonId, statusId, cb = () => {}) {
@@ -11,28 +12,28 @@ export class AudioManager {
         this.mediaRecorder = null;
         this.cb = cb;
 
-        console.log("AudioManager initialized");
+        // console.log("AudioManager initialized");
 
         this.setupRecording();
     }
 
     setupRecording() {
         this.recordButton.addEventListener("click", async () => {
-            console.log("Record button clicked");
+            // console.log("Record button clicked");
 
             try {
-                this.status.innerText = "Recording...";
+                this.status.innerText = userMessages.recording;
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 this.mediaRecorder = new MediaRecorder(stream);
 
                 this.mediaRecorder.ondataavailable = (event) => {
-                    console.log("Data available from media recorder");
+                    // console.log("Data available from media recorder");
                     this.audioChunks.push(event.data);
                 };
 
                 this.mediaRecorder.onstop = async () => {
-                    console.log("Recording stopped");
-                    this.status.innerText = "Recording stopped. Sending audio...";
+                    // console.log("Recording stopped");
+                    this.status.innerText = userMessages.recordingStopped;
                     const audioBlob = new Blob(this.audioChunks, { type: "audio/webm" });
                     const arrayBuffer = await audioBlob.arrayBuffer();
                     
@@ -54,7 +55,7 @@ export class AudioManager {
                     const audioUrl = URL.createObjectURL(wavBlob);
                     this.downloadLink.href = audioUrl;
                     this.downloadLink.download = 'recorded_audio.wav';
-                    this.downloadLink.textContent = 'Download recorded audio';
+                    this.downloadLink.textContent = userMessages.downloadText;
                 };
 
                 this.mediaRecorder.start();
@@ -66,14 +67,14 @@ export class AudioManager {
                     }
                 }, 5000);
             } catch (error) {
-                console.error("Error starting recording:", error);
-                this.status.innerText = "Error accessing microphone";
+                // console.error("Error starting recording:", error);
+                this.status.innerText = userMessages.micError;
             }
         });
     }
 
     async sendAudioFile(wavBlob) {
-        console.log("Sending audio file to server...");
+        // console.log("Sending audio file to server...");
         const formData = new FormData();
         formData.append('file', wavBlob, 'audio.wav');
 
@@ -88,15 +89,16 @@ export class AudioManager {
                 const result = await response.json();
 
                 if (result.errorType === "invalid_command") {
-                console.warn("Invalid command:", result.transcription);
-                console.log("Updating status with invalid command message");
-                this.status.innerText = `Invalid command: "${result.transcription}". Valid commands are: ${VALID_COMMANDS.join(", ")}.`;
+                // console.warn("Invalid command:", result.transcription);
+                // console.log("Updating status with invalid command message");
+                // this.status.innerText = `Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`;
+                this.status.innerText = userMessages.invalidCommand(result.transcription, VALID_COMMANDS);
                 setTimeout(() => {
-                    console.log("Status element after update:", this.status.innerText);
+                    // console.log("Status element after update:", this.status.innerText);
                 }, 1000);
             } else {
-                console.warn("Bad request:", result.error);
-                this.status.innerText = `Error: ${result.error}`;
+                // console.warn("Bad request:", result.error);
+                this.status.innerText = userMessages.badRequestError(result.error);
             }
             return;
             }
@@ -106,11 +108,11 @@ export class AudioManager {
             }
 
             const result = await response.json();
-            console.log("Transcription from server:", result.transcription);
-            this.status.innerText = `Transcription from server: ${result.transcription}`;
+            // console.log("Transcription from server:", result.transcription);
+            this.status.innerText = userMessages.transcription(result.transcription);
         } catch (error) {
-            this.status.innerText = "Error sending audio.";
-            console.error("Error:", error);
+            this.status.innerText = userMessages.audioSendError;
+            // console.error("Error:", error);
         }
 
         this.cb();

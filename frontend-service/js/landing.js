@@ -13,6 +13,8 @@ const RECORD_BUTTON_ID = "recordButton"
 const STATUS_ID = "status"
 const USAGE_COUNT_ID = "usageCount"
 const USERS_PATH = "/api-consumption-user"
+const LANDING_CONTENT_URL = "https://hjdjprojectvillage.online/router-service/api/v1/landing";
+
 
 class Landing {
 
@@ -32,11 +34,38 @@ class Landing {
 }
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
-    Initializer.loadUserMessages()
-    new Profile()
+    fetch(LANDING_CONTENT_URL, {
+        method: "GET",
+        credentials: "include",
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Failed to load content: ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then((content) => {
+            const mainContent = document.getElementById("main-content");
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, "text/html");
 
-    const land = new Landing()
-    land.updateUserStats()
+            mainContent.textContent = "";
+            Array.from(doc.body.childNodes).forEach((node) => {
+                mainContent.appendChild(node.cloneNode(true));
+            });
 
-    document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout
+            Initializer.loadUserMessages();
+            new Profile();
+
+            const land = new Landing();
+            land.updateUserStats();
+
+            document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout;
+        })
+        .catch((error) => {
+            console.error("Error loading landing page content:", error.message);
+            document.getElementById("main-content").textContent =
+                "<p>Error loading content. Please try again later.</p>";
+        });
 })

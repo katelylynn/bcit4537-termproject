@@ -6,7 +6,9 @@ const AuthController = require('../modules/authController');
 const DBController = require('../modules/dbController');
 const WhisperController = require('../modules/whisperController');
 const CarController = require('../modules/carController');
-
+const { ERROR_MESSAGES } = require('../lang/en');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = class Router {
 
@@ -112,6 +114,8 @@ module.exports = class Router {
     }
     
     async incrementUserCallCount(userId, endpointId) {
+        console.log("Endpoint ID: ", endpointId)
+
         return new Promise((resolve, reject) => {
             DBController.incrementUserCallCount(userId, endpointId, {
                 status: (code) => ({
@@ -168,6 +172,58 @@ module.exports = class Router {
         this.router.post('/post-user', DBController.postUser.bind(DBController));
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
+        // SERVER-SIDE RENDERING
+        // this.router.get('/landing', (req, res) => {
+        //     const filePath = path.join(__dirname, '../html', 'landing.html');
+        //     fs.readFile(filePath, 'utf8', (err, data) => {
+        //         if (err) {
+        //             console.error("Error reading landing.html:", err.message);
+        //             return res.status(500).json({ error: "Failed to load the landing page" });
+        //         }
+        //         res.setHeader('Content-Type', 'text/html');
+        //         res.status(200).send(data); 
+        //     });
+        // });
+        this.router.get('/landing', (req, res) => {
+            const filePath = path.join(__dirname, '../html', 'landing.html');
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading landing.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the landing page" });
+                }
+                        // Log the full file content
+                console.log("Full file content:", data);
+
+                // Extract content using regex
+                const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+                console.log("Extracted content:", content);
+                if (content) {
+                    res.setHeader('Content-Type', 'text/html');
+                    res.status(200).send(content.trim()); // Trim unnecessary whitespace
+                } else {
+                    res.status(500).json({ error: "Failed to extract main content" });
+                }
+            });
+        });
+
+        this.router.get('/admin', this.allowAdminsOnly, (req, res) => {
+            const filePath = path.join(__dirname, '../html', 'admin.html');
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    console.error("Error reading admin.html:", err.message);
+                    return res.status(500).json({ error: "Failed to load the admin page" });
+                }
+        
+                const content = data.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1];
+                if (content) {
+                    res.setHeader('Content-Type', 'text/html');
+                    res.status(200).send(content.trim());
+                } else {
+                    res.status(500).json({ error: "Failed to extract admin content" });
+                }
+            });
+        });
+
     }
 
 };

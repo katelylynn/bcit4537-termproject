@@ -13,6 +13,7 @@ const RECORD_BUTTON_ID = "recordButton"
 const STATUS_ID = "status"
 const USER_CONSUMPTION_STATS_ID = "userConsumptionStats"
 const USERS_PATH = "/api-consumption-users"
+const ADMIN_CONTENT_URL = "https://hjdjprojectvillage.online/router-service/api/v1/admin";
 
 class Admin {
 
@@ -54,12 +55,37 @@ class Admin {
 }
 
 document.addEventListener(DOM_CONTENT_LOADED, () => {
-    Initializer.loadUserMessages()
-    new Profile()
+    fetch(ADMIN_CONTENT_URL, {
+        method: "GET",
+        credentials: "include",
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Failed to load admin content: ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then((content) => {
+            const adminContent = document.getElementById("admin-content");
+            adminContent.textContent = ""; 
 
-    const admin = new Admin()
-    admin.updateEndpointStats()
-    admin.updateUserStats()
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, "text/html");
+            Array.from(doc.body.childNodes).forEach((node) => {
+                adminContent.appendChild(node.cloneNode(true));
+            });
 
-    document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout
+            Initializer.loadUserMessages();
+            new Profile();
+            const admin = new Admin();
+            admin.updateEndpointStats();
+            admin.updateUserStats();
+
+            document.getElementById(LOGOUT_BUTTON_ID).onclick = Auth.logout;
+        })
+        .catch((error) => {
+            console.error("Error loading admin page content:", error.message);
+            const adminContent = document.getElementById("admin-content");
+            adminContent.textContent = "Error loading admin content. Please try again later.";
+        });
 })

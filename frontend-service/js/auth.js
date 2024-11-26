@@ -17,23 +17,33 @@ export class Auth {
             if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText
         })
     }
-
     static login(email, password) {
         const body = {
-            'email': email,
-            'password': password
-        }
-        Api.postRouterService(LOGIN_PATH, body, response => {
-            if (response.message) document.getElementById(RESULT_ELEMENT_ID).textContent = response.message
-            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText
+            email: email,
+            password: password,
+        };
+    
+        Api.postRouterService(LOGIN_PATH, body, (response) => {
+            if (response.message) document.getElementById(RESULT_ELEMENT_ID).textContent = response.message;
+            if (response.statusText) document.getElementById(RESULT_ELEMENT_ID).textContent = response.statusText;
 
-            if (response.role && response.role === 'admin') {
-                window.location.href = '/admin.html';
+            if (response.role) {
+                const url = response.role === "admin"
+                    // ? '/frontend-service/admin.html'
+                    // : "/frontend-service/landing.html";
+                    ? '/admin.html'
+                    : "/landing.html";
+
+                window.location.href = url;
+
             } else {
-                window.location.href = '/landing.html';
+                console.error("Login failed:", response.message || "Unknown error");
+                document.getElementById(RESULT_ELEMENT_ID).textContent = response.message || "Login failed. Please try again.";
             }
-        })
+
+        });
     }
+    
 
     static forgotPassword(email) {
         console.log("todo implement forgot password")
@@ -42,7 +52,7 @@ export class Auth {
     static logout() {
         const body = {};
         Api.postRouterService(LOGOUT_PATH, body, response => {
-            window.location.href = '/login.html';
+            window.location.href = 'https://bcit4537-termproject-frontend.up.railway.app/login.html';
         });
     }
 
