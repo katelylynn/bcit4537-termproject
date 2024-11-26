@@ -1,4 +1,9 @@
 """ Transcribes audio from .wav file using a pretrained Whisper model. """
+""" This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ """
 
 import os
 import torchaudio

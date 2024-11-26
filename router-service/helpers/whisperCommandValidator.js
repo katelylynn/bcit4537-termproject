@@ -1,3 +1,9 @@
+/*This code was made with the assistance of CHATGPT version 4o- to:
+ - make recommendations
+ - provide feedback
+ - correct syntax and logic
+ */
+
 const { VALID_COMMANDS, ERROR_MESSAGES } = require('../lang/en');
 const { convertWordsToNumbers } = require('../helpers/convertWordsToNumbers');
 const { processNegativeValues } = require('../helpers/processNegativeValues');

@@ -78,9 +78,9 @@ Linux (Debian/Ubuntu):
     ```python
     whisper-service/
     ├── model/
-    │   └── whisper_tiny_model/        # Unzipped model files here
+    │   └── whisper_tiny_model/        
     ├── Model_zip/
-    │   └── whisper_tiny_model.zip     # Original compressed model file
+    │   └── whisper_tiny_model.zip     
     ├── modules/
     ├── .gitignore
     ├── app.py
