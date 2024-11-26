@@ -68,7 +68,7 @@ module.exports = class CarController {
     }
 
     static postCarService(res, path, body) {
-        fetch(process.env["CAR-SERVICE"] + path, {
+        fetch(process.env["CAR_SERVICE"] + path, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
