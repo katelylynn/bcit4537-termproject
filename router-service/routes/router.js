@@ -25,8 +25,8 @@ module.exports = class Router {
         UPDATE_USER_EMAIL: ["/user/email", "patch"],
         DELETE_USER: ["/user", "delete"],
         TRANSCRIBE_AND_CONTROL: ["/transcribe-and-control", "post"],
-        JUSTIN_1: ["/justin1", "post"],
-        JUSTIN_2: ["/justin2", "post"],
+        DONUT: ["/donut", "post"],
+        STOP: ["/stop", "post"],
     }
 
     constructor() {
@@ -155,8 +155,8 @@ module.exports = class Router {
         this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USERS[0], [this.allowAdminsOnly, this.requestCountMiddleware.bind(this)], DBController.getApiConsumptionAllUsers.bind(DBController));
         this.router.get(this.EXTERNAL_APIS.API_CONSUMPTION_USER[0], this.requestCountMiddleware.bind(this), DBController.getApiConsumptionSingleUser.bind(DBController));
         
-        this.router.post(this.EXTERNAL_APIS.JUSTIN_1[0], this.requestCountMiddleware.bind(this), CarController.justin1.bind(CarController));
-        this.router.post(this.EXTERNAL_APIS.JUSTIN_2[0], this.requestCountMiddleware.bind(this), CarController.justin2.bind(CarController))
+        this.router.post(this.EXTERNAL_APIS.DONUT[0], this.requestCountMiddleware.bind(this), CarController.donut.bind(CarController));
+        this.router.post(this.EXTERNAL_APIS.STOP[0], this.requestCountMiddleware.bind(this), CarController.stop.bind(CarController));
         
         this.router.post(this.EXTERNAL_APIS.TRANSCRIBE_AND_CONTROL[0], this.upload.single('file'), (req, res) => {
             WhisperController.transcribeAndControl(req, res);
