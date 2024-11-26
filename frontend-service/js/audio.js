@@ -96,7 +96,7 @@ export class AudioManager {
                 console.warn("Invalid command:", result.transcription);
                 console.log(`Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`);
                 // this.status.innerText = `Invalid command: "${result.transcription}". Valid commands are: ${userMessages.validCommands.join(", ")}.`;
-                this.status.innerText = userMessages.invalidCommand(result.transcription, VALID_COMMANDS);
+                this.status.innerText = userMessages.invalidCommand(result.transcription, userMessages.validCommands);
                 setTimeout(() => {
                     // console.log("Status element after update:", this.status.innerText);
                 }, 1000);
