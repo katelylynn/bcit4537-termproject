@@ -38,8 +38,7 @@ module.exports = class Router {
 
         this.nojwt = ['/register', '/login', '/logout', '/docs']
         this.router.use((req, res, next) => {
-            // skip jwt verification for server-to-server calls
-            // should swap to calls from recognized origin list eventually
+
             if (req.headers['user-agent'] === 'node') {
                 return next();
             }
@@ -177,6 +176,7 @@ module.exports = class Router {
         this.router.post('/post-endpoint', DBController.postEndpoint.bind(DBController));
         
  
+        //SSR HTML CONTENT
         this.router.get('/landing', (req, res) => {
             const filePath = path.join(__dirname, '../html', 'landing.html');
             fs.readFile(filePath, 'utf8', (err, data) => {
