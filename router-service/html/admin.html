@@ -1,78 +1,78 @@
 
 <main id="admin-content">
-  <h2>Admin Dashboard</h2>
-  <p>Monitor API usage statistics and user consumption details.</p>
+  <h2 id="adminHeader"></h2>
+  <p id="adminDescription"></p>
 
   <div>
-    <h3>API Consumption Stats</h3>
+    <h3 id="apiConsumptionStatsHeader"></h3>
     <table id="apiConsumptionStats">
       <thead>
         <tr>
-          <th>Method</th>
-          <th>Path</th>
-          <th>Total Requests</th>
+          <th id="methodHeader"></th>
+          <th id="pathHeader"></th>
+          <th id="totalRequestsHeader"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td colspan="3">No calls have been made.</td>
+          <td colspan="3" id="noCallsApiConsumption"></td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div>
-    <h3>User API Consumption Stats</h3>
+    <h3 id="userConsumptionStatsHeader"></h3>
     <table id="userConsumptionStats">
       <thead>
         <tr>
-          <th>Email</th>
-          <th>Total Requests</th>
+          <th id="emailHeader"></th>
+          <th id="totalRequestsUserHeader"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td colspan="3">No calls have been made.</td>
+          <td colspan="3" id="noCallsUserConsumption"></td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div>
-    <h3>Send Voice Commands</h3>
-    <button id="recordButton">Record 5s Command</button>
+    <h3 id="sendCommandsHeader"></h3>
+    <button id="recordButton"></button>
     <p id="status"></p>
     <a id="downloadLink"></a>
   </div>
 
   <div>
-    <h3>Profile</h3>
+    <h3 id="profileHeader"></h3>
     <div>
       <div>
-        <label>Update Email:</label>
+        <label id="updateEmailLabel"></label>
       </div>
       <div>
         <input id="emailInput" placeholder="Enter email here" />
-        <button id="emailButton">Submit</button>
+        <button id="emailButton"></button>
       </div>
       <div>
         <p id="result"></p>
       </div>
       <div>
-        <label>===== DANGER =====</label>
+        <label id="dangerLabel"></label>
       </div>
       <div>
-        <button id="deleteUserButton">Delete Account</button>
+        <button id="deleteUserButton"></button>
       </div>
       <div>
-        <label>===================</label>
+        <label id="dangerEndLabel"></label>
       </div>
     </div>
   </div>
 
   <div>
-    <h3>Session</h3>
-    <button id="logoutButton">Logout</button>
+    <h3 id="sessionHeader"></h3>
+    <button id="logoutButton"></button>
   </div>
 </main>
 

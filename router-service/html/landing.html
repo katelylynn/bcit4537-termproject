@@ -1,49 +1,49 @@
 
 <main id="landing-content">
-  <h2>Voice Activated Land-Bound Drone</h2>
-  <p>Control your land-bound drone using voice commands!</p>
+  <h2 id="landingHeader"></h2>
+  <p id="landingDescription"></p>
 
   <div>
-    <h3>API Consumption</h3>
-    <p id="apiUsage">API Calls Made: <span id="usageCount">0</span></p>
+    <h3 id="apiConsumptionHeader">API Consumption</h3>
+    <p id="apiUsage"><span id="usageCount"></span></p>
     <p id="apiUsageWarning"></p>
   </div>
 
   <div>
-    <h3>Send Voice Commands</h3>
-    <button id="recordButton">Record 5s Command</button>
+    <h3 id="sendCommandsHeader"></h3>
+    <button id="recordButton"></button>
     <p id="status"></p>
     <a id="downloadLink"></a>
   </div>
 
   <div>
-    <h3>Profile</h3>
+    <h3 id="profileHeader"></h3>
     <div>
       <div>
-        <label>Update Email:</label>
+        <label id="updateEmailLabel"></label>
       </div>
       <div>
         <input id="emailInput" placeholder="Enter email here" />
-        <button id="emailButton">Submit</button>
+        <button id="emailButton"></button>
       </div>
       <div>
         <p id="result"></p>
       </div>
       <div>
-        <label>===== DANGER =====</label>
+        <label id="dangerLabel"></label>
       </div>
       <div>
-        <button id="deleteUserButton">Delete Account</button>
+        <button id="deleteUserButton"></button>
       </div>
       <div>
-        <label>===================</label>
+        <label id="dangerEndLabel"></label>
       </div>
     </div>
   </div>
 
   <div>
-    <h3>Session</h3>
-    <button id="logoutButton">Logout</button>
+    <h3 id="sessionHeader"></h3>
+    <button id="logoutButton"></button>
   </div>
 </main>
 

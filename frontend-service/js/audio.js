@@ -104,7 +104,7 @@ export class AudioManager {
             }
 
             if (!response.ok) {
-                throw new Error(`Server error: ${response.statusText}`);
+                throw new Error(`${userMessages.serverError} ${response.statusText}`);
             }
 
             const result = await response.json();
