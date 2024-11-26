@@ -10,28 +10,22 @@ const { processNegativeValues } = require('../helpers/processNegativeValues');
 
 function validateCommand(transcription) {
     const sanitizedTranscription = transcription.toLowerCase().trim().replace(/[.,!?]/g, "");
-    console.log("validateCommand - Sanitized transcription:", sanitizedTranscription);
 
     const [command, ...args] = sanitizedTranscription.split(" ");
-    console.log("validateCommand - Command:", command, "Args:", args);
 
     if (!VALID_COMMANDS[command]) {
         return { isValid: false, error: ERROR_MESSAGES.invalidCommand };
     }
 
     const processedArgs = convertWordsToNumbers(args);
-    console.log("convertWordsToNumbers - Processed args:", processedArgs);
 
     const convertedArgs = processNegativeValues(processedArgs);
-    console.log("processNegativeValues - Converted args:", convertedArgs);
-
 
     const result = { isValid: true, command: VALID_COMMANDS[command], params: {} };
 
     switch (command) {
         case "forward":     
         case "backward":
-            console.log("FORWARD OR BACKWARD")
             if (convertedArgs.length === 0) {
                 result.params = { speed: 1, angle: 0 };
             } 

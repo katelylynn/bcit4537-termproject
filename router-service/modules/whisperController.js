@@ -80,10 +80,8 @@ module.exports = class WhisperController {
             }
     
             const { command, params } = validation;
-            console.log("transcribeAndControl - Sending car command:", command, params);
 
             const carCommandResult = await CarController.sendCarCommand(command, params);  
-            console.log("transcribeAndControl - Car Command Result:", carCommandResult);
 
             if (!carCommandResult.success) {
                 return res.status(500).json({ error: carCommandResult.error });
@@ -91,8 +89,6 @@ module.exports = class WhisperController {
 
             res.json({ transcription, carCommand: "success", carResponse: carCommandResult.data });
 
-            // const carCommandSuccess = CarController.sendCarCommand(transcription);
-            // res.json({ transcription, carCommand: carCommandSuccess ? "success" : "failure" });
         } catch (error) {
             res.status(500).json({ error: ERROR_MESSAGES.requestProcessFailed });
         }
