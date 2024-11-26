@@ -67,12 +67,42 @@ module.exports = class CarController {
         });
     }
 
-    static justin1(req, res) {
-
+    static postCarService(res, path, body) {
+        fetch(process.env["CAR-SERVICE"] + path, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+            .then(response => {
+                console.log("post car service first then")
+                console.log(response)
+                if (!response.ok) {
+                    throw response;
+                }
+                return response.json();
+            })
+            .then(data => {
+                res.status(200).json(data);
+                console.log(res)
+            })
+            .catch(response => {
+                console.error('Error in postCarService posting data:', response.statusText);
+                return res.status(response.status).json({ error: response.statusText });
+            });
     }
 
-    static justin2(req, res) {
+    static donut(req, res) {
+        const body = {
+            "speed": 10,
+            "angle": 10
+        }
 
+        this.postCarService(res, `/forward`, body)
+    }
+
+    static stop(req, res) {
+        const body = {}
+        this.postCarService(res, `/stop`, body)
     }
 
 }
