@@ -61,11 +61,21 @@ module.exports = class UserCredentialsManager {
 
     static async getUid(email) {
         const data = await this.getRouterValue(`/api/v1/get-uid/${email}`)
+        
+        if (data['data'].length === 0) {
+            return undefined
+        }
+
         return data['data'][0]['id']
     }
 
     static async getUser(uid) {
         const data = await this.getRouterValue(`/api/v1/get-user/${uid}`)
+
+        if (data['data'].length === 0) {
+            return undefined
+        }
+
         return data['data'][0]
     }
 
