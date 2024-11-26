@@ -29,11 +29,20 @@ module.exports = class AuthManager {
 
         const uid = await UserCredentialsManager.getUid(email)
         const user = await UserCredentialsManager.getUser(uid)
+        
+        console.log(`reached after uid and user fetch with uid ${uid}, and user ${user}`)
+
+        if (!uid || !user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
         const correctPassword = bcrypt.compareSync(password, user.password)
 
         if (!correctPassword) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({ message: 'Invalid Password' });
         }
+
+        console.log(`reached after password confirmation`)
 
         const token = jwt.sign({ user }, this.SECRET_KEY, { expiresIn: this.EXPIRATION });
         res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None'});
